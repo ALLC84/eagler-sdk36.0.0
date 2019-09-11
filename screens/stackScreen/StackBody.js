@@ -5,7 +5,7 @@ import BodyScreen from "../BodyScreen";
 import BodyDetailScreen from "../BodyDetailScreen";
 
 import SingUp from "../RegisterScreen";
-// import PerfilUsuarioScreen from "../PerfilUsuarioScreen";
+import PerfilUsuarioScreen from "../PerfilUsuarioScreen";
 import PerfilFisicoUsuarioScreen from "../PerfilFisicoUsuarioScreen";
 import PerfilJuegoUsuarioScreen from "../PerfilJuegoUsuarioScreen";
 import SuscripcionesScreen from "../SuscripcionesScreen";
@@ -21,9 +21,9 @@ const Body = createStackNavigator(
 		SingUp: {
 			screen: SingUp
 		},
-		// PerfilUsuario: {
-		// 	screen: PerfilUsuarioScreen
-		// },
+		PerfilUsuario: {
+			screen: PerfilUsuarioScreen
+		},
 		PerfilJuego: {
 			screen: PerfilJuegoUsuarioScreen
 		},

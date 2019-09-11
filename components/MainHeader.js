@@ -1,5 +1,5 @@
 /* =========== LIBRERIAS ============= */
-import React, { Component } from "react"; // React
+import React from "react"; // React
 import { Platform, StyleSheet, Image } from "react-native"; // React Native
 import { Header, Left, Right, Button, Icon } from "native-base"; // Native Base
 /* ========== PROPIOS ================ */
@@ -7,32 +7,32 @@ import { Header, Left, Right, Button, Icon } from "native-base"; // Native Base
 //import Strings from '../constants/Strings'; // Strings
 import Colors from '../constants/Colors'; // Styles
 
-class MainHeader extends Component {
-	render() {
-		return (
-			<Header style={stylesPage.header}>
-				<Left>
-					{/* <Text style={stylesPage.name_app_header}>
-						{Strings.ST0}
-					</Text> */}
-					<Button transparent style={{width: 80}}>
-						<Image style={{flex: 1}}
-							source={require("../assets/images/eagler.png")}
-						/>
-					</Button>
-				</Left>
-				
-				<Right>
-					<Button transparent onPress={() => this.props.openDrawer()}>
-					{Platform.OS === "ios"
-						? <Icon name="more" style={stylesPage.icon_menu_heade} />
-						: <Icon name="menu" style={stylesPage.icon_menu_heade} />
-					}
-					</Button>
-				</Right>
-			</Header>
-		);
-	}
+const  MainHeader = props => {
+	const { openDrawer } = props;
+
+	return (
+		<Header style={stylesPage.header}>
+			<Left>
+				{/* <Text style={stylesPage.name_app_header}>
+					{Strings.ST0}
+				</Text> */}
+				<Button transparent style={{width: 80}}>
+					<Image style={{flex: 1}}
+						source={require("../assets/images/eagler.png")}
+					/>
+				</Button>
+			</Left>
+			
+			<Right>
+				<Button transparent onPress={() => openDrawer()}>
+				{Platform.OS === "ios"
+					? <Icon name="more" style={stylesPage.icon_menu_heade} />
+					: <Icon name="menu" style={stylesPage.icon_menu_heade} />
+				}
+				</Button>
+			</Right>
+		</Header>
+	);
 }
 export default MainHeader;
 

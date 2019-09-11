@@ -5,7 +5,6 @@ const initialState = {
 }
 
 const UserProfileReducer = ( state = initialState, action ) => {
-   //console.log('State userProfile =>', state)
    switch(action.type){
       case TYPES.GUARDAR_USER_PROFILE_STORE:
             return {

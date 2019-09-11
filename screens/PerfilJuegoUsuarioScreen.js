@@ -1,8 +1,9 @@
 /* =========== LIBRERIAS ============= */
-import React from "react"; // React
+import React, { useEffect } from "react"; // React
 import { StyleSheet } from "react-native"; // React-native
 import { Container, Content, Form, Toast, Root} from "native-base"; // Native Base
-import { connect } from 'react-redux'; // Redux
+/* ========== REDUX ================ */
+import { useDispatch, useSelector  } from 'react-redux' // React-Redux
 /* ========== PROPIOS ================ */
 import Strings from '../constants/Strings'; // Strings
 import DetailScreenHeader from '../components/DetailScreenHeader'; // Header
@@ -12,44 +13,29 @@ import { actionGetUserProfile, actionUpdatePlayUserProfile } from '../store/acti
 
 
 
-class PerfilJuegoUsuarioScreen extends React.Component {
-	constructor(props) {
-		super(props);
-		this.user = AUTH.currentUser;
+const PerfilJuegoUsuarioScreen = props => {
+	const { navigation } = props;
+	const user = AUTH.currentUser;
+	// REDUX
+	const { userProfile }= useSelector(state => state.userProfile);
+	// Dispatchs
+	const dispatch = useDispatch();
+	const getUserProfile = userId => dispatch(actionGetUserProfile(userId));
+	const updatePlayProfile = (userId, values) => dispatch(actionUpdatePlayUserProfile(userId, values));
+
+	const initialValues = {
+		anioInicio: userProfile.anioInicio,
+		diasEntrenamientoSemana: userProfile.diasEntrenamientoSemana,
+		diasJuegoSemana: userProfile.diasJuegoSemana,
+		handicap: userProfile.handicap,
+		mano: userProfile.mano
 	}
 
-	componentDidMount(){
-		this.props.getUserProfile(this.user.uid);
-	}
+	useEffect(() => {
+		getUserProfile(user.uid);
+	}, [])
 
-	render() {
-		return (
-			<Root>
-				<Container>
-					{/* Header Page */}
-					<DetailScreenHeader
-						navigation={this.props.navigation} 
-						title={Strings.ST21}
-						page={'PERFIL_JUEGO'}
-					/>
-
-					{/* Content Page */}
-					<Content padder>
-						<Form style={stylesPage.form_style}>
-							<PlayUserProfileForm 
-								initialValues = {this.props.initialValues} 
-								updatePlayProfile={this.props.updatePlayProfile} 
-								userId={this.user.uid} 
-								setMessage={this.mostrarToast}
-							/>
-						</Form>
-					</Content>
-				</Container>
-			</Root>
-		);
-	}
-
-	mostrarToast = (message) => {
+	const mostrarToast = (message) => {
 		return (
 			Toast.show({
 				text: message,
@@ -59,35 +45,33 @@ class PerfilJuegoUsuarioScreen extends React.Component {
 			})
 		)
 	}
+
+	return (
+		<Root>
+			<Container>
+				{/* Header Page */}
+				<DetailScreenHeader
+					navigation={navigation} 
+					title={Strings.ST21}
+					page={'PERFIL_JUEGO'}
+				/>
+
+				{/* Content Page */}
+				<Content padder>
+					<Form style={stylesPage.form_style}>
+						<PlayUserProfileForm 
+							initialValues = {initialValues} 
+							updatePlayProfile={updatePlayProfile} 
+							userId={user.uid} 
+							setMessage={mostrarToast}
+						/>
+					</Form>
+				</Content>
+			</Container>
+		</Root>
+	);
 }
-
-const mapStateToProps = (state) => ({
-
-	userProfile: state.UserProfileReducer.userProfile,
-
-	initialValues: {
-		anioInicio: state.UserProfileReducer.userProfile.anioInicio,
-		diasEntrenamientoSemana: state.UserProfileReducer.userProfile.diasEntrenamientoSemana,
-		diasJuegoSemana: state.UserProfileReducer.userProfile.diasJuegoSemana,
-		handicap: state.UserProfileReducer.userProfile.handicap,
-		mano: state.UserProfileReducer.userProfile.mano
-	}
-
-});
-
-const mapDispatchToProps = (dispatch) => ({
-
-	getUserProfile: (userId) => {
-		dispatch(actionGetUserProfile(userId))
-	},
-
-	updatePlayProfile: (userId, values) => {
-		dispatch(actionUpdatePlayUserProfile(userId, values));
-	}
-
-});
-
-export default connect( mapStateToProps, mapDispatchToProps )(PerfilJuegoUsuarioScreen);
+export default PerfilJuegoUsuarioScreen;
 
 // Styles
 const stylesPage = StyleSheet.create({

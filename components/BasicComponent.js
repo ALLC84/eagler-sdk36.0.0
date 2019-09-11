@@ -1,21 +1,17 @@
 /* =========== LIBRERIAS ============= */
-import React, { Component } from "react"; // React
+import React, { useEffect, useState } from "react"; // React
 import { StyleSheet } from "react-native"; // React Native
 import { Content, Toast, Root, Spinner } from "native-base"; // NativeBase
-import { connect } from "react-redux"; //Redux
 import { AUTH } from "../services/firebase"; // Firebase
 /* ========== PROPIOS ================ */
 import Text from "./CustomText"; // Custom Text Styles and Font
 import Strings from "../constants/Strings"; // Strings
-import {
-  actionGetFase,
-  actionGetClase,
-  actionMostrarModal,
-  actionCerrarModal
-} from "../store/actions/basicAction"; //Actions Redux
 import ModalPerfilJuego from "./ModalPerfilJuego"; // Modal con formulario derfil de juego
 import CardBasicsComponent from "./CardBasicsComponent"; // Card de las diferentes clases
 import Colors from "../constants/Colors"; // Color Style
+/* ========== REDUX ================ */
+import { useDispatch, useSelector  } from 'react-redux' // React-Redux
+import { actionGetFase } from "../store/actions/basicAction"; //Actions Redux
 
 const imgs = [
   "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fimages%2FseveBunker.jpeg?alt=media&token=81d97819-192f-44dc-89ed-68e321adbbf9",
@@ -25,90 +21,32 @@ const imgs = [
   "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fimages%2FputtSpieth.jpg?alt=media&token=39f81cbb-ed77-4740-856d-03caf093a69c"
 ];
 
-class BasicComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.user = AUTH.currentUser;
-  }
+const BasicComponent = props => {
+  const user = AUTH.currentUser;
+  const { navigation } = props;
+  // STATE
+  const [visibleModalPerfilJuego, setVisibleModalPerfilJuego] = useState(false)
+	// REDUX
+  const { clases, fase }= useSelector(state => state.basic)
+	// Dispatchs
+	const dispatch = useDispatch()
+  const getFase = (userId) => dispatch(actionGetFase(userId))
 
-  async componentDidMount() {
-    await this.props.getFase(this.user.uid);
-  }
+  // FUNCTIONS
+  const cerrarModal = () => setVisibleModalPerfilJuego(false)
 
-  render() {
-    const { fase, clases } = this.props;
 
-    if (
-      (fase === undefined && !this.props.visibleModal) ||
-      clases.length == 0
-    ) {
-      return (
-        <Root>
-          <Spinner color={Colors.tintColor} />
-          <Text style={stylesPage.snipperText}>{Strings.ST33}</Text>
-        </Root>
-      );
-    } else if (fase === undefined || this.props.visibleModal) {
-      return (
-        <Root>
-          <ModalPerfilJuego
-            getFase={this.props.getFase}
-            cerrarModal={this.props.cerrarModal}
-            mostrarToast={this.mostrarToast}
-          />
-        </Root>
-      );
-    } else {
-      return (
-        <Root>
-          <Content padder>
-            <CardBasicsComponent
-              key={"1"}
-              body={clases}
-              title={Strings.ST23}
-              subtitle={Strings.ST24}
-              img={imgs[0]}
-              navigation={this.props.navigation}
-            />
-            <CardBasicsComponent
-              key={"2"}
-              body={clases}
-              title={Strings.ST25}
-              subtitle={Strings.ST26}
-              img={imgs[1]}
-              navigation={this.props.navigation}
-            />
-            <CardBasicsComponent
-              key={"3"}
-              body={clases}
-              title={Strings.ST27}
-              subtitle={Strings.ST28}
-              img={imgs[2]}
-              navigation={this.props.navigation}
-            />
-            <CardBasicsComponent
-              key={"4"}
-              body={clases}
-              title={Strings.ST29}
-              subtitle={Strings.ST30}
-              img={imgs[3]}
-              navigation={this.props.navigation}
-            />
-            <CardBasicsComponent
-              key={"5"}
-              body={clases}
-              title={Strings.ST31}
-              subtitle={Strings.ST32}
-              img={imgs[4]}
-              navigation={this.props.navigation}
-            />
-          </Content>
-        </Root>
-      );
+  useEffect(() => {
+		getFase(user.uid)
+  }, [])
+
+  useEffect(() => {
+    if(!fase) {
+      setVisibleModalPerfilJuego(true)
     }
-  }
-
-  mostrarToast = message => {
+  }, [fase])
+  
+  const mostrarToast = message => {
     return Toast.show({
       text: message,
       textStyle: { textAlign: "center" },
@@ -116,37 +54,77 @@ class BasicComponent extends Component {
       position: "bottom"
     });
   };
-}
 
-const mapStateToProps = state => ({
-  fases: state.BasicReducer.fases,
-  fase: state.BasicReducer.fase,
-  clases: state.BasicReducer.clases,
-  visibleModal: state.BasicReducer.visibleModal
-});
-
-const mapDispatchToProps = dispatch => ({
-  getFase: userId => {
-    dispatch(actionGetFase(userId));
-  },
-
-  getClase: () => {
-    dispatch(actionGetClase());
-  },
-
-  mostrarModal: () => {
-    dispatch(actionMostrarModal());
-  },
-
-  cerrarModal: () => {
-    dispatch(actionCerrarModal());
+  if (
+    (fase === undefined && visibleModalPerfilJuego === false) ||
+    clases.length == 0
+  ) {
+    return (
+      <Root>
+        <Spinner color={Colors.tintColor} />
+        <Text style={stylesPage.snipperText}>{Strings.ST33}</Text>
+      </Root>
+    );
+  } else if (fase === undefined || visibleModalPerfilJuego) {
+    return (
+      <Root>
+        <ModalPerfilJuego
+          getFase={getFase}
+          cerrarModal={cerrarModal}
+          mostrarToast={mostrarToast}
+        />
+      </Root>
+    );
+  } else {
+    return (
+      <Root>
+        <Content padder>
+          <CardBasicsComponent
+            key={"1"}
+            body={clases}
+            title={Strings.ST23}
+            subtitle={Strings.ST24}
+            img={imgs[0]}
+            navigation={navigation}
+          />
+          <CardBasicsComponent
+            key={"2"}
+            body={clases}
+            title={Strings.ST25}
+            subtitle={Strings.ST26}
+            img={imgs[1]}
+            navigation={navigation}
+          />
+          <CardBasicsComponent
+            key={"3"}
+            body={clases}
+            title={Strings.ST27}
+            subtitle={Strings.ST28}
+            img={imgs[2]}
+            navigation={navigation}
+          />
+          <CardBasicsComponent
+            key={"4"}
+            body={clases}
+            title={Strings.ST29}
+            subtitle={Strings.ST30}
+            img={imgs[3]}
+            navigation={navigation}
+          />
+          <CardBasicsComponent
+            key={"5"}
+            body={clases}
+            title={Strings.ST31}
+            subtitle={Strings.ST32}
+            img={imgs[4]}
+            navigation={navigation}
+          />
+        </Content>
+      </Root>
+    );
   }
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BasicComponent);
+}
+export default BasicComponent;
 
 // Styles del Componente
 const stylesPage = StyleSheet.create({

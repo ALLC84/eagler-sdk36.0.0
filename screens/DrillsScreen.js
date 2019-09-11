@@ -7,44 +7,41 @@ import MainHeader from "../components/MainHeader";
 import DrillsComponent from "../components/DrillsComponent";
 import ProfileUser from '../components/ProfileUser'
 
-class DrillsScreen extends React.Component {
-	static navigationOptions = {
+const DrillsScreen = props => {
+	const { navigation } = props;
+	const navigationOptions = {
 		header: null
 	};
 
-	render() {
-		const { navigation } = this.props;
-
-		return (
-			<Root style={stylesPage.container}>
-				<Drawer
-					ref={ref => {
-						this._drawer = ref;
-					}}
-					content={<ProfileUser navigation={navigation}/>}
-					onClouse={() => this.closeDrawer()}
-					
-				>
-				<MainHeader openDrawer={this.openDrawer} />
-
-				
-				<DrillsComponent 
-					navigation= {this.props}
-				/>
-			
-
-				</Drawer>
-			</Root>
-		);
-	}
-
 	//Drawer
 	closeDrawer = () => {
-		this._drawer._root.close();
+		_drawer._root.close();
 	};
 	openDrawer = () => {
-		this._drawer._root.open();
+		_drawer._root.open();
 	};
+
+	return (
+		<Root style={stylesPage.container}>
+			<Drawer
+				ref={ref => {
+					_drawer = ref;
+				}}
+				content={<ProfileUser navigation={navigation}/>}
+				onClouse={() => closeDrawer()}
+				
+			>
+			<MainHeader openDrawer={openDrawer} />
+
+			
+			<DrillsComponent 
+				navigation= {props}
+			/>
+		
+
+			</Drawer>
+		</Root>
+	);
 }
 
 export default DrillsScreen;

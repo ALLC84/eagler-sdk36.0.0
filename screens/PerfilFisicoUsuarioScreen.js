@@ -1,93 +1,74 @@
 /* =========== LIBRERIAS ============= */
-import React from "react"; // React
+import React, {useEffect} from "react"; // React
 import { StyleSheet } from "react-native"; // React-native
 import { Container, Content, Form, Toast, Root } from "native-base"; // Native Base
-import { connect } from 'react-redux'; // Redux
+/* ========== REDUX ================ */
+import { useDispatch, useSelector  } from 'react-redux' // React-Redux
+import { actionGetUserProfile, actionUpdatePhysicalUserProfile } from '../store/actions/userProfileAction';// Actions
 /* ========== PROPIOS ================ */
 import DetailScreenHeader from '../components/DetailScreenHeader'; // Header
 import Strings from '../constants/Strings'; // Strings
 import { AUTH } from '../services/firebase'; // Firebase
 import PlayPhysicalProfileForm from '../navigation/autenticados/forms/physicalUserProfile'; // Formulario
-import { actionGetUserProfile, actionUpdatePhysicalUserProfile } from '../store/actions/userProfileAction';// Actions
 
 
-class PerfilFisicoUsuarioScreen extends React.Component {
-	constructor(props) {
-		super(props);
-		this.user = AUTH.currentUser;
+const PerfilFisicoUsuarioScreen = props => {
+	const { navigation } = props;
+	const user = AUTH.currentUser;
+	// REDUX
+	const { userProfile }= useSelector(state => state.userProfile);
+	// Dispatchs
+	const dispatch = useDispatch();
+	const getUserProfile = userId => dispatch(actionGetUserProfile(userId));
+	const updatePhysicalProfile = (userId, values) => dispatch(actionUpdatePhysicalUserProfile(userId, values));
+
+	const initialValues= {
+		altura: userProfile.altura , peso:userProfile.peso , anioNacimiento:userProfile.anioNacimiento , state:userProfile.state , sexo:userProfile.sexo 
 	}
 
-	componentDidMount() {
-		this.props.getUserProfile(this.user.uid);
-	}
+	useEffect(() => {
+		getUserProfile(user.uid);
+	},[])
 
-	render() {
-		return (
-			<Root>
-				<Container>
-					{/* Header Page */}
-					<DetailScreenHeader
-						navigation={this.props.navigation} 
-						title={Strings.ST20}
-						page={'PERFIL_FISICO'}
-					/>
+	console.log(initialValues)
 
-					{/* Content Page */}
-					<Content padder>
-						<Form style={stylesPage.form_style}>
-							<PlayPhysicalProfileForm 
-								initialValues = {this.props.initialValues}
-								updatePhysicalProfile={this.props.updatePhysicalProfile}
-								userId={this.user.uid} 
-								setMessage={this.mostrarToast}
-							/>
-						</Form>
-					</Content>
-				</Container>
-			</Root>
-		);
-	}
+	return (
+		<Root>
+			<Container>
+				{/* Header Page */}
+				<DetailScreenHeader
+					navigation={navigation} 
+					title={Strings.ST20}
+					page={'PERFIL_FISICO'}
+				/>
 
-	mostrarToast = (message) => {
-		return (
-			Toast.show({
-				text: message,
-				textStyle: {textAlign: 'center'},
-				duration: 3000,
-				position: "bottom",
-			})
-		)
-	}
-
+				{/* Content Page */}
+				<Content padder>
+					<Form style={stylesPage.form_style}>
+						<PlayPhysicalProfileForm 
+							initialValues = {initialValues}
+							updatePhysicalProfile={updatePhysicalProfile}
+							userId={user.uid} 
+							setMessage={mostrarToast}
+						/>
+					</Form>
+				</Content>
+			</Container>
+		</Root>
+	);
 }
 
-const mapStateToProps = (state) => ({
-
-	userProfile: state.UserProfileReducer.userProfile,
-
-	initialValues: {
-		altura         : state.UserProfileReducer.userProfile.altura,
-		peso           : state.UserProfileReducer.userProfile.peso,
-		anioNacimiento : state.UserProfileReducer.userProfile.anioNacimiento,
-		sexo           : state.UserProfileReducer.userProfile.sexo,
-	}
-	 
-
-});
-
-const mapDispatchToProps = (dispatch) => ({
-
-	getUserProfile: (userId) => {
-		dispatch(actionGetUserProfile(userId))
-	},
-
-	updatePhysicalProfile: (userId, values) => {
-		dispatch(actionUpdatePhysicalUserProfile(userId, values));
-	}
-
-});
-
-export default connect( mapStateToProps, mapDispatchToProps )(PerfilFisicoUsuarioScreen);
+const mostrarToast = (message) => {
+	return (
+		Toast.show({
+			text: message,
+			textStyle: {textAlign: 'center'},
+			duration: 3000,
+			position: "bottom",
+		})
+	)
+}
+export default PerfilFisicoUsuarioScreen;
 
 // Styles
 const stylesPage = StyleSheet.create({

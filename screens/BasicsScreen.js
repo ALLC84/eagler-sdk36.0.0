@@ -1,5 +1,5 @@
 /* =========== LIBRERIAS ============= */
-import React, { Component} from "react"; // React
+import React from "react"; // React
 import { StyleSheet  } from "react-native"; // React native
 import { Root, Drawer } from "native-base"; // Native Base
 /* ========== PROPIOS ================ */
@@ -7,42 +7,37 @@ import MainHeader from "../components/MainHeader"; // Main Header
 import BasicComponent from "../components/BasicComponent";
 import ProfileUser from '../components/ProfileUser'
 
-class BasicsScreen extends Component {
-	static navigationOptions = {
+const BasicsScreen = props => {
+	const { navigation } = props;
+	const navigationOptions = {
 		header: null
 		// title: 'Basics'
 	};
-
-	render() {
-		const { navigation } = this.props;
-		//console.log(navigation)
-
-		return (
-			<Root style={stylesPage.container}>
-				<Drawer
-					ref={ref => {
-						this._drawer = ref;
-					}}
-					content={<ProfileUser navigation={navigation}/>}
-					onClouse={() => this.closeDrawer()}
-					
-				>
-				<MainHeader openDrawer={this.openDrawer} />
-
-				<BasicComponent navigation={this.props} />
-
-				</Drawer>
-			</Root>
-		);
-	}
-
 	//Drawer
-	closeDrawer = () => {
+	const closeDrawer = () => {
 		this._drawer._root.close();
 	};
-	openDrawer = () => {
+	const openDrawer = () => {
 		this._drawer._root.open();
 	};
+
+	return (
+		<Root style={stylesPage.container}>
+			<Drawer
+				ref={ref => {
+					_drawer = ref;
+				}}
+				content={<ProfileUser navigation={navigation}/>}
+				onClouse={() => closeDrawer()}
+				
+			>
+			<MainHeader openDrawer={openDrawer} />
+
+			<BasicComponent navigation={props} />
+
+			</Drawer>
+		</Root>
+	);
 }
 
 export default BasicsScreen;

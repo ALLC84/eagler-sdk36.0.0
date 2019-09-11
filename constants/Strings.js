@@ -43,13 +43,13 @@ const Strings = {
     // Header Detail Screens
     ST17: "Volver",
 
-    ST18: "Prfil de Usuario:",
+    ST18: "Perfil de Usuario:",
 
     ST19: "Suscripciones",
 
     ST20: "Perfil físico",
 
-    ST21: "Prfil de Juego",
+    ST21: "Perfil de Juego",
 
     // All Detail Screens
     ST22: "Duración: ",

@@ -74,11 +74,11 @@ function* registroUsuario(values) {
 
 //Login Usuario
 //============================================
-const  loginUsuarioFirebase = (value) => {
+const  loginUsuarioFirebase = value => 
    AUTH
       .signInWithEmailAndPassword(value.email, value.password)
-      .then(success => success)
-}
+      .then(success => success);
+
 
 function* loginUsuario(values){
    try {

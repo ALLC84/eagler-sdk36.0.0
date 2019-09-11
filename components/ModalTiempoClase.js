@@ -1,5 +1,5 @@
 /* =========== LIBRERIAS ============= */
-import React, { Component } from "react"; // React
+import React, { useState } from "react"; // React
 import { Modal, View, StyleSheet } from "react-native"; // React Native
 import { Form, Button } from "native-base"; // Native Base
 import { Ionicons } from '@expo/vector-icons'; // Expo
@@ -11,70 +11,61 @@ import functionUserProfile from "../lib/functions/functionUserProfile"; // Funci
 import TimeClassBasicsForm from '../navigation/autenticados/forms/timeClassBasics'; // Form
 
 
-class ModalTiempoClase extends Component {
-	constructor(props) {
-		super(props);
-		this._userId = AUTH.currentUser.uid;
-		this.state = {
-			visibleModal: true
-		}
-	}
-
-	render() {
-		return (
-			<View>
-				<Modal
-					animationType="fade"
-					transparent={true}
-					visible={this.state.visibleModal}
-					// onRequestClose={() => {
-					// 	Alert.alert("Modal has been closed.");
-					// }}
-				>
-					<View style={stylesPage.form_view}>
-						<Button transparent 
-							style={stylesPage.form_button_close}
-							onPress={() => {
-								this.setState({visibleModal: false})
-								this.props.navigation.navigate('Basics')
-							}}
-						>
-							<Ionicons
-								size={40}
-								color={"red"}
-								name={"ios-close"}
-							/>
-						</Button>
-
-						<Text style={stylesPage.form_text}>
-							{Strings.ST41}
-						</Text>
-
-						<Form>
-							{/* ReduxForm */}
-							<TimeClassBasicsForm 
-								userId = {this._userId}
-								actualizarPerfil = {this.actualizarPerfil}
-							/>
-						</Form>
-
-					</View>
-				</Modal>
-			</View>
-		);
-	}
-
+const ModalTiempoClase = props => {
+	const _userId = AUTH.currentUser.uid;
+	const { navigation } = props;
+	// STATE
+	const [ visibleModal, setVisibleModal ] = useState(true)
 
 	// Actualizar puntos abilidades definiendo % segun tiempo clase
-	actualizarPerfil = async (idUser, time) => {
+	const actualizarPerfil = async (idUser, time) => {
 		await functionUserProfile.defineTiempoHabilidades(idUser, time);
-		this.setState({
-			visibleModal: false
-		});
-		this.props.crearTiempoClase(time);
+		setVisibleModal(false)
+		props.crearTiempoClase(time);
 	};
-}
+	
+	return (
+		<View>
+			<Modal
+				animationType="fade"
+				transparent={true}
+				visible={visibleModal}
+				// onRequestClose={() => {
+				// 	Alert.alert("Modal has been closed.");
+				// }}
+			>
+				<View style={stylesPage.form_view}>
+					<Button transparent 
+						style={stylesPage.form_button_close}
+						onPress={() => {
+							setVisibleModal(false)
+							navigation.navigate('Basics')
+						}}
+					>
+						<Ionicons
+							size={40}
+							color={"red"}
+							name={"ios-close"}
+						/>
+					</Button>
 
+					<Text style={stylesPage.form_text}>
+						{Strings.ST41}
+					</Text>
+
+					<Form>
+						{/* ReduxForm */}
+						<TimeClassBasicsForm 
+							userId = {_userId}
+							actualizarPerfil = {actualizarPerfil}
+						/>
+					</Form>
+
+				</View>
+			</Modal>
+		</View>
+	);
+}
 export default ModalTiempoClase;
 
 // Styles del Componente

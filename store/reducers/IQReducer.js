@@ -1,7 +1,7 @@
 import TYPES from '../actions/types';
 
 const initialState = {
-   IQ: []
+   posts: []
 }
 
 const IQReducer = ( state = initialState, action ) => {
@@ -11,7 +11,7 @@ const IQReducer = ( state = initialState, action ) => {
          //console.log(action.IQ);
          return {
             ...state,
-            IQ: action.IQ 
+            posts: action.IQ 
          };
       default: 
          return state;

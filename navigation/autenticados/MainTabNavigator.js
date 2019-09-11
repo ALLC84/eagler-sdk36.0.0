@@ -1,7 +1,7 @@
 /* =========== LIBRERIAS ============= */
-import React from "react"; // React
+import React from 'react';
 import { createStackNavigator, createBottomTabNavigator } from "react-navigation"; // React
-import { Platform, Image, StyleSheet } from "react-native"; // React Native
+import { Image, StyleSheet } from "react-native"; // React Native
 /* ========== PROPIOS ================ */
 import strings from '../../constants/Strings';
 // import TabBarIcon from "../../components/TabBarIcon"; // Iconos personalizados

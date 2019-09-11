@@ -1,4 +1,13 @@
 import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+
+// const composeEnhancers = composeWithDevTools({
+//    realtime: true,
+//    name: 'Eagler',
+//    hostname: 'localhost',
+//    port: '19001/debugger-ui/'
+// })
 
 //Middlewares
 // import funcionPrimaria from './sagas/registerUserSaga';
@@ -17,11 +26,17 @@ import reducers from './reducers'
 
 
 // Saga es un middleware para trabajar con funciones* asincronas (yield == await )
-const sagaMiddleware = createSagaMiddleware();
+const sagaMiddleware = createSagaMiddleware()
+      // composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+
 
 const store = createStore(
-   reducers, 
-   applyMiddleware(sagaMiddleware)
+   reducers,
+   composeWithDevTools(
+      applyMiddleware(
+         sagaMiddleware,
+      ),
+   )
 );
 
 sagaMiddleware.run(

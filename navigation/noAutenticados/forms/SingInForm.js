@@ -46,7 +46,7 @@ const validate = (values) => {
 }
 
 
-const SingInForm = (props) => {
+const SingInForm = props => {
    return (
       <>
          <Field type={'email-address'} placeholder={'Correo'} name="email" component={FieldInput}/>
@@ -57,7 +57,7 @@ const SingInForm = (props) => {
             block
             style={[styles.button_auth, { marginTop: 30 }]}
             onPress = {
-               props.handleSubmit((value) => {
+               props.handleSubmit( value => {
                   props.loginUsuario(value);
                })
             }

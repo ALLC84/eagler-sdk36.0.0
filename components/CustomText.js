@@ -1,25 +1,22 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-class CustomText extends React.Component {
-  constructor(){
-    super();
-  }
+const CustomText = props => {
+    const {type, style, children} = props;
 
-  render() {
-    const font     = this.setFontType(this.props.type ? this.props.type : 'normal');
-    const style    = [{fontFamily: font, fontSize: 16}, this.props.style || {}];
-    const allProps = Object.assign({}, this.props, {style: style});
+    const font     = setFontType(type ? type : 'normal');
+    const styles   = [{fontFamily: font, fontSize: 16}, style || {}];
+    const allProps = Object.assign({}, props, {style: styles});
 
     return (
       <Text {...allProps}>
-        {this.props.children}
+        {children}
       </Text>
     );
     // return <Text {...this.props} style={[this.props.style, { fontFamily: 'gilroy-regular' }]} />;
   }
 
-  setFontType = (type) => {
+const  setFontType = type => {
     switch(type) {
       case 'light':
         return 'gilroy-light';
@@ -30,8 +27,7 @@ class CustomText extends React.Component {
       default:
         return 'gilroy-regular'
     }
-  }
-
+  
 }
 
 export default CustomText;

@@ -1,10 +1,9 @@
 import React from "react";
 import { createStackNavigator, createAppContainer } from "react-navigation";
-
 // Screen
 import IQScreen from "../IQScreen";
 import PostDetailScreen from '../PostDetailScreen'
-// import PerfilUsuarioScreen from "../PerfilUsuarioScreen";
+import PerfilUsuarioScreen from "../PerfilUsuarioScreen";
 import PerfilFisicoUsuarioScreen from "../PerfilFisicoUsuarioScreen";
 import PerfilJuegoUsuarioScreen from "../PerfilJuegoUsuarioScreen";
 import SuscripcionesScreen from "../SuscripcionesScreen";
@@ -18,9 +17,9 @@ const IQ = createStackNavigator(
 		PostDetail: {
 			screen: PostDetailScreen
 		},
-		// PerfilUsuario: {
-		// 	screen: PerfilUsuarioScreen
-		// },
+		PerfilUsuario: {
+			screen: PerfilUsuarioScreen
+		},
 		PerfilJuego: {
 			screen: PerfilJuegoUsuarioScreen
 		},

@@ -5,13 +5,7 @@ const TYPES = {
    CERRAR_SESION                       : 'CERRAR_SESION',
         
    GET_FASE                            : 'GET_FASE',
-   GUARDAR_FASE_STORE                  : 'GUARDAR_FASE_STORE',
-   GET_INITIAL_STATE                   : 'GET_INITIAL_STATE',
-   SET_TIEMPO_CLASE                    : 'SET_TIEMPO_CLASE',
-   SET_STATE_COUNTER                   : 'SET_STATE_COUNTER',
-   SET_COUNTER                         : 'SET_COUNTER',
-        
-        
+   GUARDAR_FASE_STORE                  : 'GUARDAR_FASE_STORE',   
    GUARDAR_CLASE_BASIC_STORE           : 'GUARDAR_CLASE_BASIC_STORE',
         
            

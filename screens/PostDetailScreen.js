@@ -1,5 +1,5 @@
 /* =========== LIBRERIAS ============= */
-import React, { Component } from "react"; // React
+import React from "react"; // React
 import { Image, StyleSheet } from "react-native"; // React Native
 import { Container, Content, View, Badge } from "native-base"; // Native Base
 /* ========== PROPIOS ================ */
@@ -7,55 +7,56 @@ import Text from '../components/CustomText';
 import DetailScreenHeader from '../components/DetailScreenHeader'; // Header
 import globalStyles from "../constants/styles/GlobalStyles"; // Styles
 
-class PostDetailScreen extends Component {
-	render() {
-		const { title, tag, content, img, date } = this.props.navigation.getParam("post","post");
+const PostDetailScreen = props => {
+	const { navigation } = props;
+	// PARAMS
+	const { title, tag, content, img, date } = navigation.getParam("post","post");
 
-		const getContent = () => {
-			content.forEach((content, i) => {
-				return <Text key={i}>{content}</Text>;
-			});
-		};
+	// const getContent = () => {
+	// 	content.forEach((content, i) => {
+	// 		return <Text key={i}>{content}</Text>;
+	// 	});
+	// };
 
-		return (
-			<>
-				{/* Header Page */}
-				<DetailScreenHeader 
-					navigation={this.props.navigation}
-					title={title}
-					page={'IQ'}
-				/>
-				
-				{/* Content Page */}
-				<Container>
-					<Content>
-						<Image style={stylesPage.image}
-							source={{ uri: img, cache: "force-cache" }}
-						/>
+	return (
+		<>
+			{/* Header Page */}
+			<DetailScreenHeader 
+				navigation={navigation}
+				title={title}
+				page={'IQ'}
+			/>
+			
+			{/* Content Page */}
+			<Container>
+				<Content>
+					<Image style={stylesPage.image}
+						source={{ uri: img, cache: "force-cache" }}
+					/>
 
-						<View style={stylesPage.content_view}>
-							<Badge
-								style={[globalStyles.bg_badge_verde, { marginBottom: 20, marginTop: 10}]}
-							>
-								<Text style={globalStyles.color_badge_verde}>{tag}</Text>
-							</Badge>
+					<View style={stylesPage.content_view}>
+						<Badge
+							style={[globalStyles.bg_badge_verde, { marginBottom: 20, marginTop: 10}]}
+						>
+							<Text style={globalStyles.color_badge_verde}>{tag}</Text>
+						</Badge>
 
-							<Text type={'semi-bold'} style={stylesPage.title_view}>
-								{title}
+						<Text type={'semi-bold'} style={stylesPage.title_view}>
+							{title}
+						</Text>
+
+						{content.map((content, i) => (
+							<Text key={i}>
+								{content}
+								{"\n"}
 							</Text>
-
-							{content.map((content, i) => (
-								<Text key={i}>
-									{content}
-									{"\n"}
-								</Text>
-							))}
-						</View>
-					</Content>
-				</Container>
-			</>
-		);
-	}
+						))}
+					</View>
+				</Content>
+			</Container>
+		</>
+	);
+	
 }
 export default PostDetailScreen;
 

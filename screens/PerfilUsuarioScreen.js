@@ -1,10 +1,12 @@
 /* =========== LIBRERIAS ============= */
-import React from "react";
+import React, {useEffect} from "react";
 import { StyleSheet, ImageBackground, TouchableOpacity, Platform } from "react-native"; // React-native
 import { connect } from 'react-redux'; // Redux
 import { Container, Content, Left, Body, Right, View, List, ListItem, Thumbnail } from "native-base"; // Native-Base
 import { ImagePicker } from "expo"; // Expo
 import { Ionicons } from '@expo/vector-icons'; // Expo
+/* ========== REDUX ================ */
+import { useDispatch, useSelector  } from 'react-redux' // React-Redux
 /* ========== PROPIOS ================ */
 import Text from '../components/CustomText';
 import Strings from '../constants/Strings'; // Strings
@@ -16,181 +18,158 @@ import { actionGetUserProfile, actionSetImageProfile } from '../store/actions/us
 import Colors from '../constants/Colors'; // Styles 
 
 
-class PerfilUsuarioScreen extends React.Component {
-	constructor(props) {
-		super(props);
-		this.user = AUTH.currentUser;
-	}
+const PerfilUsuarioScreen = props => {
+	const { navigation } = props;
+	const user = AUTH.currentUser;
+	// REDUX
+	const { userProfile, imageProfile }= useSelector(state => state.userProfile);
+	// Dispatchs
+	const dispatch = useDispatch();
+	const getUserProfile = userId => dispatch(actionGetUserProfile(userId));
+	const setImageDB = (uri, name) => dispatch(actionSetImageProfile(uri, name));
 
-	componentDidMount() {
-		this.props.getUserProfile(this.user.uid);
-	}
+	useEffect(() => {
+		getUserProfile(user.uid);
+	},[])
 
-	render() {
-		const { userProfile, imageProfile } = this.props;
-
+	// Muestra cada item de la lista de abilidades
+	const	mostrarPuntuacion = (avilidad, handicap, puntuacion, icon, func) => {
 		return (
-			<Container>
-				{/* Header Page */}
-				<DetailScreenHeader
-					navigation={this.props.navigation} 
-					title={Strings.ST18}
-					page={'PERFIL_USUARIO'}
-				/>
+			<ListItem avatar>
+				<Left>
+					<Ionicons style={stylesPage.puntuacionLeftIcon}
+						name={icon} 
+						size={24}
+					/>
+				</Left>
+				<Body>
+					<Text>{avilidad}</Text>
+					<Text note>Estas en fase {func(puntuacion, handicap)}</Text>
+				</Body>
+				<Right>
+					<Text note> {puntuacion} pts</Text>
+				</Right>
+			</ListItem>
+		);
+	};
 
-				{/* Content Page */}
-				{/* profile */}
-				<View style={stylesPage.header_container}>
-					<ImageBackground style={stylesPage.header_background}
-						source={require("../assets/images/user-profile-header-bg.jpg")}
-					>
-						<List>
-							<ListItem avatar>
-								<Left>
-									<TouchableOpacity
-										onPress={this.obtenerPermisoCamaraRoll}
-									>
-										<Thumbnail
-											source={
-												imageProfile !== "" || imageProfile == undefined
-													? {
-															uri: imageProfile
-													  }
-													: require("../assets/images/user-img.png")
-											}
-										/>
-									</TouchableOpacity>
-								</Left>
-								<Body>
-									<Text style={stylesPage.text_header}>
-										{userProfile.nickName}
-									</Text>
-									<Text note>{userProfile.email}</Text>
-								</Body>
-							</ListItem>
-						</List>
-					</ImageBackground>
-				</View>
-
-				{/* tiempos */}
-				<Content style={stylesPage.puntuacionContainer}>
-					<List>
-						{mostrarPuntuacion(
-							"Drive",
-							userProfile.handicap,
-							userProfile.tiempoDrive,
-							"ios-thunderstorm",
-							FunctionSetPhase.getPhaseDrive
-						)}
-						{mostrarPuntuacion(
-							"Maderas",
-							userProfile.handicap,
-							userProfile.tiempoMaderas,
-							"ios-compass",
-							FunctionSetPhase.getPhaseMaderas
-						)}
-						{mostrarPuntuacion(
-							"Hierros largos",
-							userProfile.handicap,
-							userProfile.tiempoHierrosLargos,
-							"ios-locate",
-							FunctionSetPhase.getPhaseHierrosLargos
-						)}
-						{mostrarPuntuacion(
-							"Hierros cortos",
-							userProfile.handicap,
-							userProfile.tiempoHierrosCortos,
-							"ios-timer",
-							FunctionSetPhase.getPhaseHierrosCortos
-						)}
-						{mostrarPuntuacion(
-							"Approach",
-							userProfile.handicap,
-							userProfile.tiempoApproach,
-							"ios-speedometer",
-							FunctionSetPhase.getPhaseApproach
-						)}
-						{mostrarPuntuacion(
-							"Putt",
-							userProfile.handicap,
-							userProfile.tiempoPutt,
-							"ios-trophy",
-							FunctionSetPhase.getPhasePutt
-						)}
-					</List>
-				</Content>
-			</Container>
-		)
-	}
-
-	obtenerPermisoCamaraRoll = async () => {
+	const obtenerPermisoCamaraRoll = async () => {
 		if(Platform.OS === 'ios') {
 			const status = await functionGetPermission.getPermissionLibrary();
 			if (status === "granted") {
-				this.obtenerImagenProfileGaleria();
+				obtenerImagenProfileGaleria();
 			}else {
 				throw new Error("Permiso denegado");
 			}
 		}else {
-			this.obtenerImagenProfileGaleria();
+			obtenerImagenProfileGaleria();
 		}
 	};
 
-	obtenerImagenProfileGaleria = async () => {
+	const obtenerImagenProfileGaleria = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
 			allowsEditing: true,
 			aspect: [4, 3]
 		});
 		if (!result.cancelled) {
-			this.props.setImageDB(result.uri, this.user.uid);
+			setImageDB(result.uri, user.uid);
 		}
 	};
 
-}
-
-// Muestra cada item de la lista de abilidades
-const	mostrarPuntuacion = (avilidad, handicap, puntuacion, icon, func) => {
 	return (
-		<ListItem avatar>
-			<Left>
-				<Ionicons style={stylesPage.puntuacionLeftIcon}
-					name={icon} 
-					size={24}
-				/>
-			</Left>
-			<Body>
-				<Text>{avilidad}</Text>
-				<Text note>Estas en fase {func(puntuacion, handicap)}</Text>
-			</Body>
-			<Right>
-				<Text note> {puntuacion} pts</Text>
-			</Right>
-		</ListItem>
-	);
-};
+		<Container>
+			{/* Header Page */}
+			<DetailScreenHeader
+				navigation={navigation} 
+				title={Strings.ST18}
+				page={'PERFIL_USUARIO'}
+			/>
 
+			{/* Content Page */}
+			{/* profile */}
+			<View style={stylesPage.header_container}>
+				<ImageBackground style={stylesPage.header_background}
+					source={require("../assets/images/user-profile-header-bg.jpg")}
+				>
+					<List>
+						<ListItem avatar>
+							<Left>
+								<TouchableOpacity
+									onPress={obtenerPermisoCamaraRoll}
+								>
+									<Thumbnail
+										source={
+											imageProfile !== "" || imageProfile == undefined
+												? {
+														uri: imageProfile
+													}
+												: require("../assets/images/user-img.png")
+										}
+									/>
+								</TouchableOpacity>
+							</Left>
+							<Body>
+								<Text style={stylesPage.text_header}>
+									{userProfile.nickName}
+								</Text>
+								<Text note>{userProfile.email}</Text>
+							</Body>
+						</ListItem>
+					</List>
+				</ImageBackground>
+			</View>
 
-// Redux
-const mapStateToProps = (state) => ({
-
-	userProfile: state.UserProfileReducer.userProfile,
-	imageProfile: state.UserProfileReducer.imageProfile
-	
-})
-
-const mapDispatchToProps = dispatch => ({
-	
-	getUserProfile: (userId) => {
-		dispatch(actionGetUserProfile(userId))
-	},
-
-	setImageDB: (uri, name) => {
-		dispatch(actionSetImageProfile(uri, name))
-	}
-
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(PerfilUsuarioScreen)
+			{/* tiempos */}
+			<Content style={stylesPage.puntuacionContainer}>
+				<List>
+					{mostrarPuntuacion(
+						"Drive",
+						userProfile.handicap,
+						userProfile.tiempoDrive,
+						"ios-thunderstorm",
+						FunctionSetPhase.getPhaseDrive
+					)}
+					{mostrarPuntuacion(
+						"Maderas",
+						userProfile.handicap,
+						userProfile.tiempoMaderas,
+						"ios-compass",
+						FunctionSetPhase.getPhaseMaderas
+					)}
+					{mostrarPuntuacion(
+						"Hierros largos",
+						userProfile.handicap,
+						userProfile.tiempoHierrosLargos,
+						"ios-locate",
+						FunctionSetPhase.getPhaseHierrosLargos
+					)}
+					{mostrarPuntuacion(
+						"Hierros cortos",
+						userProfile.handicap,
+						userProfile.tiempoHierrosCortos,
+						"ios-timer",
+						FunctionSetPhase.getPhaseHierrosCortos
+					)}
+					{mostrarPuntuacion(
+						"Approach",
+						userProfile.handicap,
+						userProfile.tiempoApproach,
+						"ios-speedometer",
+						FunctionSetPhase.getPhaseApproach
+					)}
+					{mostrarPuntuacion(
+						"Putt",
+						userProfile.handicap,
+						userProfile.tiempoPutt,
+						"ios-trophy",
+						FunctionSetPhase.getPhasePutt
+					)}
+				</List>
+			</Content>
+		</Container> 
+	)
+}
+export default PerfilUsuarioScreen;
 
 
 // Styles

@@ -1,5 +1,5 @@
 /* =========== LIBRERIAS ============= */
-import React, { Component } from "react"; // React
+import React, { useEffect } from "react"; // React
 import { StyleSheet } from 'react-native'; // React Native
 import { connect } from 'react-redux'; // Redux
 import { Content, Spinner } from "native-base"; // Native Base
@@ -7,60 +7,52 @@ import { Content, Spinner } from "native-base"; // Native Base
 import Text from './CustomText'; // Custom Text Styles and Font
 import Strings from '../constants/Strings'; // Strings
 import CardDrillComponent from "./CardDrillComponent"; // Card 
-import { actionGetDrills } from '../store/actions/drillAction'; // Actions
 import Colors from '../constants/Colors' // Style
+/* ========== REDUX ================ */
+import { useDispatch, useSelector  } from 'react-redux'
+import { actionGetDrills } from '../store/actions/drillAction'; // Actions
 
-class DrillsComponent extends Component {
+
+const DrillsComponent = props => {
+	const { navigation } = props;
+	// REDUX
+	const { drills } = useSelector(state => state.drills)
+	// Dispatchs
+	const dispatch = useDispatch()
+	const getDrills = () => dispatch(actionGetDrills())
 	
-	componentDidMount() {
-		this.props.getDrills();
-	}
+	useEffect(() => {
+		getDrills();
+	}, [])
 
-	render() {
-		const {drills} = this.props;
-
-		return (
-			drills.length == 0
-			? 
-			<>
-				<Spinner color={Colors.tintColor}/>
-				<Text style={stylesPage.snipperText}>
-					{Strings.ST33_2}
-				</Text>
-			</>
-			:
-			<Content padder>
-				{ this.crearCardDrills(drills) }
-			</Content>
-		);
-	}
-
-	crearCardDrills = (drills) => 
+	const crearCardDrills = (drills) => 
 		drills.map((drill, i) => (
 			<CardDrillComponent
 				key={i}
 				drill={drill}
-				navigation={this.props.navigation}
+				navigation={navigation}
 			/>
 		))
+
+	return (
+		drills.length == 0
+		? 
+		<>
+			<Spinner color={Colors.tintColor}/>
+			<Text style={stylesPage.snipperText}>
+				{Strings.ST33_2}
+			</Text>
+		</>
+		:
+		<Content padder>
+			{ crearCardDrills(drills) }
+		</Content>
+	);
+	
+
+	
 }
-
-const mapStateToProps = (state) => ({
-	
-	drills: state.DrillReducer.drills
-
-})
-
-const mapDispatchToProps = dispatch => ({
-	
-	getDrills: () => {
-		dispatch(actionGetDrills());
-	}
-	
-})
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(DrillsComponent);
+export default DrillsComponent;
 
 // Styles del Componente
 const stylesPage = StyleSheet.create({

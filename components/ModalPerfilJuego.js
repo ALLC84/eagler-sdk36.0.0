@@ -1,8 +1,10 @@
 /* =========== LIBRERIAS ============= */
-import React, { Component } from "react"; // React
+import React, { useState, useEffect} from "react"; // React
 import { connect } from 'react-redux'; // Redux
 import { Modal, View, Dimensions, StyleSheet } from "react-native"; // React Native
 import { Form } from "native-base"; // Native Base
+/* ========== REDUX ================ */
+import { useDispatch, useSelector  } from 'react-redux' // React-Redux
 /* ========== PROPIOS ================ */
 import Text from './CustomText'; // Custom Text Styles and Font
 import Strings from '../constants/Strings'; // Strings
@@ -13,51 +15,45 @@ import SliderComponent from './SliderComponent'; // Tour App
 
 const width = Dimensions.get('window').width;
 
-class ModalPerfilJuego extends Component {
-	constructor(props) {
-		super(props);
-		this.user = AUTH.currentUser;
-		this.state = {
-			mostrarTourApp: true
-		}
-	}
+const ModalPerfilJuego = props => {
+	const user = AUTH.currentUser;
+	const { mostrarToast, getFase, cerrarModal } = props;
+	// STATE
+	const [mostrarTourApp, setMostrarTourApp] = useState(true)
+	const [modalVisible, setModalVisible] = useState(true)
+	// REDUX
+	const { userProfile }= useSelector(state => state.userProfile)
+	// Dispatchs
+	const dispatch = useDispatch()
+	const getUserProfile = userId => dispatch(actionGetUserProfile(userId));
+	const updatePlayProfile = (userId, values) => dispatch(actionUpdatePlayUserProfile(userId, values));
+	const createInitialPhase = (userId, fase, handicap) => dispatch(actionCreateInitialPhase(userId, fase, handicap));
 
-	componentDidMount() {
-		this.props.getUserProfile(this.user.uid);
-	}
+	useEffect(() => {
+		getUserProfile(user.uid)
+	}, [])
 
-	render() {
-		const { userProfile } = this.props;
-		return (
-			<Modal
-				animationType="fade"
-				transparent={true}
-				visible={this.props.modalVisible}
-			>
-				{
-					this.state.mostrarTourApp
-					? this.mostrarTourApp()
-					: this.mostrarForm(userProfile)
-				}
-			</Modal>
-		);
+	const initialValues = {
+		anioInicio              : userProfile.anioInicio,
+		diasEntrenamientoSemana : userProfile.diasEntrenamientoSemana,
+		diasJuegoSemana         : userProfile.diasJuegoSemana,
+		handicap                : userProfile.handicap,
+		mano                    : userProfile.mano
 	}
 
 	// TOUR APP
-	mostrarTourApp = () => {
+	const visibleTourApp = () => {
 		return (
 			<SliderComponent 
-				cerrarTourApp = {this.cerrarTourApp}
+				cerrarTourApp = {cerrarTourApp}
 			/>
 		)
 	}
-	cerrarTourApp = () => {
-		this.setState({
-			mostrarTourApp: false
-		})
+	const cerrarTourApp = () => {
+		setMostrarTourApp(false)
 	}
 
-	mostrarForm = (userProfile) => {
+	const mostrarForm = (userProfile) => {
 		return(
 			<View style={stylesPage.form_view}>
 				<Text style={stylesPage.form_message} >
@@ -66,54 +62,36 @@ class ModalPerfilJuego extends Component {
 				
 				<Form style={stylesPage.form_container}>
 					<PlayUserProfileForm 
-						getFase = {this.props.getFase}
-						initialValues = {this.props.initialValues} 
-						updatePlayProfile={this.props.updatePlayProfile} 
-						userId={this.user.uid} 
+						getFase = {getFase}
+						initialValues = {initialValues} 
+						updatePlayProfile={updatePlayProfile} 
+						userId={user.uid} 
 						userProfile={userProfile}
-						setMessage={this.props.mostrarToast}
-						createInitialPhase={this.props.createInitialPhase}
-						cerrarModal={this.props.cerrarModal}
+						setMessage={mostrarToast}
+						createInitialPhase={createInitialPhase}
+						cerrarModal={cerrarModal}
 					/>
 				</Form>
 			</View>
 		)
 	}
 
+
+	return (
+		<Modal
+			animationType="fade"
+			transparent={true}
+			visible={modalVisible}
+		>
+			{
+				mostrarTourApp
+				? visibleTourApp()
+				: mostrarForm(userProfile)
+			}
+		</Modal>
+	);
 }
-
-const mapStateToProps = (state) => ({
-
-	modalVisible: true,
-
-	userProfile: state.UserProfileReducer.userProfile,
-
-	initialValues: {
-		anioInicio              : state.UserProfileReducer.userProfile.anioInicio,
-		diasEntrenamientoSemana : state.UserProfileReducer.userProfile.diasEntrenamientoSemana,
-		diasJuegoSemana         : state.UserProfileReducer.userProfile.diasJuegoSemana,
-		handicap                : state.UserProfileReducer.userProfile.handicap,
-		mano                    : state.UserProfileReducer.userProfile.mano
-	}
-
-});
-
-const mapDispatchToProps = (dispatch) => ({
-
-	getUserProfile: (userId) => {
-		dispatch(actionGetUserProfile(userId))
-	},
-
-	updatePlayProfile: (userId, values) => {
-		dispatch(actionUpdatePlayUserProfile(userId, values))
-	},
-
-	createInitialPhase: (userId, fase, handicap) => {
-		dispatch(actionCreateInitialPhase(userId, fase, handicap))
-	}
-
-});
-export default connect( mapStateToProps, mapDispatchToProps )(ModalPerfilJuego);
+export default ModalPerfilJuego;
 
 // Styles del Componente
 const stylesPage = StyleSheet.create({

@@ -1,47 +1,35 @@
-import React, { Component } from 'react'
-import { connect }  from 'react-redux'
+import React, { useEffect } from 'react'
 import { AUTH } from '../services/firebase';
-
+/* ========== REDUX ================ */
+import { useDispatch, useSelector  } from 'react-redux' // React-Redux
+import { actionEstablecerSesion, actionCerrarSesion } from '../store/actions/registerAction'; // Action-Redux
 // Rutas
 import NoAutenticadas from './noAutenticados/RutasNoAutenticadas'
 import AppNavigator from './autenticados/AppNavigator';
-import { actionEstablecerSesion, actionCerrarSesion } from '../store/actions/registerAction';
 
-class RutasSelection extends Component {
+const RutasSelection = props => {
+   // REDUX
+   const user = useSelector(state => state.session);
+	// Dispatchs
+	const dispatch = useDispatch();
+	const autentication = () => 
+      AUTH.onAuthStateChanged( user => {
+         if ( user !== null ) {
+            dispatch(actionEstablecerSesion(user))
+         } else {
+            dispatch(actionCerrarSesion())
+         }
+      });
+   
+   
+   useEffect(() => {
+      autentication()
+   }, [])
 
-   componentDidMount(){
-      this.props.autenticacion();
-   }
-
-   render() {
-      return (
-         this.props.user 
-            ? <AppNavigator openDrawer={this.openDrawer}/> 
-            : <NoAutenticadas />
-      )
-   }
+   return (
+      user 
+         ? <AppNavigator openDrawer={props.openDrawer}/> 
+         : <NoAutenticadas />
+   )
 }
-
-
-const mapStateToProps = state => {
-   return {
-      user: state.SessionReducer
-   }
-}
-
-const mapDispatchToProps = dispath => {
-   return {
-      autenticacion: () => {
-         AUTH.onAuthStateChanged( user => {
-            if ( user !== null ) {
-               dispath(actionEstablecerSesion(user))
-            } else {
-               dispath(actionCerrarSesion())
-            }
-         });
-      }
-   }
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(RutasSelection);
+export default RutasSelection;

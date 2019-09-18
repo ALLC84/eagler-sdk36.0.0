@@ -10,7 +10,7 @@ import { AUTH } from '../services/firebase'; // Firebase Auth
 import stylesDrawer from "../constants/styles/DrawerProfileStyle"; // Styles
 
 const  ProfileUser = props => {
-	const { navigation } = props;
+	const { navigation, closeDrawer } = props;
 
 	return (
 		<View style={stylesDrawer.container_menu}>
@@ -28,6 +28,7 @@ const  ProfileUser = props => {
 				<ListItem
 					style={stylesDrawer.item_menu}
 					onPress={() => {
+						closeDrawer()
 						navigation.navigate("PerfilUsuario");
 					}}
 				>
@@ -51,6 +52,7 @@ const  ProfileUser = props => {
 				<ListItem
 					style={stylesDrawer.item_menu}
 					onPress={() => {
+						closeDrawer()
 						navigation.navigate("PerfilJuego");
 					}}
 				>
@@ -74,6 +76,7 @@ const  ProfileUser = props => {
 				<ListItem
 					style={stylesDrawer.item_menu}
 					onPress={() => {
+						closeDrawer()
 						navigation.navigate("PerfilFisico");
 					}}
 				>
@@ -97,6 +100,7 @@ const  ProfileUser = props => {
 				<ListItem
 					style={stylesDrawer.item_menu}
 					onPress={() => {
+						closeDrawer()
 						navigation.navigate("Suscripciones");
 					}}
 				>
@@ -119,7 +123,10 @@ const  ProfileUser = props => {
 
 				<ListItem
 					style={stylesDrawer.item_menu}
-					// onPress={this.navigateToScreen("QuotesScreen")}
+					onPress={ () => {
+						closeDrawer()
+						// this.navigateToScreen("QuotesScreen")
+					}}
 				>
 					<Left>
 						<Ionicons
@@ -138,6 +145,7 @@ const  ProfileUser = props => {
 					</Right>
 				</ListItem>
 			</ScrollView>
+
 			<View style={stylesDrawer.footer_menu}>
 				<TouchableOpacity
 					onPress={() => {

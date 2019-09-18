@@ -12,11 +12,11 @@ import UserProfileReducer from './userProfileReducer';
 
 export default combineReducers({
    form,
+   session     : SessionReducer,
    basic       : BasicReducer,
    body        : BodyReducer,
    drills      : DrillReducer,
    posts       : IQReducer,
-   session     : SessionReducer,
    userProfile : UserProfileReducer,
 });
 

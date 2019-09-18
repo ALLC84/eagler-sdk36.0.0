@@ -37,12 +37,12 @@ const BasicComponent = props => {
 
 
   useEffect(() => {
-		getFase(user.uid)
+		// getFase(user.uid)
   }, [])
 
   useEffect(() => {
     if(!fase) {
-      setVisibleModalPerfilJuego(true)
+      // setVisibleModalPerfilJuego(true)
     }
   }, [fase])
   

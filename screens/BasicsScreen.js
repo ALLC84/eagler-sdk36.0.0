@@ -27,13 +27,13 @@ const BasicsScreen = props => {
 				ref={ref => {
 					_drawer = ref;
 				}}
-				content={<ProfileUser navigation={navigation}/>}
-				onClouse={() => closeDrawer()}
+				content={<ProfileUser navigation={navigation} closeDrawer={closeDrawer}/>}
+				// onClouse={() => closeDrawer()}
 				
 			>
 			<MainHeader openDrawer={openDrawer} />
 
-			<BasicComponent navigation={props} />
+			<BasicComponent navigation={props}/>
 
 			</Drawer>
 		</Root>

@@ -12,7 +12,7 @@ const  Suscripciones = props => {
 		<>
 			{/* Header Page */}
 			<DetailScreenHeader
-				navigation={this.props.navigation} 
+				navigation={props.navigation} 
 				title={Strings.ST19}
 				page={'SUSCRIPCIONES'}
 			/>

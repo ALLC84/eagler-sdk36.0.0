@@ -26,8 +26,12 @@ const IQScreen = props => {
 				ref={ref => {
 					_drawer = ref;
 				}}
-				content={<ProfileUser navigation={navigation} />}
-				onClouse={() => closeDrawer()}
+				content={
+					<ProfileUser 
+						navigation={navigation} 
+						closeDrawer={closeDrawer}
+					/>
+				}
 			>
 				<MainHeader openDrawer={openDrawer} />
 

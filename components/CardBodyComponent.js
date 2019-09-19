@@ -5,16 +5,14 @@ import { Card, CardItem, Left, Body, Right, } from "native-base"; // Native Base
 import { Ionicons } from '@expo/vector-icons'; // Expo
 /* ========== PROPIOS ================ */
 import Text from './CustomText'; // Custom Text Styles and Font
-import layout from "../constants/Layout"; // Styles
 import cardStyles from '../constants/styles/CardStyle' // Styles
 
 const CardBodyComponent = props =>{
-	const { body } = props;
 	const { img, title, subtitle } = props;
 	const { navigation } = props.navigation;
 
-	const bodyDetailView = (body, title) =>{
-		navigation.navigate("BodyDetail", { body: body, title: title });
+	const bodyDetailView = (title) =>{
+		navigation.navigate("BodyDetail", { title: title });
 	}
 
 	// Image.prefetch({ uri: img });
@@ -23,7 +21,7 @@ const CardBodyComponent = props =>{
 		<Card style={cardStyles.card_section}>
 			<CardItem style={cardStyles.card_item}
 				cardBody
-				button onPress={() => bodyDetailView(body, title)}
+				button onPress={() => bodyDetailView(title)}
 			>
 				<Image style={cardStyles.card_item_img}
 					source={{ uri: img }}
@@ -33,7 +31,7 @@ const CardBodyComponent = props =>{
 
 			{/* Capa por encima de la imagen */}
 			<CardItem style={cardStyles.card_image_cap}
-				button onPress={() => bodyDetailView(body, title)}
+				button onPress={() => bodyDetailView(title)}
 			></CardItem>
 
 			{/* Card Action and Text  */}
@@ -46,7 +44,7 @@ const CardBodyComponent = props =>{
 				</Left>
 				<Right>
 					<TouchableOpacity
-						onPress={() => bodyDetailView(body, title)}
+						onPress={() => bodyDetailView(title)}
 					>
 						<Ionicons
 							size={40}
@@ -61,9 +59,6 @@ const CardBodyComponent = props =>{
 	
 }
 export default CardBodyComponent;// Styles del Componente
-const stylesPage = StyleSheet.create({
-	
-
-});
+const stylesPage = StyleSheet.create({});
 
 

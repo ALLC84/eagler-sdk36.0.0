@@ -1,9 +1,9 @@
 import TYPES from './types';
 
-// Secciones de clases principal
+// Secciones de clases Base
 //==============================
-export const actionGetSeccionClase = (movements, workouts, warmups) => ({
-   type: TYPES.GET_SECCION_CLASE,
+export const actionGetSeccionBase = (movements, workouts, warmups) => ({
+   type: TYPES.GET_SECCION_BASE,
    args: {
       movements,
       workouts,
@@ -11,8 +11,8 @@ export const actionGetSeccionClase = (movements, workouts, warmups) => ({
    }
 });
 
-export const actionGuardarSeccionClaseStore = (clase) => ({
-   type: TYPES.GUARDAR_SECCION_CLASE_STORE,
-   clase
+export const actionGuardarSeccionBaseStore = (claseBase) => ({
+   type: TYPES.GUARDAR_SECCION_BASE_STORE,
+   claseBase
 });
 

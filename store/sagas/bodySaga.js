@@ -4,7 +4,7 @@ import { DB } from '../../services/firebase'
 
 import TYPES from '../actions/types'
 import {
-   actionGuardarSeccionClaseStore
+   actionGuardarSeccionBaseStore
 } from '../actions/bodyAction';
 
 //Movements
@@ -17,7 +17,9 @@ const getMovementsFirebase = (clase) =>
       if (doc.exists) {
          movements.push(doc.data());
       } else {
-         console.log("No existe el documento solicitado a movements");
+         console.log('TCL: -------------------------------------------------')
+         console.log('TCL: getMovementsFirebase -> No existe el documento')
+         console.log('TCL: -------------------------------------------------')
       } 
       return movements;
    })
@@ -33,7 +35,9 @@ const getWarmupsFirebase = (clase) =>
       if (doc.exists) {
          warmups.push(doc.data());
       } else {
-         console.log("No existe el documento solicitado a warmups");
+         console.log('TCL: ------------------------------------------------')
+         console.log('TCL: getWarmupsFirebase -> No existe el documento')
+         console.log('TCL: ------------------------------------------------')
       } 
       return warmups;
    })
@@ -50,7 +54,9 @@ const getWorkoutsFirebase = (clase) =>
       if (doc.exists) {
          workouts.push(doc.data());
       } else {
-         console.log("No existe el documento solicitado a workouts");
+         console.log('TCL: -------------------------------------------------')
+         console.log('TCL: getWorkoutsFirebase -> No existe el documento')
+         console.log('TCL: -------------------------------------------------')
       } 
       return workouts;
    })
@@ -58,15 +64,17 @@ const getWorkoutsFirebase = (clase) =>
 
 // Crea una Seccion de clases aleatoria de movements, warmups, worckouts
 //======================================================================
-function* getSeccionClase(values) {
+function* getSeccionBase(values) {
    try {
       const movements = yield call(getMovementsFirebase, values.args.movements);
       const warmups = yield call(getWarmupsFirebase, values.args.warmups);
       const workouts = yield call(getWorkoutsFirebase, values.args.workouts);
-      const clase = yield movements.concat(warmups, workouts);
-      yield put(actionGuardarSeccionClaseStore(clase))
+      const claseBase = yield movements.concat(warmups, workouts);
+      yield put(actionGuardarSeccionBaseStore(claseBase))
    } catch (error) {
-      console.log('Error al pasar los datos',error)
+      console.log('TCL: -------------------------------------------')
+      console.log('TCL: function*getSeccionBase -> error', error)
+      console.log('TCL: -------------------------------------------')
    }
 }
 
@@ -81,5 +89,5 @@ function* getSeccionClase(values) {
 
 
 export default function* funcionesBodySaga() {
-   yield takeEvery(TYPES.GET_SECCION_CLASE, getSeccionClase);
+   yield takeEvery(TYPES.GET_SECCION_BASE, getSeccionBase);
 }

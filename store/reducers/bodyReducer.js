@@ -1,7 +1,7 @@
 import TYPES from '../actions/types';
 
 const initialState = {
-   clase: [],
+   claseBase: [],
    claseLight: [],
    claseStrong: []
 }
@@ -9,10 +9,10 @@ const initialState = {
 const BodyReducer = ( state = initialState, action ) => {
    //console.log('State Body =>', state)
    switch(action.type){
-      case TYPES.GUARDAR_SECCION_CLASE_STORE:
+      case TYPES.GUARDAR_SECCION_BASE_STORE:
             return {
                ...state,
-               clase: action.clase
+               claseBase: action.claseBase
             };
       default: 
          return state;

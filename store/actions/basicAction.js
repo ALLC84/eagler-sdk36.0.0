@@ -6,13 +6,18 @@ export const actionGetFase = (userId) => ({
    userId
 });
 
-export const actionGuardarFaseStore = (fases) => ({
+export const actionGuardarFaseStore = (data) => ({
    type: TYPES.GUARDAR_FASE_STORE,
-   fases
+   fases: data.fases,
+   loading: data.loading
 });
 
 // Clases
-export const actionGuardarClaseStore = (clase) => ({
-   type: TYPES.GUARDAR_CLASE_BASIC_STORE,
-   clase
+export const actionGetClaseCombinada = fases => ({
+   type: TYPES.GET_CLASE_COMBINADA,
+   fases
+})
+export const actionGuardarClaseCombinadaStore = (claseCombinada) => ({
+   type: TYPES.GUARDAR_CLASE_COMBINADA_BASIC_STORE,
+   claseCombinada
 })

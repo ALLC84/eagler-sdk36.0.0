@@ -2,8 +2,9 @@ import TYPES from '../actions/types';
 
 const initialState = {
    fases: {},
-   fase: 1,
-   clases: [],
+   fase: null,
+   claseCombinada: [],
+   loading: true
 }
 
 const BasicReducer = ( state = initialState, action ) => {
@@ -14,11 +15,12 @@ const BasicReducer = ( state = initialState, action ) => {
             ...state,
             fases: action.fases,
             fase : action.fases.fase,
+            loading: action.fases.loading
          };
-      case TYPES.GUARDAR_CLASE_BASIC_STORE:
+      case TYPES.GUARDAR_CLASE_COMBINADA_BASIC_STORE:
          return {
             ...state,
-            clases: action.clase
+            claseCombinada: action.claseCombinada
          };
       default: 
          return state; 

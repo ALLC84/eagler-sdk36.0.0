@@ -5,7 +5,7 @@ import TYPES from '../actions/types'
 //Actions
 import {
    actionGuardarFaseStore,
-   actionGuardarClaseStore,
+   actionGuardarClaseCombinadaStore,
 } from '../actions/basicAction';
 
 // Funciones asignar fase
@@ -39,14 +39,20 @@ const getFaseFirebase = userId =>
          fases.faseApproach      = data.faseApproach !== undefined ? FunctionSetPhase.getPhaseApproach(data.tiempoApproach, fases.handicap) : 1
          fases.fasePutt          = data.fasePutt !== undefined ? FunctionSetPhase.getPhasePutt(data.tiempoPutt, fases.handicap) : 1   
       } else {
-         console.log("El documento esta vacio");
+         console.log('TCL: ----------------------------------------------')
+         console.log('TCL: getFaseFirebase -> El documento esta vacio')
+         console.log('TCL: ----------------------------------------------')
       }
-      return fases;
+      data = {
+         fases,
+         loading : false
+      }
+      return data
    })
-   
+
 // Genera una seccion aleatoria de clases utilizando getClase
- const getClases = async (fases) => {
-   let clases = [];
+const getClases = async (fases) => {
+   let claseCombinada = [];
    const abilidades = [
       "shortgame",
       "shortirons",
@@ -71,11 +77,10 @@ const getFaseFirebase = userId =>
          faseAbilidades[i],
          0
       )
-      clases.push(data);
-      //console.log('Data ====> ', data);
+      claseCombinada.push(data);
    }
 
-   return clases
+   return claseCombinada
 };
 
 // Obtiene una avilidad => Es llamada dentro del bucle desde getClases
@@ -95,21 +100,32 @@ const getClase = async (doc, fase, random) => {
 
 
 
-function* getDataClases(values) {
+function* getClaseCombinada(values) {
    try {
-      const fases = yield call(getFaseFirebase, values.userId)
-      const clase = yield call(getClases, fases)
-      
-      yield put(actionGuardarClaseStore(clase))
-      yield put( actionGuardarFaseStore(fases))
+      const claseCombinada = yield call(getClases, values.fases)
+      yield put(actionGuardarClaseCombinadaStore(claseCombinada))
    }catch (error) {
-      console.log('Error al obtener las fase desde firebase',error)
+      console.log('TCL: ----------------------------------------------')
+      console.log('TCL: function*getClaseCombinada -> error', error)
+      console.log('TCL: ----------------------------------------------')
+   }
+}
+
+function* getFases(values) {
+   try {
+      const data = yield call(getFaseFirebase, values.userId)
+      yield put( actionGuardarFaseStore(data))
+   }catch (error) {
+      console.log('TCL: -------------------------------------')
+      console.log('TCL: function*getFases -> error', error)
+      console.log('TCL: -------------------------------------')
    }
 }
 
 
 export default function* funcionesBasicSaga() {
-   yield takeEvery(TYPES.GET_FASE, getDataClases);
+   yield takeEvery(TYPES.GET_FASE, getFases);
+   yield takeEvery(TYPES.GET_CLASE_COMBINADA, getClaseCombinada);
 }
 
 

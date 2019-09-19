@@ -30,7 +30,7 @@ const PerfilFisicoUsuarioScreen = props => {
 		getUserProfile(user.uid);
 	},[])
 
-	console.log(initialValues)
+
 
 	return (
 		<Root>

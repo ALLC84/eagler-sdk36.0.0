@@ -5,6 +5,9 @@ import { Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Sp
 import { Video } from 'expo-av'; // Expo
 import { Ionicons } from '@expo/vector-icons';
 // import { StyleSheet, TouchableOpacity } from "react-native";
+/* ========== REDUX ================ */
+import { useDispatch, useSelector  } from 'react-redux'; // React-Redux
+import { actionGetClaseCombinada } from '../store/actions/basicAction';
 /* ========== PROPIOS ================ */
 import Text from '../components/CustomText';
 import DetailScreenHeader from '../components/DetailScreenHeader'; // Header
@@ -18,7 +21,6 @@ import Colors from '../constants/Colors'; // Styles
 const  BasicsDetailScreen = props => {
 	const { navigation } = props;
 	// PARAMS
-	const params = navigation.getParam("body", "body");
 	const title = navigation.getParam("title", "title");
 	// STATE
 	const [ visibleModalTiempo, setVisibleModalTiempo ] = useState(true);
@@ -26,18 +28,35 @@ const  BasicsDetailScreen = props => {
 	const [ tiempoClase, setTiempoClase ] = useState(0)
 	const [ contVideo, setContVideo ] = useState(0)
 
-	// Obtiene los (PARAMS => proveniente de Basic Component)
-	// Los guarda en la variable videos listos para utilizar 
+	// REDUX
+	const { claseCombinada, fases }= useSelector(state => state.basic)
+	// Dispatchs
+	const dispatch = useDispatch()
+	const getClaseCombinada = (fases) => dispatch(actionGetClaseCombinada(fases))
+
+	useEffect(() => {
+		if(fases && !visibleModalTiempo) {
+			switch (title) {
+				case 'Combinada':
+					getClaseCombinada(fases)
+					break;
+				default:
+					getClaseCombinada(fases)
+					break;
+			}
+		}
+	}, [fases, visibleModalTiempo])
+
+
 	let videos = [];
 	(getVideos = () => {
-		params.map((e, i) => {
+		claseCombinada.map((e, i) => {
 			videos.push(e.fields);
-			// console.log('VIDEO ===> ' + i + ': ', e.fields);
 		});
 	})();
+	
 
 	const crearTiempoClase = tiempoClase => {
-		//console.log(tiempoClase);
 		setTiempoClase(tiempoClase);
 		setVisibleModalTiempo(false)
 		setCounterVisible(true);
@@ -45,7 +64,6 @@ const  BasicsDetailScreen = props => {
 
 	// Crea la vista del current video 
 	const mostrarVideo = e => {
-		// console.log(e);
 		return (
 			<>
 				<Video style={stylesPage.video_avtive}
@@ -86,7 +104,7 @@ const  BasicsDetailScreen = props => {
 			navigation={navigation}
 		/>;
 
-	} else if (tiempoClase > 0){
+	} else if (tiempoClase > 0 && videos.length > 0){
 		return (
 			<>
 				{/* Header Page */}
@@ -101,7 +119,7 @@ const  BasicsDetailScreen = props => {
 				{/* Video */}
 				<View>
 					<>
-						{videos
+						{videos.length !== 0
 							? mostrarVideo(videos[contVideo])
 							: null}
 					</>
@@ -146,7 +164,8 @@ const  BasicsDetailScreen = props => {
 				{/* Lista de siguientes videos */}
 				<Content> 
 					<List style={stylesPage.list_videos}>
-						{videos.map((video, i) => (
+						{videos.length !== 0 ?
+							videos.map((video, i) => (
 							<ListItem thumbnail key={i}>
 								<Left>
 									{video.img && video.img !== '' ? (
@@ -181,14 +200,27 @@ const  BasicsDetailScreen = props => {
 									</Button>
 								</Right>
 							</ListItem>
-						))}
+						)): <></>}
 					</List>
 				</Content>
 			</>
 		);
 	} else {
 		return (
-			<Spinner color={Colors.tintColor}/>
+			<>
+			<DetailScreenHeader 
+					navigation={navigation}
+					setStateConunter= {setCounterVisible}
+					counterVisible={counterVisible}
+					title={title}
+					page={'BASICS'}
+				/>
+				
+			<Content style={stylesPage.snipperContent}>
+				<Spinner color={Colors.tintColor}/>
+				<Text style={stylesPage.snipperText}> Preparando la clases...</Text>
+			</Content>
+			</>
 		)
 	}
 }
@@ -196,6 +228,15 @@ export default BasicsDetailScreen;
 
 // Styles
 const stylesPage = StyleSheet.create({
+	// ====== Snipper =======
+	snipperContent: {
+		height: 200
+	},
+	snipperText: {
+		color: Colors.tintColor,
+		fontSize: 18,
+		textAlign: 'center', 
+	},
 	// Video 
 	video_avtive: {
 		width: layout.window.width,

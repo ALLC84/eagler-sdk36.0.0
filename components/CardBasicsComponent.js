@@ -1,7 +1,7 @@
 /* =========== LIBRERIAS ============= */
 import React from "react"; // React
 import { Image, TouchableOpacity, StyleSheet } from "react-native"; // React Native
-import { Card, CardItem, Left, Body, Right, Content, Spinner } from "native-base"; // Native Base
+import { Card, CardItem, Left, Body, Right } from "native-base"; // Native Base
 import { Ionicons } from '@expo/vector-icons';// Expo
 /* ========== PROPIOS ================ */
 import Text from './CustomText'; // Custom Text Styles and Font
@@ -9,34 +9,22 @@ import Colors from '../constants/Colors'; // Styles
 import cardStyles from '../constants/styles/CardStyle' // Styles
 
 const CardBasicsComponent = props => {
-	const { body } = props;
 	const { img, title, subtitle } = props;
 	const { navigation } = props.navigation;
 
-	const basicsDetailView = (body, title) => {
-		navigation.navigate("BasicsDetail", { body: body, title: title });
+	const basicsDetailView = (title) => {
+		navigation.navigate("BasicsDetail", { title: title });
 	}
 
 	// Image.prefetch({ uri: img });
 	// { uri: img, cache: "force-cache" }
 
-	return (
-		body === undefined 
-		? // Snipper
-		<Card>
-			<CardItem cardBody>
-				<Content style={stylesPage.snipperContent}>
-					<Spinner color={Colors.tintColor}/>
-					<Text style={styles.snipperText}> Preparando la clases...</Text>
-				</Content>
-			</CardItem>
-		</Card>
-		: // Tarjeta de las secciones 
+	return (// Tarjeta de las secciones 
 		<Card style={cardStyles.card_section}>
 			{/* Imagen */}
 			<CardItem style={cardStyles.card_item}
 				cardBody
-				button onPress={() => basicsDetailView(body, title)}
+				button onPress={() => basicsDetailView(title)}
 			>	
 				<Image style={cardStyles.card_item_img}
 					source={{ uri: img }}
@@ -45,7 +33,7 @@ const CardBasicsComponent = props => {
 
 			{/* Capa por encima de la imagen */}
 			<CardItem style={cardStyles.card_image_cap}
-				button onPress={() => basicsDetailView(body, title)}
+				button onPress={() => basicsDetailView(title)}
 			></CardItem>
 
 			{/* Card Action and Text  */}
@@ -58,7 +46,7 @@ const CardBasicsComponent = props => {
 				</Left>
 				<Right>
 					<TouchableOpacity
-						onPress={() => basicsDetailView(body, title)}
+						onPress={() => basicsDetailView(title)}
 					>
 						<Ionicons
 							size={40}
@@ -74,14 +62,4 @@ const CardBasicsComponent = props => {
 export default CardBasicsComponent;
 
 // Styles del Componente
-const stylesPage = StyleSheet.create({
-	// ====== Snipper =======
-	snipperContent: {
-		height: 200
-	},
-	snipperText: {
-		color: Colors.tintColor,
-		fontSize: 18,
-		textAlign: 'center', 
-	},
-});
+const stylesPage = StyleSheet.create({});

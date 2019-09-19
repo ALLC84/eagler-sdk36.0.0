@@ -27,8 +27,7 @@ const BasicComponent = props => {
   // STATE
   const [visibleModalPerfilJuego, setVisibleModalPerfilJuego] = useState(false)
 	// REDUX
-  const { fase, loading }= useSelector(state => state.basic)
-
+  const { clases, fase }= useSelector(state => state.basic)
 	// Dispatchs
 	const dispatch = useDispatch()
   const getFase = (userId) => dispatch(actionGetFase(userId))
@@ -38,12 +37,12 @@ const BasicComponent = props => {
 
 
   useEffect(() => {
-		getFase(user.uid)
+		// getFase(user.uid)
   }, [])
 
   useEffect(() => {
-    if(fase === undefined) {
-      setVisibleModalPerfilJuego(true)
+    if(!fase) {
+      // setVisibleModalPerfilJuego(true)
     }
   }, [fase])
   
@@ -56,14 +55,17 @@ const BasicComponent = props => {
     });
   };
 
-  if ( fase === null && visibleModalPerfilJuego === false) {
+  if (
+    (fase === undefined && visibleModalPerfilJuego === false) ||
+    clases.length == 0
+  ) {
     return (
       <Root>
         <Spinner color={Colors.tintColor} />
-        <Text style={stylesPage.snipperText}>Validando perfil!!</Text>
+        <Text style={stylesPage.snipperText}>{Strings.ST33}</Text>
       </Root>
     );
-  } else if (fase === undefined || visibleModalPerfilJuego === true && loading === false) {
+  } else if (fase === undefined || visibleModalPerfilJuego) {
     return (
       <Root>
         <ModalPerfilJuego
@@ -79,13 +81,15 @@ const BasicComponent = props => {
         <Content padder>
           <CardBasicsComponent
             key={"1"}
+            body={clases}
             title={Strings.ST23}
             subtitle={Strings.ST24}
             img={imgs[0]}
             navigation={navigation}
           />
-          <CardBasicsComponent
+          {/* <CardBasicsComponent
             key={"2"}
+            body={clases}
             title={Strings.ST25}
             subtitle={Strings.ST26}
             img={imgs[1]}
@@ -93,6 +97,7 @@ const BasicComponent = props => {
           />
           <CardBasicsComponent
             key={"3"}
+            body={clases}
             title={Strings.ST27}
             subtitle={Strings.ST28}
             img={imgs[2]}
@@ -100,6 +105,7 @@ const BasicComponent = props => {
           />
           <CardBasicsComponent
             key={"4"}
+            body={clases}
             title={Strings.ST29}
             subtitle={Strings.ST30}
             img={imgs[3]}
@@ -107,11 +113,12 @@ const BasicComponent = props => {
           />
           <CardBasicsComponent
             key={"5"}
+            body={clases}
             title={Strings.ST31}
             subtitle={Strings.ST32}
             img={imgs[4]}
             navigation={navigation}
-          />
+          /> */}
         </Content>
       </Root>
     );

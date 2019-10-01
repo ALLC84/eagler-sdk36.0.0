@@ -69,6 +69,7 @@ const TimeClassBasicsForm = (props) => {
             onPress = {
                props.handleSubmit((value) => {
                   props.actualizarPerfil(props.userId, value.tiempo);
+                  props.actualizaFase(props.userId)
                })
             }
          >

@@ -37,7 +37,7 @@ export default class App extends React.Component {
 						{Platform.OS === "ios" && <StatusBar barStyle="default"/>}
 
 						<Provider store={Store}>
-              			<RutasSelection /> 
+							<RutasSelection /> 
 						</Provider>
 
 					</View>
@@ -80,9 +80,11 @@ export default class App extends React.Component {
 	};
 
 	_handleLoadingError = error => {
+		console.log('TCL: -----------------------')
+		console.log('TCL: App -> error', error)
+		console.log('TCL: -----------------------')
 		// In this case, you might want to report the error to your error
 		// reporting service, for example Sentry
-		console.warn(error);
 	};
 
 	_handleFinishLoading = () => {

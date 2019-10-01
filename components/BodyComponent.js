@@ -8,9 +8,9 @@ import CardBodyComponent from "./CardBodyComponent";
 
 
 const imgs = [
-	"https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/Body%2Fbody%20img%2Flevel_1516827226.jpg?alt=media&token=5f322133-78ac-4f46-9b03-3fca2252474d",
-	"https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/Body%2Fbody%20img%2Flevel_1516827206.jpg?alt=media&token=1e2a2794-c497-4e73-a57d-4a9c1e9a35c3",
-	"https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/Body%2Fbody%20img%2Fimages.jpeg?alt=media&token=509110df-7956-42b9-8076-6a6452240da7"
+	"https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/Body%2Fbody%20img%2Fportada%2Fimg-mueve-cuerda.jpg?alt=media&token=d523e8f2-e126-4a5c-929a-3a8fa2c9be17",
+	"https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/Body%2Fbody%20img%2Fportada%2Fimg-sentadillas.jpg?alt=media&token=5dabf6e4-a0ae-4288-97bf-d9fbba4678bc",
+	"https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/Body%2Fbody%20img%2Fportada%2Fimg-kettlebell.jpeg?alt=media&token=f40548b6-fd5c-4b20-9a5e-535ffeef95c2"
 ];
 
 

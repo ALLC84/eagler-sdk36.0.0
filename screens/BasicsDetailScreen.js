@@ -166,7 +166,7 @@ const  BasicsDetailScreen = props => {
 					<List style={stylesPage.list_videos}>
 						{videos.length !== 0 ?
 							videos.map((video, i) => (
-							<ListItem thumbnail key={i}>
+							<ListItem thumbnail key={i} onPress = {() => nextVideo(i)}>
 								<Left>
 									{video.img && video.img !== '' ? (
 										<Thumbnail
@@ -184,6 +184,7 @@ const  BasicsDetailScreen = props => {
 									<Text>{video.title.stringValue}</Text>
 									
 									<Text note numberOfLines={1}>
+										{/* // TODO: Crear funcion para calcular los tiempos que se deben visualizar cada video. */}
 										{Strings.ST22} {tiempoClase * 0.3} mts
 									</Text>
 								</Body>

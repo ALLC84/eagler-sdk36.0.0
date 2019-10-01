@@ -17,7 +17,9 @@ const getUserProfileFirebase = (userId) =>
          userProfile = doc.data();
          // console.log(doc.data());
       } else {
-         console.log("El documento esta vacio");
+         console.log('TCL: --------------------------------------------------------------')
+         console.log('TCL: getUserProfileFirebase -> Warning: El documento esta vacio')
+         console.log('TCL: --------------------------------------------------------------')
       }
       return userProfile;
    })
@@ -25,9 +27,11 @@ const getUserProfileFirebase = (userId) =>
 function* getUserProfile(values){
    try {
       const userProfile = yield call(getUserProfileFirebase, values.userId);
-       yield put(actionGuardarUserProfileStore(userProfile))
+      yield put(actionGuardarUserProfileStore(userProfile))
    }catch (error) {
-      console.log(error);
+      console.log('TCL: -------------------------------------------')
+      console.log('TCL: function*getUserProfile -> error', error)
+      console.log('TCL: -------------------------------------------')
    }
 }
 
@@ -48,7 +52,9 @@ function* updatePlayProfile(values){
    try {
       yield call(updatePlayUserProfileFirebase, values.args.userId, values.args.values)
    } catch (error) {
-      console.log('UpdateProfileUserFirebase: => ',error);
+      console.log('TCL: ----------------------------------------------')
+      console.log('TCL: function*updatePlayProfile -> error', error)
+      console.log('TCL: ----------------------------------------------')
    }
 }
 
@@ -68,7 +74,9 @@ function* updatePhysicalProfile(values){
    try {
       yield call(updatePhysicalUserProfileFirebase, values.args.userId, values.args.values)
    } catch (error) {
-      console.log('UpdateProfileUserFirebase: => ',error);
+      console.log('TCL: --------------------------------------------------')
+      console.log('TCL: function*updatePhysicalProfile -> error', error)
+      console.log('TCL: --------------------------------------------------')
    }
 }
 
@@ -117,7 +125,9 @@ function* createInitialPhase(values){
    try {
       yield call(createInitialPhaseFirebase, values.args.userId, values.args.fase, values.args.handicap)
    } catch (error) {
-      console.log('UpdateProfileUserFirebase: => ',error);
+      console.log('TCL: -----------------------------------------------')
+      console.log('TCL: function*createInitialPhase -> error', error)
+      console.log('TCL: -----------------------------------------------')
    }
 }
 
@@ -137,8 +147,9 @@ const setImageProfileFirebase = async (args) => {
          // var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
          // console.log('Upload is ' + progress + '% done');
       }, (error) => {
-         console.log(error);
-
+         console.log('TCL: -------------------------------------------')
+         console.log('TCL: setImageProfileFirebase -> error', error)
+         console.log('TCL: -------------------------------------------')
       }, () => {
          uploadImage.snapshot.ref.getDownloadURL()
             .then(downloadURL => {
@@ -157,7 +168,9 @@ function* setImageProfile(values){
       yield call(setImageProfileFirebase, values.args);
       yield put(actionGuardarImageProfileStore(values.args.uri))
    }catch (error) {
-      console.log(error);
+      console.log('TCL: --------------------------------------------')
+      console.log('TCL: function*setImageProfile -> error', error)
+      console.log('TCL: --------------------------------------------')
    }
 }
 

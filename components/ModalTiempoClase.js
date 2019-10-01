@@ -3,12 +3,16 @@ import React, { useState } from "react"; // React
 import { Modal, View, StyleSheet } from "react-native"; // React Native
 import { Form, Button } from "native-base"; // Native Base
 import { Ionicons } from '@expo/vector-icons'; // Expo
+/* ========== REDUX ================ */
+import { useDispatch } from 'react-redux' // React-Redux
+import { actionGetFase } from "../store/actions/basicAction"; //Actions Redux
 /* ========== PROPIOS ================ */
 import Text from './CustomText'; // Custom Text Styles and Font
 import Strings from '../constants/Strings'; // Strings
 import { AUTH } from '../services/firebase' // Firebase Auth
 import functionUserProfile from "../lib/functions/functionUserProfile"; // Funciones Profile
 import TimeClassBasicsForm from '../navigation/autenticados/forms/timeClassBasics'; // Form
+
 
 
 const ModalTiempoClase = props => {
@@ -23,6 +27,10 @@ const ModalTiempoClase = props => {
 		setVisibleModal(false)
 		props.crearTiempoClase(time);
 	};
+
+	// Dispatchs
+	const dispatch = useDispatch()
+	const getFase = (userId) => dispatch(actionGetFase(userId))
 	
 	return (
 		<View>
@@ -30,9 +38,6 @@ const ModalTiempoClase = props => {
 				animationType="fade"
 				transparent={true}
 				visible={visibleModal}
-				// onRequestClose={() => {
-				// 	Alert.alert("Modal has been closed.");
-				// }}
 			>
 				<View style={stylesPage.form_view}>
 					<Button transparent 
@@ -58,6 +63,7 @@ const ModalTiempoClase = props => {
 						<TimeClassBasicsForm 
 							userId = {_userId}
 							actualizarPerfil = {actualizarPerfil}
+							actualizaFase = {getFase}
 						/>
 					</Form>
 

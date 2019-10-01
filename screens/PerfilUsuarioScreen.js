@@ -1,14 +1,13 @@
 /* =========== LIBRERIAS ============= */
 import React, {useEffect} from "react";
 import { StyleSheet, ImageBackground, TouchableOpacity, Platform } from "react-native"; // React-native
-import { connect } from 'react-redux'; // Redux
-import { Container, Content, Left, Body, Right, View, List, ListItem, Thumbnail } from "native-base"; // Native-Base
-import { ImagePicker } from "expo"; // Expo
+import { Container, Content, Left, Body, Right, View, List, ListItem, Thumbnail, Text } from "native-base"; // Native-Base
+import * as ImagePicker from 'expo-image-picker'; // Expo
 import { Ionicons } from '@expo/vector-icons'; // Expo
 /* ========== REDUX ================ */
 import { useDispatch, useSelector  } from 'react-redux' // React-Redux
 /* ========== PROPIOS ================ */
-import Text from '../components/CustomText';
+// import Text from '../components/CustomText';
 import Strings from '../constants/Strings'; // Strings
 import DetailScreenHeader from '../components/DetailScreenHeader'; // Header
 import { AUTH } from '../services/firebase'; // Firebase
@@ -34,6 +33,7 @@ const PerfilUsuarioScreen = props => {
 
 	// Muestra cada item de la lista de abilidades
 	const	mostrarPuntuacion = (avilidad, handicap, puntuacion, icon, func) => {
+		
 		return (
 			<ListItem avatar>
 				<Left>
@@ -43,11 +43,11 @@ const PerfilUsuarioScreen = props => {
 					/>
 				</Left>
 				<Body>
-					<Text>{avilidad}</Text>
-					<Text note>Estas en fase {func(puntuacion, handicap)}</Text>
+					<Text style={{fontWeight: '400'}}>{avilidad}</Text>
+					<Text style={{fontSize: 14}}> Estas en fase {func(parseInt(puntuacion), parseFloat(handicap))}</Text>
 				</Body>
 				<Right>
-					<Text note> {puntuacion} pts</Text>
+					<Text> {puntuacion} pts</Text>
 				</Right>
 			</ListItem>
 		);
@@ -112,7 +112,7 @@ const PerfilUsuarioScreen = props => {
 								<Text style={stylesPage.text_header}>
 									{userProfile.nickName}
 								</Text>
-								<Text note>{userProfile.email}</Text>
+								<Text>{userProfile.email}</Text>
 							</Body>
 						</ListItem>
 					</List>
@@ -121,50 +121,52 @@ const PerfilUsuarioScreen = props => {
 
 			{/* tiempos */}
 			<Content style={stylesPage.puntuacionContainer}>
-				<List>
-					{mostrarPuntuacion(
-						"Drive",
-						userProfile.handicap,
-						userProfile.tiempoDrive,
-						"ios-thunderstorm",
-						FunctionSetPhase.getPhaseDrive
-					)}
-					{mostrarPuntuacion(
-						"Maderas",
-						userProfile.handicap,
-						userProfile.tiempoMaderas,
-						"ios-compass",
-						FunctionSetPhase.getPhaseMaderas
-					)}
-					{mostrarPuntuacion(
-						"Hierros largos",
-						userProfile.handicap,
-						userProfile.tiempoHierrosLargos,
-						"ios-locate",
-						FunctionSetPhase.getPhaseHierrosLargos
-					)}
-					{mostrarPuntuacion(
-						"Hierros cortos",
-						userProfile.handicap,
-						userProfile.tiempoHierrosCortos,
-						"ios-timer",
-						FunctionSetPhase.getPhaseHierrosCortos
-					)}
-					{mostrarPuntuacion(
-						"Approach",
-						userProfile.handicap,
-						userProfile.tiempoApproach,
-						"ios-speedometer",
-						FunctionSetPhase.getPhaseApproach
-					)}
-					{mostrarPuntuacion(
-						"Putt",
-						userProfile.handicap,
-						userProfile.tiempoPutt,
-						"ios-trophy",
-						FunctionSetPhase.getPhasePutt
-					)}
-				</List>
+				{ userProfile.handicap ?
+					<List>
+						{mostrarPuntuacion(
+							"Drive",
+							userProfile.handicap,
+							userProfile.tiempoDrive,
+							"ios-thunderstorm",
+							FunctionSetPhase.getPhaseDrive
+						)}
+						{mostrarPuntuacion(
+							"Maderas",
+							userProfile.handicap,
+							userProfile.tiempoMaderas,
+							"ios-compass",
+							FunctionSetPhase.getPhaseMaderas
+						)}
+						{mostrarPuntuacion(
+							"Hierros largos",
+							userProfile.handicap,
+							userProfile.tiempoHierrosLargos,
+							"ios-locate",
+							FunctionSetPhase.getPhaseHierrosLargos
+						)}
+						{mostrarPuntuacion(
+							"Hierros cortos",
+							userProfile.handicap,
+							userProfile.tiempoHierrosCortos,
+							"ios-timer",
+							FunctionSetPhase.getPhaseHierrosCortos
+						)}
+						{mostrarPuntuacion(
+							"Approach",
+							userProfile.handicap,
+							userProfile.tiempoApproach,
+							"ios-speedometer",
+							FunctionSetPhase.getPhaseApproach
+						)}
+						{mostrarPuntuacion(
+							"Putt",
+							userProfile.handicap,
+							userProfile.tiempoPutt,
+							"ios-trophy",
+							FunctionSetPhase.getPhasePutt
+						)}
+					</List>
+				: <><Text>Cargando</Text></> }
 			</Content>
 		</Container> 
 	)

@@ -17,16 +17,16 @@ const crearObjectUserFirebase = userProfile => {
    }
 };
 
-const crearProfile = (name, lastName,email, nickName, fachaNacimiento) => {
+const crearProfile = (name, email) => {
    return (userProfile = {
       //CAMPOS PERFIL USUARIO
       name,
-      lastName,
+      lastName: "",
       email,
-      nickName,
+      nickName: "",
       altura: "",
       peso: "",
-      fachaNacimiento,
+      fachaNacimiento: "",
       avatarImg: "",
 
       //CAMPOS DE JUEGO
@@ -54,11 +54,8 @@ const registroUsuarioFirebase = (value) => {
       )
       .then(() => {
          crearObjectUserFirebase(crearProfile(
-            value.nombre,
-            value.apellido,
-            value.email,
             value.usuario,
-            value.fecha
+            value.email
          ));
       })
       .then(success => success)
@@ -68,7 +65,9 @@ function* registroUsuario(values) {
    try {
       yield call(registroUsuarioFirebase, values.datos)
    } catch (error) {
-      console.log(error)
+      console.log('TCL: --------------------------------------------')
+      console.log('TCL: function*registroUsuario -> error', error)
+      console.log('TCL: --------------------------------------------')
    }
 }
 
@@ -84,7 +83,9 @@ function* loginUsuario(values){
    try {
       yield call(loginUsuarioFirebase, values.datos)
    }catch (error) {
-      console.log(error);
+      console.log('TCL: -----------------------------------------')
+      console.log('TCL: function*loginUsuario -> error', error)
+      console.log('TCL: -----------------------------------------')
    }
 }
 

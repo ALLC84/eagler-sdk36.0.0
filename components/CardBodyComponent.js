@@ -25,7 +25,7 @@ const CardBodyComponent = props =>{
 			>
 				<Image style={cardStyles.card_item_img}
 					source={{ uri: img }}
-					// source={require("../assets/images/publi_ping_play.jpg")}
+					//source={require("../assets/images/publi_ping_play.jpg")}
 				/>
 			</CardItem>
 

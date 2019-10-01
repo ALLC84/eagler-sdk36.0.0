@@ -14,11 +14,11 @@ import { useDispatch, useSelector  } from 'react-redux' // React-Redux
 import { actionGetFase } from "../store/actions/basicAction"; //Actions Redux
 
 const imgs = [
-  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fimages%2FseveBunker.jpeg?alt=media&token=81d97819-192f-44dc-89ed-68e321adbbf9",
-  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fimages%2FdriveMacllroy.jpg?alt=media&token=6061c146-c61b-4b35-a25e-e066963cdd6a",
-  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fimages%2FkoepkaHierros.jpg?alt=media&token=a205be3c-9d7e-44fc-92a5-191d282cb9cb",
-  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fimages%2FtigerApproach.jpg?alt=media&token=dfabdd4f-2379-4806-a12e-6c31d36dc069",
-  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fimages%2FputtSpieth.jpg?alt=media&token=39f81cbb-ed77-4740-856d-03caf093a69c"
+  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FseveBunker.jpeg?alt=media&token=d115d0c5-a727-4d3c-ae7b-cd186c0082cc",
+  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FdriveMacllroy.jpg?alt=media&token=386dd092-73de-4222-9d52-b12422f5ec39",
+  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FkoepkaHierros.jpg?alt=media&token=ce2be166-68a4-4013-8929-3fa22a5fab94",
+  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FtigerApproach.jpg?alt=media&token=e639e073-2b5d-46a2-b9d9-bfe7b2891150",
+  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FputtSpieth.jpg?alt=media&token=4b424291-a9e2-46f7-9094-a50edc8148cd"
 ];
 
 const BasicComponent = props => {

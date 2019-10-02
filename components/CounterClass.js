@@ -1,9 +1,9 @@
 /* =========== LIBRERIAS ============= */
 import React, { Component } from "react"; // React
 import { StyleSheet } from "react-native"; // React Native
-import { Button } from "native-base"; // Native Base
+import { Button, Text } from "native-base"; // Native Base
 /* ========== PROPIOS ================ */
-import Text from './CustomText'; // Custom Text Styles and Font
+// import Text from './CustomText'; // Custom Text Styles and Font
 import Colors from '../constants/Colors';
 
 const colorArray = ['#FFF', 'red'];

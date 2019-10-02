@@ -9,7 +9,7 @@ import AppNavigator from './autenticados/AppNavigator';
 
 const RutasSelection = props => {
    // REDUX
-   const user = useSelector(state => state.session);
+   const {user} = useSelector(state => state.session);
 	// Dispatchs
 	const dispatch = useDispatch();
 	const autentication = () => 

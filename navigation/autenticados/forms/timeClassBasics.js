@@ -2,9 +2,9 @@
 import React from 'react' // React
 import { StyleSheet } from 'react-native'; // React Native
 import { Field, reduxForm } from 'redux-form'; // Redux
-import { Item, Input, Button, Picker} from "native-base"; // Native Base
+import { Item, Input, Button, Picker, Text} from "native-base"; // Native Base
 /* ========== PROPIOS ================ */
-import Text from '../../../components/CustomText'; // Custom Text and Style Font
+// import Text from '../../../components/CustomText'; // Custom Text and Style Font
 import Strings from '../../../constants/Strings'; // Strings
 
 
@@ -12,7 +12,7 @@ const FieldInput = (props) => {
    //console.log('Props Input: =========================> ', props)
    return (
       <>
-         <Item>
+         <Item rounded style={{borderColor: '#444444'}}>
             <Input
                name={props.name}
                keyboardType={props.type}
@@ -64,7 +64,7 @@ const TimeClassBasicsForm = (props) => {
             //text='Tiempo'               
          />
 
-         <Button style={stylesPage.button_form}
+         <Button rounded style={stylesPage.button_form}
             block
             onPress = {
                props.handleSubmit((value) => {
@@ -73,7 +73,7 @@ const TimeClassBasicsForm = (props) => {
                })
             }
          >
-            <Text style={stylesPage.text_button_form}>
+            <Text>
                {Strings.ST53}
             </Text>
          </Button>
@@ -91,11 +91,8 @@ export default reduxForm({
 // Styles Page
 const stylesPage = StyleSheet.create({
    button_form: {
-      marginTop: 50,
-      backgroundColor: "#240066"
+      marginTop: 10,
+      backgroundColor: "#240066",
+      height: 60
    },
-   text_button_form: {
-      color: '#FFF',
-      paddingHorizontal: 20
-   }
 })

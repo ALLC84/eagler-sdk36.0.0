@@ -2,9 +2,9 @@
 import React, { useEffect } from "react"; // React
 import { StyleSheet } from 'react-native'; // React Native
 import { connect } from 'react-redux'; // Redux
-import { Content, Spinner } from "native-base"; // Native Base
+import { Content, Spinner, Text } from "native-base"; // Native Base
 /* ========== PROPIOS ================ */
-import Text from './CustomText'; // Custom Text Styles and Font
+// import Text from './CustomText'; // Custom Text Styles and Font
 import Strings from '../constants/Strings'; // Strings
 import CardDrillComponent from "./CardDrillComponent"; // Card 
 import Colors from '../constants/Colors' // Style

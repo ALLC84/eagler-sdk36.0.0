@@ -2,10 +2,10 @@
 import React from 'react' // React
 import { StyleSheet } from 'react-native'; // React Native
 import { Field, reduxForm } from 'redux-form'; // Redux
-import { Item, Input, Button, Picker} from "native-base"; // Native Base
+import { Item, Input, Button, Picker, Text} from "native-base"; // Native Base
 import { Icon } from "expo"; // Expo
 /* ========== PROPIOS ================ */
-import Text from '../../../components/CustomText'; // Custom Text and Style Font
+// import Text from '../../../components/CustomText'; // Custom Text and Style Font
 import Strings from '../../../constants/Strings'; // Strings
 
 
@@ -23,7 +23,7 @@ const FieldInput = (props) => {
                onChangeText={props.input.onChange}
                onBlur={props.input.onBlur}
             />
-            <Text type={'semi-bold'}>{props.text}</Text>
+            <Text style={{fontWeight: 'bold'}} >{props.text}</Text>
          </Item>
          {
             props.meta.touched && props.meta.error &&  
@@ -142,7 +142,7 @@ const PlayUserProfileForm = (props) => {
             text={Strings.ST42}               
          />
 
-          <Field 
+            <Field 
             type={'numeric'}  
             name="diasEntrenamientoSemana" 
             component={FieldInput} 
@@ -156,14 +156,14 @@ const PlayUserProfileForm = (props) => {
             text={Strings.ST44}         
          />
 
-        <Field 
+         <Field 
             type={'numeric'}
             name="handicap"                
             component={FieldInput} 
             text={Strings.ST45}                         
          /> 
 
-        <Field 
+         <Field 
             placeholder={'Diestro/Zurdo'} 
             name="mano"                
             component={FieldInput} 
@@ -191,7 +191,7 @@ const PlayUserProfileForm = (props) => {
                
             }
          >
-            <Text style={stylesPage.text_button_form}>
+            <Text>
                {Strings.ST47}
             </Text>
          </Button>
@@ -212,7 +212,4 @@ const stylesPage = StyleSheet.create({
       marginLeft: 20,
       backgroundColor: "#240066"
    },
-   text_button_form: {
-      color: '#FFF'
-   }
 })

@@ -1,7 +1,7 @@
 /* =========== LIBRERIAS ============= */
 import React, { useEffect, useState } from "react"; // React
 import { StyleSheet } from "react-native"; // React-native
-import { Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Spinner } from "native-base"; // Native Base
+import { Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Spinner, Text } from "native-base"; // Native Base
 import { Video } from 'expo-av'; // Expo
 import { Ionicons } from '@expo/vector-icons';
 // import { StyleSheet, TouchableOpacity } from "react-native";
@@ -9,7 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useDispatch, useSelector  } from 'react-redux'; // React-Redux
 import { actionGetClaseCombinada } from '../store/actions/basicAction';
 /* ========== PROPIOS ================ */
-import Text from '../components/CustomText';
+// import Text from '../components/CustomText';
 import DetailScreenHeader from '../components/DetailScreenHeader'; // Header
 import CounterClass from '../components/CounterClass'; // Contador tiempo clase
 import ModalTiempoClase from "../components/ModalTiempoClase"; // Modal

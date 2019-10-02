@@ -1,10 +1,10 @@
 /* =========== LIBRERIAS ============= */
 import React, { useEffect, useState } from "react"; // React
 import { StyleSheet } from "react-native"; // React Native
-import { Content, Toast, Root, Spinner } from "native-base"; // NativeBase
+import { Content, Toast, Root, Spinner, Text } from "native-base"; // NativeBase
 import { AUTH } from "../services/firebase"; // Firebase
 /* ========== PROPIOS ================ */
-import Text from "./CustomText"; // Custom Text Styles and Font
+// import Text from "./CustomText"; // Custom Text Styles and Font
 import Strings from "../constants/Strings"; // Strings
 import ModalPerfilJuego from "./ModalPerfilJuego"; // Modal con formulario derfil de juego
 import CardBasicsComponent from "./CardBasicsComponent"; // Card de las diferentes clases
@@ -14,11 +14,16 @@ import { useDispatch, useSelector  } from 'react-redux' // React-Redux
 import { actionGetFase } from "../store/actions/basicAction"; //Actions Redux
 
 const imgs = [
-  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FseveBunker.jpeg?alt=media&token=d115d0c5-a727-4d3c-ae7b-cd186c0082cc",
-  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FdriveMacllroy.jpg?alt=media&token=386dd092-73de-4222-9d52-b12422f5ec39",
-  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FkoepkaHierros.jpg?alt=media&token=ce2be166-68a4-4013-8929-3fa22a5fab94",
-  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FtigerApproach.jpg?alt=media&token=e639e073-2b5d-46a2-b9d9-bfe7b2891150",
-  "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FputtSpieth.jpg?alt=media&token=4b424291-a9e2-46f7-9094-a50edc8148cd"
+  // "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FseveBunker.jpeg?alt=media&token=d115d0c5-a727-4d3c-ae7b-cd186c0082cc"
+  require("../assets/images/portadaBasics/seveBunker.jpeg"),
+  // "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FdriveMacllroy.jpg?alt=media&token=386dd092-73de-4222-9d52-b12422f5ec39",
+  require("../assets/images/portadaBasics/driveMacllroy.jpg"),
+  // "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FkoepkaHierros.jpg?alt=media&token=ce2be166-68a4-4013-8929-3fa22a5fab94",
+  require("../assets/images/portadaBasics/koepkaHierros.jpg"),
+  // "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FtigerApproach.jpg?alt=media&token=e639e073-2b5d-46a2-b9d9-bfe7b2891150",
+  require("../assets/images/portadaBasics/tigerApproach.jpg"),
+  // "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FputtSpieth.jpg?alt=media&token=4b424291-a9e2-46f7-9094-a50edc8148cd"
+  require("../assets/images/portadaBasics/puttSpieth.jpg"),
 ];
 
 const BasicComponent = props => {
@@ -38,7 +43,9 @@ const BasicComponent = props => {
 
 
   useEffect(() => {
-		getFase(user.uid)
+    if(user) {
+      getFase(user.uid)
+    }
   }, [])
 
   useEffect(() => {

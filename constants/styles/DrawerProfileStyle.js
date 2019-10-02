@@ -38,9 +38,9 @@ module.exports = StyleSheet.create({
 		paddingLeft: 20
 	},
 
-	text_menu: {
-		marginTop: 5
-	},
+	// text_menu: {
+	// 	marginTop: 5
+	// },
 
 	thumbnail_menu: {
 		marginRight: 10,

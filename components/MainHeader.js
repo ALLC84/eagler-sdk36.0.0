@@ -3,7 +3,6 @@ import React from "react"; // React
 import { Platform, StyleSheet, Image } from "react-native"; // React Native
 import { Header, Left, Right, Button, Icon } from "native-base"; // Native Base
 /* ========== PROPIOS ================ */
-//import Text from './CustomText' // Custom Text ( Font ) and Styles
 //import Strings from '../constants/Strings'; // Strings
 import Colors from '../constants/Colors'; // Styles
 

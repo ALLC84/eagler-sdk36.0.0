@@ -2,10 +2,10 @@
 import React from 'react' // React
 import { StyleSheet } from 'react-native'; // React Native
 import { Field, reduxForm } from 'redux-form'; // Redux
-import { Item, Input, Button, Picker} from "native-base"; // Native Base
+import { Item, Input, Button, Picker, Text} from "native-base"; // Native Base
 import { Icon } from "expo"; // Expo
 /* ========== PROPIOS ================ */
-import Text from '../../../components/CustomText'; // Custom Text and Style Font
+// import Text from '../../../components/CustomText'; // Custom Text and Style Font
 import Strings from '../../../constants/Strings'; // Strings
 
 const FieldInput = (props) => {
@@ -22,7 +22,7 @@ const FieldInput = (props) => {
                onChangeText={props.input.onChange}
                onBlur={props.input.onBlur}
             />
-            <Text type={'semi-bold'}>{props.text}</Text>
+            <Text style={{fontWeight: 'bold'}}>{props.text}</Text>
          </Item>
          {
             props.meta.touched && props.meta.error &&  
@@ -132,7 +132,7 @@ const PlayPhysicalProfileForm = (props) => {
             text={Strings.ST49}               
          />
 
-          <Field 
+         <Field 
             type={'numeric'}  
             name="peso" 
             component={FieldInput} 
@@ -146,7 +146,7 @@ const PlayPhysicalProfileForm = (props) => {
             text={Strings.ST51}         
          />
 
-        <Field 
+         <Field 
             name="sexo"                
             component={FieldInput} 
             text='Sexo' 
@@ -185,7 +185,7 @@ const stylesPage = StyleSheet.create({
       marginLeft: 20,
       backgroundColor: "#240066"
    },
-   text_button_form: {
-      color: '#FFF'
-   }
+   // text_button_form: {
+   //    color: '#FFF'
+   // }
 })

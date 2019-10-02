@@ -1,13 +1,13 @@
 /* =========== LIBRERIAS ============= */
 import React, { useState } from "react"; // React
-import { Modal, View, StyleSheet } from "react-native"; // React Native
-import { Form, Button } from "native-base"; // Native Base
+import { Modal, View, StyleSheet, ImageBackground } from "react-native"; // React Native
+import { Form, Button, Text } from "native-base"; // Native Base
 import { Ionicons } from '@expo/vector-icons'; // Expo
 /* ========== REDUX ================ */
 import { useDispatch } from 'react-redux' // React-Redux
 import { actionGetFase } from "../store/actions/basicAction"; //Actions Redux
 /* ========== PROPIOS ================ */
-import Text from './CustomText'; // Custom Text Styles and Font
+// import Text from './CustomText'; // Custom Text Styles and Font
 import Strings from '../constants/Strings'; // Strings
 import { AUTH } from '../services/firebase' // Firebase Auth
 import functionUserProfile from "../lib/functions/functionUserProfile"; // Funciones Profile
@@ -40,33 +40,34 @@ const ModalTiempoClase = props => {
 				visible={visibleModal}
 			>
 				<View style={stylesPage.form_view}>
-					<Button transparent 
-						style={stylesPage.form_button_close}
-						onPress={() => {
-							setVisibleModal(false)
-							navigation.navigate('Basics')
-						}}
-					>
-						<Ionicons
-							size={40}
-							color={"red"}
-							name={"ios-close"}
-						/>
-					</Button>
+					<ImageBackground source={require('../assets/images/HomeHD.jpg')} style={stylesPage.form_image}>
+						<Button transparent 
+							style={stylesPage.form_button_close}
+							onPress={() => {
+								setVisibleModal(false)
+								navigation.navigate('Basics')
+							}}
+						>
+							<Ionicons
+								size={40}
+								color={"red"}
+								name={"ios-close"}
+							/>
+						</Button>
 
-					<Text style={stylesPage.form_text}>
-						{Strings.ST41}
-					</Text>
+						<Text style={stylesPage.form_text}>
+							{Strings.ST41}
+						</Text>
 
-					<Form>
-						{/* ReduxForm */}
-						<TimeClassBasicsForm 
-							userId = {_userId}
-							actualizarPerfil = {actualizarPerfil}
-							actualizaFase = {getFase}
-						/>
-					</Form>
-
+						<Form style={{width: '90%'}}>
+							{/* ReduxForm */}
+							<TimeClassBasicsForm 
+								userId = {_userId}
+								actualizarPerfil = {actualizarPerfil}
+								actualizaFase = {getFase}
+							/>
+						</Form>
+					</ImageBackground>
 				</View>
 			</Modal>
 		</View>
@@ -78,24 +79,28 @@ export default ModalTiempoClase;
 const stylesPage = StyleSheet.create({
 	form_view: {
 		flex: 1,
+		borderRadius: 20,
+		backgroundColor: "#F9F5F4",
+	},
+	form_image: {
+		flex: 1,
 		flexDirection: "column",
 		justifyContent: "center",
 		alignItems: "center",
-		padding: 20,
-		borderRadius: 20,
-		backgroundColor: "#F9F5F4",
-		marginVertical: 100,
-		marginHorizontal: 10
+		width: '100%', 
+		height: '100%'
 	},
 	form_button_close: {
 		position: 'absolute',
-		top: 0,
+		top: 50,
 		right: -1,
-		marginRight: 20
+		marginRight: 30
 	},
 	form_text: {
 		marginBottom: 40,
-		textAlign: "justify",
-		paddingHorizontal: 40
+		textAlign: "center",
+		fontWeight: 'bold'
 	}
 });
+
+// style={{width: '100%', height: '100%'}}

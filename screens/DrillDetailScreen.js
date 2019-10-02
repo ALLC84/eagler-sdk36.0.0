@@ -1,10 +1,10 @@
 /* =========== LIBRERIAS ============= */
 import React from "react"; // React
 import { StyleSheet } from "react-native"; // React Native
-import { Container, Content, View, Badge } from "native-base"; // Native Base
+import { Container, Content, View, Badge, Text } from "native-base"; // Native Base
 import { Video } from 'expo-av'; // Expo
 /* ========== PROPIOS ================ */
-import Text from '../components/CustomText'; // Custom Text Styles and Font
+// import Text from '../components/CustomText'; // Custom Text Styles and Font
 import DetailScreenHeader from '../components/DetailScreenHeader'; // Header
 import layout from "../constants/Layout"; // Styles
 import globalStyles from "../constants/styles/GlobalStyles"; // Styles

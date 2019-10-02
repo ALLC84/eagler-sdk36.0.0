@@ -5,6 +5,12 @@ export const actionRegistroUsuario = values => ({
    datos: values
 });
 
+export const handleErrorSessionUsuario = value => ({
+   type: 'ERROR_SESSION_USUARIO',
+   error: value
+})
+
+
 export const  actionLoginUsuario = values => ({
    type: TYPES.LOGIN_USUARIO,
    datos: values

@@ -1,9 +1,9 @@
 /* =========== LIBRERIAS ============= */
 import React from "react"; // React
 import { Image, StyleSheet } from "react-native"; // React Native
-import { Container, Content, View, Badge } from "native-base"; // Native Base
+import { Container, Content, View, Badge, Text } from "native-base"; // Native Base
 /* ========== PROPIOS ================ */
-import Text from '../components/CustomText';
+// import Text from '../components/CustomText';
 import DetailScreenHeader from '../components/DetailScreenHeader'; // Header
 import globalStyles from "../constants/styles/GlobalStyles"; // Styles
 

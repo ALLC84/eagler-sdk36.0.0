@@ -5,8 +5,8 @@
 import React, { Component } from "react";
 import { View, Image, Dimensions, StyleSheet } from "react-native";
 import Swiper from 'react-native-swiper'
-import { Button, Right } from "native-base";
-import Text from './CustomText'; // Custom Text Styles and Font
+import { Button, Right, Text } from "native-base";
+// import Text from './CustomText'; // Custom Text Styles and Font
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;

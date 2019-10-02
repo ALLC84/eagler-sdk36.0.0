@@ -2,7 +2,6 @@
 import React from "react"; // React
 import { StyleSheet } from "react-native"; // React-native
 /* ========== PROPIOS ================ */
-import Text from '../components/CustomText';
 import Strings from '../constants/Strings'; // Strings
 import DetailScreenHeader from '../components/DetailScreenHeader'; // Header
 
@@ -26,6 +25,6 @@ const  Suscripciones = props => {
 export default Suscripciones;
 
 // Styles
-const styles = StyleSheet.create({
+const stylesPage = StyleSheet.create({
 
 });

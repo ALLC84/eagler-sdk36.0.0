@@ -1,10 +1,10 @@
 /* =========== LIBRERIAS ============= */
 import React from "react"; // React
 import { Image, TouchableOpacity, StyleSheet } from "react-native"; // React Native
-import { Card, CardItem, Left, Body, Right } from "native-base"; // Native Base
+import { Card, CardItem, Left, Body, Right, Text } from "native-base"; // Native Base
 import { Ionicons } from '@expo/vector-icons';// Expo
 /* ========== PROPIOS ================ */
-import Text from './CustomText'; // Custom Text Styles and Font
+// import Text from './CustomText'; // Custom Text Styles and Font
 import Colors from '../constants/Colors'; // Styles
 import cardStyles from '../constants/styles/CardStyle' // Styles
 
@@ -27,7 +27,8 @@ const CardBasicsComponent = props => {
 				button onPress={() => basicsDetailView(title)}
 			>	
 				<Image style={cardStyles.card_item_img}
-					source={{ uri: img }}
+					source={img}
+					// source={{ uri: img }}
 				/>
 			</CardItem>
 

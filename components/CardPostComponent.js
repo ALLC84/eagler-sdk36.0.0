@@ -1,10 +1,10 @@
 /* =========== LIBRERIAS ============= */
 import React from "react"; // React
 import { Image, Platform, StyleSheet } from "react-native"; // React Native
-import { Card, CardItem, Button, Left, Body, Right } from "native-base"; // Native Base
+import { Card, CardItem, Button, Left, Body, Right, Text } from "native-base"; // Native Base
 import { Ionicons } from '@expo/vector-icons';
 /* ========== PROPIOS ================ */
-import Text from './CustomText'; // Custom Text Styles and Font
+// import Text from './CustomText'; // Custom Text Styles and Font
 import Strings from '../constants/Strings'; // Strings
 import cardStyles from '../constants/styles/CardStyle' // Styles
 

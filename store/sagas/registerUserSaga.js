@@ -1,8 +1,9 @@
-import { takeEvery, call } from 'redux-saga/effects';
+import { takeEvery, call, put } from 'redux-saga/effects';
 ////// Firebase
-import { AUTH, DB } from '../../services/firebase'
+import { AUTH, DB } from '../../services/firebase';
 
 import TYPES from '../actions/types'
+import { handleErrorSessionUsuario } from '../actions/registerAction';
 
 // Registro Usuario
 //============================================
@@ -58,13 +59,15 @@ const registroUsuarioFirebase = (value) => {
             value.email
          ));
       })
-      .then(success => success)
+      .then(() => 'success')
 }
 
 function* registroUsuario(values) {
    try {
       yield call(registroUsuarioFirebase, values.datos)
+      yield put(handleErrorSessionUsuario(null))
    } catch (error) {
+      yield put(handleErrorSessionUsuario('Verifique los campos e intentelo nuevamente'))
       console.log('TCL: --------------------------------------------')
       console.log('TCL: function*registroUsuario -> error', error)
       console.log('TCL: --------------------------------------------')
@@ -76,13 +79,15 @@ function* registroUsuario(values) {
 const  loginUsuarioFirebase = value => 
    AUTH
       .signInWithEmailAndPassword(value.email, value.password)
-      .then(success => success);
+      .then(() => 'success');
 
 
 function* loginUsuario(values){
    try {
       yield call(loginUsuarioFirebase, values.datos)
+      yield put(handleErrorSessionUsuario(null))
    }catch (error) {
+      yield put(handleErrorSessionUsuario('Verifique los campos e intentelo nuevamente'))
       console.log('TCL: -----------------------------------------')
       console.log('TCL: function*loginUsuario -> error', error)
       console.log('TCL: -----------------------------------------')

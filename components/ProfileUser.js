@@ -1,10 +1,10 @@
 /* =========== LIBRERIAS ============= */
 import React, { Component } from "react"; // React
 import { ScrollView, View, Image, TouchableOpacity } from "react-native"; // React Native
-import { ListItem, Left, Right } from "native-base"; // Native Base
+import { ListItem, Left, Right, Text } from "native-base"; // Native Base
 import { Ionicons } from '@expo/vector-icons'; // Expo
 /* ========== PROPIOS ================ */
-import Text from './CustomText'; // Custom Text Styles and Font
+// import Text from './CustomText'; // Custom Text Styles and Font
 import Strings from '../constants/Strings'; // Strings
 import { AUTH } from '../services/firebase'; // Firebase Auth
 import stylesDrawer from "../constants/styles/DrawerProfileStyle"; // Styles
@@ -33,10 +33,12 @@ const  ProfileUser = props => {
 					}}
 				>
 					<Left>
-						<Ionicons
-							name="ios-contact"
-							style={stylesDrawer.icon_left_menu}
-						/>
+						<View style={{width: 30}}>
+							<Ionicons
+								name="ios-contact"
+								style={stylesDrawer.icon_left_menu}
+							/>
+						</View>
 						<Text style={stylesDrawer.text_menu}>
 							{Strings.ST11}
 						</Text>
@@ -57,10 +59,12 @@ const  ProfileUser = props => {
 					}}
 				>
 					<Left>
-						<Ionicons
-							name="ios-flag"
-							style={stylesDrawer.icon_left_menu}
-						/>
+						<View style={{width: 30}}>
+							<Ionicons
+								name="ios-flag"
+								style={stylesDrawer.icon_left_menu}
+							/>
+						</View>
 						<Text style={stylesDrawer.text_menu}>
 							{Strings.ST12}
 						</Text>
@@ -81,10 +85,12 @@ const  ProfileUser = props => {
 					}}
 				>
 					<Left>
-						<Ionicons
-							name="ios-man"
-							style={stylesDrawer.icon_left_menu}
-						/>
+						<View style={{width: 30}}>
+							<Ionicons
+								name="ios-man"
+								style={stylesDrawer.icon_left_menu}
+							/>
+						</View>
 						<Text style={stylesDrawer.text_menu}>
 							{Strings.ST13}
 						</Text>
@@ -105,10 +111,12 @@ const  ProfileUser = props => {
 					}}
 				>
 					<Left>
-						<Ionicons
-							name="ios-card"
-							style={stylesDrawer.icon_left_menu}
-						/>
+						<View style={{width: 30}}>
+							<Ionicons
+								name="ios-card"
+								style={stylesDrawer.icon_left_menu}
+							/>
+						</View>
 						<Text style={stylesDrawer.text_menu}>
 							{Strings.ST14}
 						</Text>
@@ -129,10 +137,12 @@ const  ProfileUser = props => {
 					}}
 				>
 					<Left>
-						<Ionicons
-							name="ios-share"
-							style={stylesDrawer.icon_left_menu}
-						/>
+						<View style={{width: 30}}>
+							<Ionicons
+								name="ios-share"
+								style={stylesDrawer.icon_left_menu}
+							/>
+						</View>
 						<Text style={stylesDrawer.text_menu}>
 							{Strings.ST15}
 						</Text>

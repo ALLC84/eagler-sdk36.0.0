@@ -47,8 +47,8 @@ module.exports = StyleSheet.create({
 	},
 	color_badge_verde: {
 		color: PrimaryColor,
-		paddingHorizontal: 10,
-		paddingVertical: 5
+		// paddingHorizontal: 10,
+		// paddingVertical: 5
 	},
 
 	// START ( LOGIN - REGISTER ) Screen

@@ -2,11 +2,11 @@
 import React, { useState, useEffect} from "react"; // React
 import { connect } from 'react-redux'; // Redux
 import { Modal, View, Dimensions, StyleSheet } from "react-native"; // React Native
-import { Form } from "native-base"; // Native Base
+import { Form, Text } from "native-base"; // Native Base
 /* ========== REDUX ================ */
 import { useDispatch, useSelector  } from 'react-redux' // React-Redux
 /* ========== PROPIOS ================ */
-import Text from './CustomText'; // Custom Text Styles and Font
+// import Text from './CustomText'; // Custom Text Styles and Font
 import Strings from '../constants/Strings'; // Strings
 import { AUTH } from '../services/firebase' // Firebase
 import PlayUserProfileForm from '../navigation/autenticados/forms/playUserProfile'; // Formulario

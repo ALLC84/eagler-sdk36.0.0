@@ -1,7 +1,7 @@
 /* =========== LIBRERIAS ============= */
 import React, {useState, useEffect} from "react"; // React
 import { StyleSheet } from "react-native"; // React Native
-import { Container, Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Spinner } from "native-base"; // Native Base
+import { Container, Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Spinner, Text } from "native-base"; // Native Base
 import { Video } from 'expo-av'; // Expo
 import { Ionicons } from '@expo/vector-icons';
 /* ========== REDUX ================ */
@@ -9,7 +9,7 @@ import { useDispatch, useSelector  } from 'react-redux' // React-Redux
 import { actionGetSeccionBase } from '../store/actions/bodyAction'; // Actions
 /* ========== PROPIOS ================ */
 import Strings from '../constants/Strings'; // Strings
-import Text from '../components/CustomText';
+// import Text from '../components/CustomText';
 import DetailScreenHeader from '../components/DetailScreenHeader'; // Header
 import layout from "../constants/Layout"; // Styles
 import Colors from '../constants/Colors' // Styles

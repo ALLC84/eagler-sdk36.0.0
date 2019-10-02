@@ -1,9 +1,9 @@
 /* =========== LIBRERIAS ============= */
 import React from 'react'
 import { Field, reduxForm } from 'redux-form';
-import { Item, Input, Button, DatePicker } from "native-base";
+import { Item, Input, Button, DatePicker, Text } from "native-base";
 /* ========== PROPIOS ================ */
-import Text from '../../../components/CustomText'; // Custom Text and Style Font
+// import Text from '../../../components/CustomText'; // Custom Text and Style Font
 import Strings from "../../../constants/Strings";
 import styles  from "../../../constants/styles/FormLoginStyle";
 import layout from "../../../constants/Layout";
@@ -147,7 +147,7 @@ const SingUpForm = (props) => {
                })
             }
          >
-            <Text style={styles.text_auth}>
+            <Text >
                {Strings.ST8}
             </Text>
          </Button>

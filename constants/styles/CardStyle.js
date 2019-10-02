@@ -39,7 +39,7 @@ module.exports = StyleSheet.create({
 		color: "#fff"
 	},
 	card_subtitle: {
-		fontSize: 20,
+		fontSize: 18,
 		color: "#fff"
    },
    // Solo tarjetas de IQ

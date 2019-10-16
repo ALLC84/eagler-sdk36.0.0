@@ -29,7 +29,6 @@ const FieldInput = (props) => {
 };
 
 const FiledPicker = (props) => {
-   console.log(props);
    return (
       <>
          <Item

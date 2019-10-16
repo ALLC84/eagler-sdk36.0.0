@@ -6,8 +6,13 @@ export const actionRegistroUsuario = values => ({
 });
 
 export const handleErrorSessionUsuario = value => ({
-   type: 'ERROR_SESSION_USUARIO',
+   type: TYPES.ERROR_SESSION_USUARIO,
    error: value
+})
+
+export const handleSuccessSessionUsuario = value => ({
+   type: TYPES.SUCCESS_SESSION_USUARIO,
+   success: value
 })
 
 
@@ -23,4 +28,9 @@ export const  actionEstablecerSesion= user => ({
 
 export const  actionCerrarSesion = () => ({
    type: TYPES.CERRAR_SESION
+});
+
+export const actionRestorePassword = email => ({
+   type: TYPES.RESTORE_PASSWORD,
+   email
 });

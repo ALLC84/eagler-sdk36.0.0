@@ -3,6 +3,9 @@ const TYPES = {
    LOGIN_USUARIO                       : 'LOGIN_USUARIO',
    ESTABLECER_SESION                   : 'ESTABLECER_SESION',
    CERRAR_SESION                       : 'CERRAR_SESION',
+   RESTORE_PASSWORD                    : 'RESTORE_PASSWORD',
+   ERROR_SESSION_USUARIO               : 'ERROR_SESSION_USUARIO',
+   SUCCESS_SESSION_USUARIO             : 'SUCCESS_SESSION_USUARIO',
 
 
    GET_FASE                            : 'GET_FASE',

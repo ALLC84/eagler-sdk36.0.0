@@ -3,7 +3,7 @@ import { takeEvery, call, put } from 'redux-saga/effects';
 import { AUTH, DB } from '../../services/firebase';
 
 import TYPES from '../actions/types'
-import { handleErrorSessionUsuario } from '../actions/registerAction';
+import { handleSuccessSessionUsuario, handleErrorSessionUsuario } from '../actions/registerAction';
 
 // Registro Usuario
 //============================================
@@ -94,8 +94,31 @@ function* loginUsuario(values){
    }
 }
 
+
+// Restore Password
+//===============================================
+const restorePasswordFirebase = value => 
+   AUTH
+      .sendPasswordResetEmail(value.email)
+      .then(() => 'succsess');
+
+
+function* restorePassword(values) {
+   try {
+      yield call(restorePasswordFirebase, values.email)
+      yield put(handleErrorSessionUsuario(null))
+      yield put(handleSuccessSessionUsuario('Correo enviado con exito!'))
+   } catch (error) {
+      yield put(handleErrorSessionUsuario('Ha ocurrido un error inesperado, intentelo nuevamente'))
+      console.log('TCL: --------------------------------------------')
+      console.log('TCL: function*restorePassword -> error', error)
+      console.log('TCL: --------------------------------------------')
+   }
+}
+
 // Dispatch
 export default function* funcionesRegistroSaga() {
    yield takeEvery(TYPES.REGISTRO_USUARIO, registroUsuario)
    yield takeEvery(TYPES.LOGIN_USUARIO, loginUsuario)
+   yield takeEvery(TYPES.RESTORE_PASSWORD, restorePassword)
 }

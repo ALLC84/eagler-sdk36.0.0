@@ -1,30 +1,36 @@
 /* =========== LIBRERIAS ============= */
-import React, {useEffect} from "react"; // React
+import React, {useEffect, useState} from "react"; // React
 import { StyleSheet, View, Image, TouchableOpacity } from "react-native"; // React Native
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"; // Scroll View
 import { Container, Button, Text, Toast, Root } from "native-base";
 /* ========== REDUX ================ */
 import { useDispatch, useSelector } from 'react-redux' // React-Redux
-import { actionLoginUsuario } from '../store/actions/registerAction'; // Actions
+import { actionLoginUsuario, actionRestorePassword } from '../store/actions/registerAction'; // Actions
 /* ========== PROPIOS ================ */
 // import Text from '../components/CustomText';
 import Strings from "../constants/Strings"; // String
 import SingInForm from '../navigation/noAutenticados/forms/SingInForm'; // Form
+import RestorePasswordForm from '../navigation/noAutenticados/forms/ResPassForm';
 import globalStyles from "../constants/styles/GlobalStyles"; // Styles
 
 const SingIn = props => {
 	const { navigation } = props;
 	// REDUX
 	const {error} = useSelector(state => state.session)
+	const {success} = useSelector(state => state.session)
 	// Dispatchs
 	const dispatch = useDispatch();
 	const loginUsuario = values => dispatch(actionLoginUsuario(values));
+	const restorePassword = values => dispatch(actionRestorePassword(values))
 
-	const mostrarToast = message => {
+	// State
+	const [ formPassword, setFormPassword ] = useState( false );
+
+	const mostrarToast = (message, type) => {
 		return Toast.show({
 			text: message,
 			textStyle: { textAlign: "center" },
-			type: "danger",
+			type: type,
 			duration: 3000,
 			position: "bottom"
 		});
@@ -32,7 +38,11 @@ const SingIn = props => {
 
 	useEffect(() => {
 		if(error !== null) {
-			mostrarToast(error)
+			mostrarToast(error, 'danger')
+		}
+
+		if(success !== null) {
+			mostrarToast(success, 'success')
 		}
 	})
 
@@ -48,28 +58,46 @@ const SingIn = props => {
 							resizeMode="contain"
 						/>
 
-						<SingInForm loginUsuario = {loginUsuario}/> 
+						{!formPassword ?
+							<>
+								<SingInForm loginUsuario = {loginUsuario}/>
+							
+								<TouchableOpacity style={globalStyles.text_auth}
+									onPress={() => setFormPassword(true)}
+									activeOpacity={1}
+								>
+									<Text>
+										{Strings.ST5}
+									</Text>
+								</TouchableOpacity>
 
-						<TouchableOpacity style={globalStyles.text_auth}
-							// onPress={this.forgetpass.bind(this)}
-							activeOpacity={1}
-						>
-							<Text>
-								{Strings.ST5}
-							</Text>
-						</TouchableOpacity>
+								<Button
+									block
+									transparent
+									onPress={() => {
+										navigation.navigate("SingUp");
+									}}
+								>
+									<Text style={globalStyles.text_link}>
+										{Strings.ST6}
+									</Text>
+								</Button>
+							</>
+							: 
+							<>
+								<RestorePasswordForm restorePassword = {restorePassword} setFormPassword = {setFormPassword}/>
 
-						<Button
-							block
-							transparent
-							onPress={() => {
-								navigation.navigate("SingUp");
-							}}
-						>
-							<Text style={globalStyles.text_link}>
-								{Strings.ST6}
-							</Text>
-						</Button>
+								<TouchableOpacity style={globalStyles.text_auth}
+									onPress={() => setFormPassword(false)}
+									activeOpacity={1}
+								>
+									<Text>
+										Volver
+									</Text>
+								</TouchableOpacity>
+							</>
+						}
+						
 
 					</View>
 				</KeyboardAwareScrollView>

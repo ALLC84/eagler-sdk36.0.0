@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native"; // React Native
 import { Container, Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Spinner, Text } from "native-base"; // Native Base
 import { Video } from 'expo-av'; // Expo
 import { Ionicons } from '@expo/vector-icons';
-/* ========== REDUX ================ */
+/* ========== REDUX ================== */
 import { useDispatch, useSelector  } from 'react-redux' // React-Redux
 import { actionGetSeccionBase } from '../store/actions/bodyAction'; // Actions
 /* ========== PROPIOS ================ */
@@ -55,17 +55,27 @@ const BodyDetailScreen = props => {
 		switch (title) {
 			case 'All':
 				getClaseBase(
-					sessionMovements[getRadnom("movements")],
-					sessionWorkouts[getRadnom("workouts")],
-					sessionWarmups[getRadnom("warmups")]
+					'1',
+					'1',
+					'1'
 				)
+				// getClaseBase(
+				// 	sessionMovements[getRadnom("movements")],
+				// 	sessionWorkouts[getRadnom("workouts")],
+				// 	sessionWarmups[getRadnom("warmups")]
+				// )
 				break;
 			default:
 				getClaseBase(
-					sessionMovements[getRadnom("movements")],
-					sessionWorkouts[getRadnom("workouts")],
-					sessionWarmups[getRadnom("warmups")]
+					1,
+					1,
+					1
 				)
+				// getClaseBase(
+				// 	sessionMovements[getRadnom("movements")],
+				// 	sessionWorkouts[getRadnom("workouts")],
+				// 	sessionWarmups[getRadnom("warmups")]
+				// )
 				break;
 		}
 	}, [])

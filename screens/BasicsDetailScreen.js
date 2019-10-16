@@ -77,7 +77,8 @@ const  BasicsDetailScreen = props => {
 					rate={1.0}
 					volume={0}
 					isMuted={true}
-					resizeMode="contain"
+					resizeMode="cover"
+					// resizeMode="contain"
 					isLooping
 					useNativeControls={true}
 				/>

@@ -1,6 +1,7 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
 ////// Firebase
-import { DB } from '../../services/firebase'
+/* =========== FIREBASE ============= */
+import { FIREBASECONFIG } from '../../services/firebase';
 
 import TYPES from '../actions/types'
 import {
@@ -9,57 +10,49 @@ import {
 
 //Movements
 //=================================
-const getMovementsFirebase = (clase) => 
-   DB.collection("movements").doc(clase)
-   .get()
-   .then( doc => {
-      let movements = [];
-      if (doc.exists) {
-         movements.push(doc.data());
-      } else {
-         console.log('TCL: -------------------------------------------------')
-         console.log('TCL: getMovementsFirebase -> No existe el documento')
-         console.log('TCL: -------------------------------------------------')
-      } 
-      return movements;
-   })
+const getMovementsFirebase = async (clase) => { 
+   const url = `https://firestore.googleapis.com/v1beta1/projects/${
+      FIREBASECONFIG.projectId
+   }/databases/(default)/documents/body/movements/${clase}?key=${
+      FIREBASECONFIG.apiKey
+   }`
+   let movements = []
+   const response = await fetch(url);
+   const data = await response.json();
+   movements.push(data)
+   return movements;
+}
 
 
 // Warmup
 //=================================
-const getWarmupsFirebase = (clase) => 
-   DB.collection("warmups").doc(clase)
-   .get()
-   .then( doc => {
-      let warmups = [];
-      if (doc.exists) {
-         warmups.push(doc.data());
-      } else {
-         console.log('TCL: ------------------------------------------------')
-         console.log('TCL: getWarmupsFirebase -> No existe el documento')
-         console.log('TCL: ------------------------------------------------')
-      } 
-      return warmups;
-   })
-
-
+const getWarmupsFirebase = async (clase) => {
+   const url = `https://firestore.googleapis.com/v1beta1/projects/${
+      FIREBASECONFIG.projectId
+   }/databases/(default)/documents/body/warmups/${clase}?key=${
+      FIREBASECONFIG.apiKey
+   }`
+   let warmups = [];
+   const response = await fetch(url);
+   const data = await response.json();
+   warmups.push(data);
+   return warmups;
+}
 
 // Workouts
 //=================================
-const getWorkoutsFirebase = (clase) => 
-   DB.collection("workouts").doc(clase)
-   .get()
-   .then( doc => {
-      let workouts = [];
-      if (doc.exists) {
-         workouts.push(doc.data());
-      } else {
-         console.log('TCL: -------------------------------------------------')
-         console.log('TCL: getWorkoutsFirebase -> No existe el documento')
-         console.log('TCL: -------------------------------------------------')
-      } 
-      return workouts;
-   })
+const getWorkoutsFirebase = async (clase) => {
+   const url = `https://firestore.googleapis.com/v1beta1/projects/${
+      FIREBASECONFIG.projectId
+   }/databases/(default)/documents/body/workouts/${clase}?key=${
+      FIREBASECONFIG.apiKey
+   }`
+   let workouts = [];
+   const response = await fetch(url);
+   const data = await response.json();
+   workouts.push(data);
+   return workouts;
+}
 
 
 // Crea una Seccion de clases aleatoria de movements, warmups, worckouts
@@ -91,3 +84,20 @@ function* getSeccionBase(values) {
 export default function* funcionesBodySaga() {
    yield takeEvery(TYPES.GET_SECCION_BASE, getSeccionBase);
 }
+
+
+
+// DB.collection("body").doc('movements').collection('1')
+   // .get()
+   // .then( doc => {
+      // let movements = [];
+      // if (doc.exists) {
+      //    movements.push(doc.data());
+      // } else {
+      //    console.log('CLASE => ', clase)
+      //    console.log('TCL: -------------------------------------------------')
+      //    console.log('TCL: getMovementsFirebase -> No existe el documento')
+      //    console.log('TCL: -------------------------------------------------')
+      // } 
+      // return movements;
+   //})

@@ -27,6 +27,7 @@ const  BasicsDetailScreen = props => {
 	const [ counterVisible, setCounterVisible ] = useState(false);
 	const [ tiempoClase, setTiempoClase ] = useState(0)
 	const [ contVideo, setContVideo ] = useState(0)
+	
 
 	// REDUX
 	const { claseCombinada, fases }= useSelector(state => state.basic)
@@ -59,169 +60,164 @@ const  BasicsDetailScreen = props => {
 	const crearTiempoClase = tiempoClase => {
 		setTiempoClase(tiempoClase);
 		setVisibleModalTiempo(false)
-		setCounterVisible(true);
+		// setCounterVisible(true);
 	};
 
 	// Crea la vista del current video 
 	const mostrarVideo = e => {
 		return (
-			<>
-				<Video style={stylesPage.video_avtive}
-					// usePoster={true}
-					// posterSource={{ uri: e.img }}
-					//shouldPlay
-					source={{
-						uri: e.video.stringValue
-					}}
-					key={Math.random()}
-					rate={1.0}
-					volume={0}
-					isMuted={true}
-					resizeMode="cover"
-					// resizeMode="contain"
-					isLooping
-					useNativeControls={true}
-				/>
-			</>
+			<Video style={stylesPage.video_avtive}
+				// usePoster={true}
+				// posterSource={{ uri: e.img }}
+				shouldPlay
+				source={{
+					uri: e.video.stringValue
+				}}
+				key={Math.random()}
+				rate={1.0}
+				volume={0}
+				isMuted={true}
+				resizeMode="cover"
+				isLooping
+				useNativeControls={true}
+			/>
 		);
 	};
+
+	// Crea lista de reproduccion de videos
+	const mostrarListaVideos = videos => {
+		return (
+			<List style={stylesPage.list_videos}>
+				{videos.map((video, i) => (
+				<ListItem thumbnail key={i} onPress = {() => nextVideo(i)}>
+					<Left>
+						{video.img && video.img.stringValue !== '' ? (
+							<Thumbnail
+								square
+								source={{ uri: video.img.stringValue }}
+							/>
+						) : (
+							<Thumbnail
+								square
+								source={require("../assets/images/1Basics.png")}
+							/>
+						)}
+					</Left>
+					<Body>
+						{/* <Text>Titulo del video</Text> */}
+						<Text>{video.title ? video.title.stringValue : 'Titulo del video'}</Text>
+						
+						<Text note numberOfLines={1}>
+							{/* // TODO: Crear funcion para calcular los tiempos que se deben visualizar cada video. */}
+							{Strings.ST22} {tiempoClase * 0.3} mts
+						</Text>
+					</Body>
+					<Right>
+						<Button
+							transparent
+							onPress={() => nextVideo(i)}
+						>
+							<Ionicons
+								name="ios-play-circle"
+								size={26}
+								color={"#240066"}
+							/>
+						</Button>
+					</Right>
+				</ListItem>
+			))}
+			</List>
+		)
+	}
+
+	// Crea barra con el contador y botones ( <    30:59    > )
+	const mostrarContadorActionBar = () => {
+		return (
+			<View style={stylesPage.action_bar}>
+				<Button small transparent
+					onPress={() => changeVideo(parseInt(contVideo) - 1, 'menos')}
+				>
+					<Ionicons
+						name="ios-arrow-back"
+						size={20}
+						color={"#240066"}
+					/>
+				</Button>
+
+				{/* CONTADOR */}
+				{/* =========================================== */}
+				<CounterClass 
+					start = {counterVisible} 
+					duracao = {parseInt(tiempoClase)}
+				/>
+				{/* ===========================================  */}
+
+				<Button small transparent
+					onPress={() => changeVideo(parseInt(contVideo) + 1, 'mas')}
+				>
+					<Ionicons
+						name="ios-arrow-forward"
+						size={20}
+						color={"#240066"}
+					/>
+				</Button>
+			</View>
+		)
+	}
 
 	// Se utiliza para next y back del listado de videos
 	const changeVideo = (i, pasarVideo) => {
 		if(contVideo === 0 && pasarVideo === 'menos' )return;
 		if(contVideo == videos.length - 1 && pasarVideo === 'mas') return;
-
 		setContVideo(i)
 	};
-
 	const nextVideo = i => {
 		setContVideo(i)
 	}
 
+	// ================== RETURN - RENDER ================== 
 	if (visibleModalTiempo) {
-		// Muestra modal donde optenemos el tiempo de clase
+		// Muestra modal donde obtenemos el tiempo de clase
 		return <ModalTiempoClase 
 			crearTiempoClase={crearTiempoClase}
 			navigation={navigation}
 		/>;
-
-	} else if (tiempoClase > 0 && videos.length > 0){
+	} else {
 		return (
 			<>
 				{/* Header Page */}
 				<DetailScreenHeader 
 					navigation={navigation}
-					setStateConunter= {setCounterVisible}
-					counterVisible={counterVisible}
 					title={title}
-					page={'BASICS'}
 				/>
-
-				{/* Video */}
-				<View>
-					<>
-						{videos.length !== 0
-							? mostrarVideo(videos[contVideo])
-							: null}
-					</>
-				</View>
-
-				{/* Barra Contados y botones <  > */}
 				{
-				<View style={stylesPage.action_bar}>
-					<Button small transparent
-						onPress={() => changeVideo(parseInt(contVideo) - 1, 'menos')}
-					>
-						<Ionicons
-							name="ios-arrow-back"
-							size={20}
-							color={"#240066"}
-						/>
-					</Button>
+				tiempoClase > 0 && videos.length > 0 ?
+				<>
+					{/* ================== CURRENT VIDEO ================== */}
+					<View>
+						
+						{mostrarVideo(videos[contVideo])}
 
-					{/* CONTADOR */}
-					{/* =========================================== */ }
+						{/* <CounterClass
+							start = {counterVisible} 
+							duracao = {parseInt(tiempoClase)}
+						/> */}
+					</View>
 
-					<CounterClass 
-						start = {counterVisible} 
-						duracao = {parseInt(tiempoClase)}
-					/>
+					{/* ================== BARRA <  30:59  > ================== */}
+					{mostrarContadorActionBar()}
 
-					{/* =========================================== */ }
-
-
-					<Button small transparent
-						onPress={() => changeVideo(parseInt(contVideo) + 1, 'mas')}
-					>
-						<Ionicons
-							name="ios-arrow-forward"
-							size={20}
-							color={"#240066"}
-						/>
-					</Button>
-				</View>	
-				}
-
-				{/* Lista de siguientes videos */}
-				<Content> 
-					<List style={stylesPage.list_videos}>
-						{videos.length !== 0 ?
-							videos.map((video, i) => (
-							<ListItem thumbnail key={i} onPress = {() => nextVideo(i)}>
-								<Left>
-									{video.img && video.img !== '' ? (
-										<Thumbnail
-											square
-											source={{ uri: video.img.stringValue }}
-										/>
-									) : (
-										<Thumbnail
-											square
-											source={require("../assets/images/1Basics.png")}
-										/>
-									)}
-								</Left>
-								<Body>
-									<Text>{video.title.stringValue}</Text>
-									
-									<Text note numberOfLines={1}>
-										{/* // TODO: Crear funcion para calcular los tiempos que se deben visualizar cada video. */}
-										{Strings.ST22} {tiempoClase * 0.3} mts
-									</Text>
-								</Body>
-								<Right>
-									<Button
-										transparent
-										onPress={() => nextVideo(i)}
-									>
-										<Ionicons
-											name="ios-play-circle"
-											size={26}
-											color={"#240066"}
-										/>
-									</Button>
-								</Right>
-							</ListItem>
-						)): <></>}
-					</List>
+					{/* ==================== LISTADO VIDEOS ================= */}
+					<Content> 
+						{mostrarListaVideos(videos)}
+					</Content>
+				</>
+				:
+				<Content style={stylesPage.snipperContent}>
+					<Spinner color={Colors.tintColor}/>
+					<Text style={stylesPage.snipperText}> Preparando la clases...</Text>
 				</Content>
-			</>
-		);
-	} else {
-		return (
-			<>
-			<DetailScreenHeader 
-					navigation={navigation}
-					setStateConunter= {setCounterVisible}
-					counterVisible={counterVisible}
-					title={title}
-					page={'BASICS'}
-				/>
-				
-			<Content style={stylesPage.snipperContent}>
-				<Spinner color={Colors.tintColor}/>
-				<Text style={stylesPage.snipperText}> Preparando la clases...</Text>
-			</Content>
+				}
 			</>
 		)
 	}
@@ -252,9 +248,12 @@ const stylesPage = StyleSheet.create({
 		paddingVertical: 10,
 		backgroundColor: Colors.secondaryColor,
 		color: Colors.tintColor,
+
 	},
 	list_videos: {
 		marginTop: 10
 	}
 
 });
+
+

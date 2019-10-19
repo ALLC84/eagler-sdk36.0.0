@@ -31,7 +31,6 @@ const DrillDetailScreen = props => {
 			
 			{/* Content */}
 			<Container>
-				<Content>
 					{/* // TODO: Agregar boton velocidad video (rate) */}
 					<View>
 						<Video style={stylesPage.video_avtive}
@@ -44,9 +43,9 @@ const DrillDetailScreen = props => {
 							resizeMode="cover"
 							shouldPlay
 							isLooping
+							useNativeControls={true}
 						/>
 					</View>
-				</Content>
 				<Content padder>
 					<View >
 						<Badge
@@ -82,7 +81,7 @@ const stylesPage = StyleSheet.create({
 	// Video 
 	video_avtive: {
 		width: layout.window.width,
-		height: layout.window.height / 2
+		height: layout.window.height / 3
 	},
 	title_view: {
 		fontSize: 18,

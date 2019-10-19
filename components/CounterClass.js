@@ -1,6 +1,6 @@
 /* =========== LIBRERIAS ============= */
 import React, { Component } from "react"; // React
-import { StyleSheet } from "react-native"; // React Native
+import { StyleSheet, View } from "react-native"; // React Native
 import { Button, Text } from "native-base"; // Native Base
 /* ========== PROPIOS ================ */
 // import Text from './CustomText'; // Custom Text Styles and Font
@@ -12,20 +12,22 @@ class CounterClass extends Component {
 
   constructor (props) {
     super(props);
+
     this.state = {
-      duracao: null,
       liveTimeMin: -1,
       liveTimeSec: 0,
       color: colorArray[0],
       colorInt:0,
-      timeFormat:'00:00',
+      // timeFormat:'00:00',
+      timeFormat:`${this.props.duracao} : 00`,
       flagTimer: false,
+
       duracao: this.props.duracao,
       isPlay: this.props.start,
     }
 
     // if(this.props.start){
-    //   this.startClock()
+    //   this.startClock(this.state.duracao, 59)
     // }
   }
 
@@ -77,17 +79,16 @@ class CounterClass extends Component {
           liveTimeSec: this.state.liveTimeSec -1
         })
       }
-     
-      let timeFormat = timeFormater(this.state.liveTimeMin) + ':' +timeFormater
-      (this.state.liveTimeSec)
+
+      let timeFormat = timeFormater(this.state.liveTimeMin) + ':' + timeFormater(this.state.liveTimeSec)
 
       this.setState({
         timeFormat,
         flagTimer: true
       })
 
-      if(!this.state.isPlay || !this.props.start) {
-        window.clearInterval(this.getTime)
+      if(!this.state.isPlay) {
+        clearInterval(this.getTime)
       }
     }, 1000)
   }
@@ -99,29 +100,31 @@ class CounterClass extends Component {
     return time
   }
 
+  handlePlay() {
+    this.setState({
+      isPlay: !this.state.isPlay
+    },() => {
+      if(this.state.isPlay){
+        this.startClock(this.state.liveTimeMin, this.state.liveTimeSec)
+      }
+    })
+  }
+
   // Hacer que al dar play al contador inicie el video
   render() {
     return (
       <Button style={stylesPage.button_counter}
         small
         transparent
-        onPress={() => {
-          this.setState({
-            isPlay: !this.state.isPlay
-          },() => {
-            if(this.state.isPlay){
-              this.startClock(this.state.liveTimeMin, this.state.liveTimeSec)
-            }
-          })
-        }}
+        onPress={() => this.handlePlay()}
       >
         {/* // TODO: cambiar tamaño */}
         <Text style={stylesPage.text_button_counter}> 
           {this.state.timeFormat}
         </Text>
       </Button>
-    );
-  }
+    )
+  };
 }
 
 export default CounterClass;
@@ -130,7 +133,11 @@ export default CounterClass;
 const stylesPage = StyleSheet.create({
   button_counter: {
     width: 80,
-    // backgroundColor: "#240066",
+    // backgroundColor: "#ccc",
+    // position: 'absolute',
+    // top: 10,
+    // right: 10,
+    // zIndex: 10000
   },
   text_button_counter: {
     color: '#240066'

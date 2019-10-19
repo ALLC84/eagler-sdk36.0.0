@@ -67,9 +67,9 @@ const BodyDetailScreen = props => {
 				break;
 			default:
 				getClaseBase(
-					1,
-					1,
-					1
+					'1',
+					'1',
+					'1'
 				)
 				// getClaseBase(
 				// 	sessionMovements[getRadnom("movements")],
@@ -84,29 +84,26 @@ const BodyDetailScreen = props => {
 	let videos = [];
 	(getVideos = () => {
 		claseBase.map((e, i) => {
-			for (let i in e) {
-				videos.push(e[i]);
-			}
+			videos.push(e.fields);
 		});
 	})();
-
+	
 	// Crea la vista del current video 
 	const mostrarVideo = e => {
-		//console.log(e);
 		return (
 			<>
 				<Video style={stylesPage.video_avtive}
-					usePoster={true}
-					posterSource={{ uri: e.img }}
+					// usePoster={true}
+					// posterSource={{ uri: e.img }}
 					shouldPlay
 					source={{
-						uri: e.video
+						uri: e.video.stringValue
 					}}
 					key={Math.random()}
 					rate={1.0}
 					volume={0}
 					isMuted={true}
-					resizeMode="contain"
+					resizeMode="cover"
 					isLooping
 					useNativeControls={true}
 				/>
@@ -114,74 +111,79 @@ const BodyDetailScreen = props => {
 		);
 	};
 
+	// Crea lista de reproduccion de videos
+	const mostrarListaVideos = videos => {
+		return (
+			<List style={stylesPage.list_videos}>
+			{videos.map((video, i) => (
+				<ListItem thumbnail key={i} onPress = {() => nextVideo(i)}>
+					<Left>
+						{video.img && video.img.stringValue !== '' ? (
+							<Thumbnail
+								square
+								source={{ uri: video.img.stringValue }}
+							/>
+						) : (
+							<Thumbnail
+								square
+								source={require("../assets/images/1Basics.png")}
+							/>
+						)}
+					</Left>
+					<Body>
+						<Text>{video.title ? video.title.stringValue : 'Titulo del video'}</Text>
+						<Text note numberOfLines={1}>
+							Duración: {video.duration.integerValue} mts
+						</Text>
+					</Body>
+					<Right>
+						<Button transparent onPress={() => nextVideo(i)}>
+							<Ionicons
+								name="ios-play-circle"
+								size={26}
+								color={"#240066"}
+							/>
+						</Button>
+					</Right>
+				</ListItem>
+			))}
+			</List>
+		)
+	}
+
 	const nextVideo = i => {
 		setContVideo(i)
 	};
 
 	return (
 		<>
-			{/* Header Page */}
+			{/* ==================== HEADER PAGE =================*/}
 			<DetailScreenHeader 
 				navigation={navigation}
 				title={title}
 				page={'BODY'}
 			/>
 			
-			{/* Content Page */}
+
+			{/* ==================== CONTENT PAGE =================*/}
+			{videos.length > 0 
+			?
 			<Container>
-				{/* // TODO: Agregar boton velocidad video (rate) */}
 				<View>
-					<>
-						{videos.length > 0
-							? mostrarVideo(videos[contVideo])
-							: null}
-					</>
+					{mostrarVideo(videos[contVideo])} 
 				</View>
+
 				<Content>
-					<List style={stylesPage.list_videos}>
-						{	videos.length > 0 ?
-							videos.map((video, i) => (
-								<ListItem thumbnail key={i}>
-									<Left>
-										{video.img && video.img !== '' ? (
-											<Thumbnail
-												square
-												source={{ uri: video.img }}
-											/>
-										) : (
-											<Thumbnail
-												square
-												source={require("../assets/images/1Basics.png")}
-											/>
-										)}
-									</Left>
-									<Body>
-										<Text>{video.title}</Text>
-										<Text note numberOfLines={1}>
-											Incluiremos descripción...
-										</Text>
-									</Body>
-									<Right>
-										<Button transparent onPress={() => nextVideo(i)}>
-											<Ionicons
-												name="ios-play-circle"
-												size={26}
-												color={"#240066"}
-											/>
-										</Button>
-									</Right>
-								</ListItem>
-							)): 
-							<>
-								<Spinner color={Colors.tintColor}/>
-								<Text style={stylesPage.snipperText}>
-										{Strings.ST33_1}
-								</Text>
-							</>
-						}
-					</List>
+					{mostrarListaVideos(videos)}
 				</Content>
 			</Container>
+			:
+			<>
+				<Spinner color={Colors.tintColor}/>
+				<Text style={stylesPage.snipperText}>
+						{Strings.ST33_1}
+				</Text>
+			</>}
 		</>
 	);
 }

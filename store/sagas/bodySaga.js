@@ -10,16 +10,16 @@ import {
 
 //Movements
 //=================================
-const getMovementsFirebase = async (clase) => { 
+const getMovementsFirebase = async (clase) => {
    const url = `https://firestore.googleapis.com/v1beta1/projects/${
       FIREBASECONFIG.projectId
    }/databases/(default)/documents/body/movements/${clase}?key=${
       FIREBASECONFIG.apiKey
    }`
-   let movements = []
+   let movements = [];
    const response = await fetch(url);
    const data = await response.json();
-   movements.push(data)
+   movements = data.documents;
    return movements;
 }
 
@@ -35,7 +35,7 @@ const getWarmupsFirebase = async (clase) => {
    let warmups = [];
    const response = await fetch(url);
    const data = await response.json();
-   warmups.push(data);
+   warmups = data.documents;
    return warmups;
 }
 
@@ -50,7 +50,7 @@ const getWorkoutsFirebase = async (clase) => {
    let workouts = [];
    const response = await fetch(url);
    const data = await response.json();
-   workouts.push(data);
+   workouts = data.documents;
    return workouts;
 }
 

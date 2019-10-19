@@ -2,36 +2,22 @@
 import React from "react"; // React
 import { StyleSheet } from "react-native"; // React Native
 import { Header, Left, Right, Button, Body, Title, Text, Icon } from "native-base"; // Native Base
-import { Ionicons } from '@expo/vector-icons'; // Expo
+// import { Ionicons } from '@expo/vector-icons'; // Expo
 /* ========== PROPIOS ================ */
 // import Text from './CustomText'; // Custom Text Styles and Font
 import Strings from '../constants/Strings'; // Strings
 import Colors from '../constants/Colors'; // Styles
 
 const DetailScreenHeader = props => {
-   const {title, page, setStateConunter, counterVisible, navigation} = props
+   const {title, navigation} = props
 
    return (
       <Header style={{backgroundColor: '#ffffff'}}>
          <Left>
             <Button
                transparent
-               onPress={() => {
-                  switch(page) {
-                     case 'BASICS':
-                        return (() => {
-                           setStateConunter(false);
-                           !counterVisible ? navigation.goBack() : null;
-                        })(); 
-                     default: return navigation.goBack();
-                  }
-               }}
+               onPress={() => navigation.goBack()}
             >
-               
-               {/* <Ionicons style={stylesPage.nabbar_icon}
-                  name="ios-arrow-back"
-                  size={24}
-               /> */}
                <Icon style={stylesPage.nabbar_icon} name='arrow-back' />
                <Text style={stylesPage.nabbar_btn_text}>
                   {Strings.ST17}
@@ -63,3 +49,8 @@ const stylesPage = StyleSheet.create({
    },
 
 });
+
+/* <Ionicons style={stylesPage.nabbar_icon}
+   name="ios-arrow-back"
+   size={24}
+/> */

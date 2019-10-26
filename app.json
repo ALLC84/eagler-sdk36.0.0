@@ -14,7 +14,7 @@
     "icon": "./assets/images/icon.png",
     "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -24,8 +24,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.eagler.club.eagler"
     },
-    "description": ""
+    "android": {
+      "package": "com.eagler.club.eagler"
+    },
+    "description": "Clases de Golf personalizadas, ejercicios físicos enfocados a mejorar las capacidades del golfista y mucho mas."
   }
 }

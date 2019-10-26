@@ -19,22 +19,30 @@ class CounterClass extends Component {
       color: colorArray[0],
       colorInt:0,
       // timeFormat:'00:00',
-      timeFormat:`${this.props.duracao} : 00`,
+      timeFormat: this.props.duracao ? `${this.props.duracao} : 00` : '00 : 00',
       flagTimer: false,
 
       duracao: this.props.duracao,
       isPlay: this.props.start,
-    }
 
-    // if(this.props.start){
-    //   this.startClock(this.state.duracao, 59)
-    // }
+      getTime: null
+    }
   }
 
   componentDidMount() {
     this.startClock(this.state.duracao, 59)
     // if(this.state.isPlay){
     // }
+  }
+
+  componentWillUnmount(){
+    this.clearListener() 
+  }
+
+  clearListener() {
+    if(this.state.getTime !== null) {
+      clearInterval(this.state.getTime)
+    }
   }
 
   toggleColor(){
@@ -52,6 +60,7 @@ class CounterClass extends Component {
 
   startClock(minute, secons){
     let timeFormater = this.timeFormater
+
     this.getTime =  setInterval(() => {
       
       if(this.state.liveTimeSec == 0){
@@ -84,7 +93,8 @@ class CounterClass extends Component {
 
       this.setState({
         timeFormat,
-        flagTimer: true
+        flagTimer: true,
+        getTime: this.getTime
       })
 
       if(!this.state.isPlay) {

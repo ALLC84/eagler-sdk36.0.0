@@ -1,7 +1,7 @@
 /* =========== LIBRERIAS ============= */
 import React, { useEffect, useState } from "react"; // React
-import { StyleSheet } from "react-native"; // React-native
-import { Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Spinner, Text } from "native-base"; // Native Base
+import { StyleSheet, Modal } from "react-native"; // React-native
+import { Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Spinner, Text, Fab, Icon } from "native-base"; // Native Base
 import { Video } from 'expo-av'; // Expo
 import { Ionicons } from '@expo/vector-icons';
 // import { StyleSheet, TouchableOpacity } from "react-native";
@@ -27,8 +27,8 @@ const  BasicsDetailScreen = props => {
 	const [ counterVisible, setCounterVisible ] = useState(false);
 	const [ tiempoClase, setTiempoClase ] = useState(0)
 	const [ contVideo, setContVideo ] = useState(0)
-	
-
+	const [ infoModal, setInfoModal ] = useState(false)
+	const [ activeFab, setActiveFab ] = useState(false)
 	// REDUX
 	const { claseCombinada, fases }= useSelector(state => state.basic)
 	// Dispatchs
@@ -46,8 +46,7 @@ const  BasicsDetailScreen = props => {
 					break;
 			}
 		}
-	}, [fases, visibleModalTiempo])
-
+	}, [fases])
 
 	let videos = [];
 	(getVideos = () => {
@@ -57,6 +56,7 @@ const  BasicsDetailScreen = props => {
 	})();
 	
 
+	// Crea tiempo de clase y cierra el modal
 	const crearTiempoClase = tiempoClase => {
 		setTiempoClase(tiempoClase);
 		setVisibleModalTiempo(false)
@@ -66,67 +66,49 @@ const  BasicsDetailScreen = props => {
 	// Crea la vista del current video 
 	const mostrarVideo = e => {
 		return (
-			<Video style={stylesPage.video_avtive}
-				// usePoster={true}
-				// posterSource={{ uri: e.img }}
-				shouldPlay
-				source={{
-					uri: e.video.stringValue
-				}}
-				key={Math.random()}
-				rate={1.0}
-				volume={0}
-				isMuted={true}
-				resizeMode="cover"
-				isLooping
-				useNativeControls={true}
-			/>
+			<View style={{position: 'relative'}}>
+				<Video style={stylesPage.video_avtive}
+					// usePoster={true}
+					// posterSource={{ uri: e.img }}
+					shouldPlay
+					source={{
+						uri: e.video.stringValue
+					}}
+					key={Math.random()}
+					rate={1.0}
+					volume={0}
+					isMuted={true}
+					resizeMode="cover"
+					isLooping
+					useNativeControls={true}
+				/>
+			</View>
 		);
 	};
 
-	// Crea lista de reproduccion de videos
-	const mostrarListaVideos = videos => {
-		return (
-			<List style={stylesPage.list_videos}>
-				{videos.map((video, i) => (
-				<ListItem thumbnail key={i} onPress = {() => nextVideo(i)}>
-					<Left>
-						{video.img && video.img.stringValue !== '' ? (
-							<Thumbnail
-								square
-								source={{ uri: video.img.stringValue }}
-							/>
-						) : (
-							<Thumbnail
-								square
-								source={require("../assets/images/1Basics.png")}
-							/>
-						)}
-					</Left>
-					<Body>
-						{/* <Text>Titulo del video</Text> */}
-						<Text>{video.title ? video.title.stringValue : 'Titulo del video'}</Text>
-						
-						<Text note numberOfLines={1}>
-							{/* // TODO: Crear funcion para calcular los tiempos que se deben visualizar cada video. */}
-							{Strings.ST22} {tiempoClase * 0.3} mts
-						</Text>
-					</Body>
-					<Right>
-						<Button
-							transparent
-							onPress={() => nextVideo(i)}
-						>
-							<Ionicons
-								name="ios-play-circle"
-								size={26}
-								color={"#240066"}
-							/>
-						</Button>
-					</Right>
-				</ListItem>
-			))}
-			</List>
+	// Crear modal info
+	const crearModalInfo = () => {
+		return(
+			<Modal
+				animationType="fade"
+				// transparent={true}
+				visible={infoModal}
+			>
+				<View>
+					<Button transparent 
+						style={stylesPage.modal_button_close}
+						onPress={() => {
+							setInfoModal(false)
+						}}
+					>
+						<Ionicons
+							size={40}
+							color={"red"}
+							name={"ios-close"}
+						/>
+					</Button>
+				</View>
+			</Modal>
 		)
 	}
 
@@ -165,6 +147,53 @@ const  BasicsDetailScreen = props => {
 		)
 	}
 
+	// Crea lista de reproduccion de videos
+	const mostrarListaVideos = videos => {
+		return (
+			<List style={stylesPage.list_videos}>
+				{videos.map((video, i) => (
+				<ListItem thumbnail key={i} onPress = {() => nextVideo(i)}>
+					<Left>
+						{video.img && video.img.stringValue !== '' ? (
+							<Thumbnail
+								square
+								source={{ uri: video.img.stringValue }}
+							/>
+						) : (
+							<Thumbnail
+								square
+								source={require("../assets/images/1Basics.png")}
+							/>
+						)}
+					</Left>
+					<Body>
+						{/* <Text>Titulo del video</Text> */}
+						<Text>{video.category && video.tag ? `${video.category.stringValue} | ${video.tag.stringValue}` : 'Categoria'}</Text>
+						<Text style={{fontWeight: 'bold'}}>{video.title ? video.title.stringValue : 'Titulo del video'}</Text>
+						
+						<Text note numberOfLines={1}>
+							{/* // TODO: Crear funcion para calcular los tiempos que se deben visualizar cada video. */}
+							{Strings.ST22} {tiempoClase * 0.3} S
+						</Text>
+					</Body>
+					<Right>
+						<Button
+							transparent
+							onPress={() => nextVideo(i)}
+						>
+							<Ionicons
+								name="ios-play-circle"
+								size={26}
+								color={"#240066"}
+							/>
+						</Button>
+					</Right>
+				</ListItem>
+			))}
+			</List>
+		)
+	}
+
 	// Se utiliza para next y back del listado de videos
 	const changeVideo = (i, pasarVideo) => {
 		if(contVideo === 0 && pasarVideo === 'menos' )return;
@@ -194,23 +223,29 @@ const  BasicsDetailScreen = props => {
 				tiempoClase > 0 && videos.length > 0 ?
 				<>
 					{/* ================== CURRENT VIDEO ================== */}
-					<View>
-						
-						{mostrarVideo(videos[contVideo])}
-
-						{/* <CounterClass
-							start = {counterVisible} 
-							duracao = {parseInt(tiempoClase)}
-						/> */}
-					</View>
-
+					{mostrarVideo(videos[contVideo])}
+					
 					{/* ================== BARRA <  30:59  > ================== */}
 					{mostrarContadorActionBar()}
 
 					{/* ==================== LISTADO VIDEOS ================= */}
 					<Content> 
 						{mostrarListaVideos(videos)}
+						{/* {crearModalInfo()} */}
 					</Content>
+
+
+					{/* <Fab 
+						active={activeFab}
+						direction="up"
+						containerStyle={{}}
+						style={{ backgroundColor: '#240066' }}
+						position="bottomRight"
+						onPress={() => setInfoModal(!infoModal)}
+						// onPress={() => setActiveFab(!activeFab)}
+					>
+						<Icon name="ios-information-circle" />
+					</Fab> */}
 				</>
 				:
 				<Content style={stylesPage.snipperContent}>
@@ -252,7 +287,13 @@ const stylesPage = StyleSheet.create({
 	},
 	list_videos: {
 		marginTop: 10
-	}
+	},
+	modal_button_close: {
+		position: 'absolute',
+		top: 50,
+		right: -1,
+		marginRight: 30
+	},
 
 });
 

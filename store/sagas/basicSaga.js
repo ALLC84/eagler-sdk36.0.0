@@ -87,12 +87,13 @@ const getClases = async (fases) => {
       fases.fasePutt
    ];
 
-   for (i = 0; i <= abilidades.length - 1; i++) {
+   for (i = 0; i <= abilidades.length; i++) {
       const data = await getClase(
          abilidades[i],
          faseAbilidades[i]
       )
       claseCombinada.push(data);
+      if(i === 5) break
    }
 
    return claseCombinada

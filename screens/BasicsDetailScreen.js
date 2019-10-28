@@ -1,5 +1,5 @@
 /* =========== LIBRERIAS ============= */
-import React, { useEffect, useState } from "react"; // React
+import React, { useEffect, useState, useRef } from "react"; // React
 import { StyleSheet, Modal } from "react-native"; // React-native
 import { Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Spinner, Text, Fab, Icon } from "native-base"; // Native Base
 import { Video } from 'expo-av'; // Expo
@@ -26,14 +26,17 @@ const  BasicsDetailScreen = props => {
 	const [ visibleModalTiempo, setVisibleModalTiempo ] = useState(true);
 	const [ counterVisible, setCounterVisible ] = useState(false);
 	const [ tiempoClase, setTiempoClase ] = useState(0)
+	const [ tiempoEjercicio, setTiempoEjercicio ] = useState(0)
 	const [ contVideo, setContVideo ] = useState(0)
 	const [ infoModal, setInfoModal ] = useState(false)
-	const [ activeFab, setActiveFab ] = useState(false)
+	const [ unoMas, setUnoMas ] = useState(false)
 	// REDUX
 	const { claseCombinada, fases }= useSelector(state => state.basic)
 	// Dispatchs
 	const dispatch = useDispatch()
 	const getClaseCombinada = (fases) => dispatch(actionGetClaseCombinada(fases))
+	//CHILD REF
+	const contadorRef = useRef();
 
 	useEffect(() => {
 		if(fases && !visibleModalTiempo) {
@@ -48,6 +51,12 @@ const  BasicsDetailScreen = props => {
 		}
 	}, [fases])
 
+	useEffect(() => {
+		if(unoMas) {
+			changeVideo( (contVideo + 1) , 'mas')
+		}
+	}, [unoMas])
+
 	let videos = [];
 	(getVideos = () => {
 		claseCombinada.map((e, i) => {
@@ -59,9 +68,23 @@ const  BasicsDetailScreen = props => {
 	// Crea tiempo de clase y cierra el modal
 	const crearTiempoClase = tiempoClase => {
 		setTiempoClase(tiempoClase);
-		setVisibleModalTiempo(false)
+		setVisibleModalTiempo(false);
+		setTiempoEjercicio(calculaTiempoEjercicios(tiempoClase, 0));
 		// setCounterVisible(true);
 	};
+
+	const calculaTiempoEjercicios = (tiempo, i) => {
+		switch (i) {
+			case 0: return Math.floor(parseInt(tiempo * .15));
+			case 1: return Math.floor(parseInt(tiempo * .15));
+			case 2: return Math.floor(parseInt(tiempo * .10));
+			case 3: return Math.floor(parseInt(tiempo * .10));
+			case 4: return Math.floor(parseInt(tiempo * .25));
+			case 5: return Math.floor(parseInt(tiempo * .25));
+			default:
+				break;
+		}
+	}
 
 	// Crea la vista del current video 
 	const mostrarVideo = e => {
@@ -128,10 +151,13 @@ const  BasicsDetailScreen = props => {
 
 				{/* CONTADOR */}
 				{/* =========================================== */}
-				<CounterClass 
+				
+				<CounterClass ref={contadorRef}
 					start = {counterVisible} 
-					duracao = {parseInt(tiempoClase)}
+					duracao = {parseInt(tiempoEjercicio)}
+					setUnoMas= {setUnoMas}
 				/>
+				
 				{/* ===========================================  */}
 
 				<Button small transparent
@@ -146,6 +172,7 @@ const  BasicsDetailScreen = props => {
 			</View>
 		)
 	}
+
 
 	// Crea lista de reproduccion de videos
 	const mostrarListaVideos = videos => {
@@ -173,7 +200,7 @@ const  BasicsDetailScreen = props => {
 						
 						<Text note numberOfLines={1}>
 							{/* // TODO: Crear funcion para calcular los tiempos que se deben visualizar cada video. */}
-							{Strings.ST22} {tiempoClase * 0.3} S
+							{Strings.ST22} {calculaTiempoEjercicios(tiempoClase, i)} minutos
 						</Text>
 					</Body>
 					<Right>
@@ -198,10 +225,19 @@ const  BasicsDetailScreen = props => {
 	const changeVideo = (i, pasarVideo) => {
 		if(contVideo === 0 && pasarVideo === 'menos' )return;
 		if(contVideo == videos.length - 1 && pasarVideo === 'mas') return;
+		if(unoMas){
+			setUnoMas(false)
+		}
 		setContVideo(i)
+		contadorRef.current.nextVideo(calculaTiempoEjercicios(tiempoClase,i))
 	};
-	const nextVideo = i => {
-		setContVideo(i)
+
+	const nextVideo = async  i => {
+		if(contVideo !== i) {
+			await setContVideo(i)
+			await setTiempoEjercicio(calculaTiempoEjercicios(tiempoClase,i))
+			contadorRef.current.nextVideo(calculaTiempoEjercicios(tiempoClase,i))
+		}
 	}
 
 	// ================== RETURN - RENDER ================== 

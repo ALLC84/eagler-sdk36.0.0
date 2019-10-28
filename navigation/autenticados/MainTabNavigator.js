@@ -84,6 +84,7 @@ BodyStack.navigationOptions = ({ navigation }) => {
 			<Image style={stylesPage.tab_icons}
 				source={
 					focused
+					// ? require("../../assets/images/Eagler_Icono_Body.png")
 						? require("../../assets/images/1BodyAz.png")
 						: require("../../assets/images/1Body.png")
 				}

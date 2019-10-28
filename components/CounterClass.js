@@ -3,7 +3,6 @@ import React, { Component } from "react"; // React
 import { StyleSheet, View } from "react-native"; // React Native
 import { Button, Text } from "native-base"; // Native Base
 /* ========== PROPIOS ================ */
-// import Text from './CustomText'; // Custom Text Styles and Font
 import Colors from '../constants/Colors';
 
 const colorArray = ['#FFF', 'red'];
@@ -12,20 +11,20 @@ class CounterClass extends Component {
 
   constructor (props) {
     super(props);
+    this.setUnoMas = this.props.setUnoMas;
 
     this.state = {
       liveTimeMin: -1,
       liveTimeSec: 0,
       color: colorArray[0],
       colorInt:0,
-      // timeFormat:'00:00',
-      timeFormat: this.props.duracao ? `${this.props.duracao} : 00` : '00 : 00',
+      timeFormat:'00:00',
       flagTimer: false,
-
+  
       duracao: this.props.duracao,
       isPlay: this.props.start,
-
-      getTime: null
+  
+      getTime: null,
     }
   }
 
@@ -39,25 +38,6 @@ class CounterClass extends Component {
     this.clearListener() 
   }
 
-  clearListener() {
-    if(this.state.getTime !== null) {
-      clearInterval(this.state.getTime)
-    }
-  }
-
-  toggleColor(){
-    this.getTime =  setInterval(() => {
-      // console.log("toggleColor =");
-      let newIndice = this.state.colorInt + 1;
-      let indice = newIndice % 2
-      // console.log('indice color = '+ indice);
-      this.setState({
-        color: colorArray[indice],
-        colorInt: newIndice
-      })
-    }, 1000)
-  }
-
   startClock(minute, secons){
     let timeFormater = this.timeFormater
 
@@ -66,12 +46,11 @@ class CounterClass extends Component {
       if(this.state.liveTimeSec == 0){
         let min = 0;
         if(this.state.liveTimeMin == -1){
-          min = this.state.duracao - 1
-
+          min = parseInt(minute) - 1
         }else{
           if(this.state.liveTimeMin == 0){
-            
             clearInterval(this.getTime);
+            this.setUnoMas(true)
             //this.toggleColor();
             return           
           }
@@ -120,6 +99,36 @@ class CounterClass extends Component {
     })
   }
 
+  async nextVideo(minute) {
+    await this.clearListener()
+    this.setState({
+      liveTimeMin: -1,
+      liveTimeSec: 0,
+      isPlay: false
+    }, () => {
+      this.startClock(minute, 59)
+    })
+  }
+
+  clearListener() {
+    if(this.state.getTime !== null) {
+      clearInterval(this.state.getTime)
+    }
+  }
+
+  toggleColor(){
+    this.getTime =  setInterval(() => {
+      // console.log("toggleColor =");
+      let newIndice = this.state.colorInt + 1;
+      let indice = newIndice % 2
+      // console.log('indice color = '+ indice);
+      this.setState({
+        color: colorArray[indice],
+        colorInt: newIndice
+      })
+    }, 1000)
+  }
+
   // Hacer que al dar play al contador inicie el video
   render() {
     return (
@@ -143,14 +152,8 @@ export default CounterClass;
 const stylesPage = StyleSheet.create({
   button_counter: {
     width: 80,
-    // backgroundColor: "#ccc",
-    // position: 'absolute',
-    // top: 10,
-    // right: 10,
-    // zIndex: 10000
   },
   text_button_counter: {
     color: '#240066'
   }
-
 });

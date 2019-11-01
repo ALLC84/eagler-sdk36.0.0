@@ -37,7 +37,7 @@ export default class App extends React.Component {
 						{Platform.OS === "ios" && <StatusBar barStyle="default"/>}
 
 						<Provider store={Store}>
-							<RutasSelection /> 
+							<RutasSelection />
 						</Provider>
 
 					</View>

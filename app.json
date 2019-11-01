@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Eagler",
-    "slug": "eagler-app",
+    "slug": "expo.io/@allc84/eagler",
     "privacy": "public",
     "sdkVersion": "34.0.0",
     "platforms": [
@@ -25,11 +25,11 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.eagler.club.eagler"
+      "bundleIdentifier": "com.alejandrollorente.eagler"
     },
     "android": {
-      "package": "com.eagler.club.eagler"
+      "package": "com.alejandrollorente.eagler"
     },
-    "description": "Clases de Golf personalizadas, ejercicios físicos enfocados a mejorar las capacidades del golfista y mucho mas."
+    "description": "Tus entrenadores de Golf. Mejora tu swing con entrenamientos personalizados. Entrena tu golf como un jugador del Tour con ejercicios técnicos y físicos en el campo y en casa. Además, encontrarás consejos que mejorará tu psicología y nutrición deportiva."
   }
 }

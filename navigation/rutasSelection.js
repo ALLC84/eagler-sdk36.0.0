@@ -28,7 +28,7 @@ const RutasSelection = props => {
 
    return (
       user 
-         ? <AppNavigator openDrawer={props.openDrawer}/> 
+         ? <AppNavigator openDrawer={props.openDrawer}/>
          : <NoAutenticadas />
    )
 }

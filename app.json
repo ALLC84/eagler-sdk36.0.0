@@ -1,9 +1,8 @@
 {
   "expo": {
     "name": "Eagler",
-    "slug": "expo.io/@allc84/eagler",
     "privacy": "public",
-    "sdkVersion": "34.0.0",
+    "sdkVersion": "35.0.0",
     "platforms": [
       "ios",
       "android",

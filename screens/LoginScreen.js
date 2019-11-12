@@ -17,7 +17,6 @@ const SingIn = props => {
 	const { navigation } = props;
 	// REDUX
 	const {error} = useSelector(state => state.session)
-	const {success} = useSelector(state => state.session)
 	// Dispatchs
 	const dispatch = useDispatch();
 	const loginUsuario = values => dispatch(actionLoginUsuario(values));
@@ -40,11 +39,7 @@ const SingIn = props => {
 		if(error !== null) {
 			mostrarToast(error, 'danger')
 		}
-
-		if(success !== null) {
-			mostrarToast(success, 'success')
-		}
-	})
+	},[error])
 
 
 	return (

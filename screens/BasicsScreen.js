@@ -1,6 +1,6 @@
 /* =========== LIBRERIAS ============= */
 import React from "react"; // React
-import { StyleSheet  } from "react-native"; // React native
+import { StyleSheet } from "react-native"; // React native
 import { Root, Drawer } from "native-base"; // Native Base
 /* ========== PROPIOS ================ */
 import MainHeader from "../components/MainHeader"; // Main Header
@@ -34,7 +34,7 @@ const BasicsScreen = props => {
 					/>
 				}
 			>
-			<MainHeader openDrawer={openDrawer} />
+			<MainHeader openDrawer={openDrawer}/>
 
 			<BasicComponent navigation={props}/>
 

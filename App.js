@@ -97,6 +97,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 		backgroundColor: "#fff"
 	}
 });

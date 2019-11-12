@@ -41,9 +41,9 @@ const validate = (values) => {
 
    // Tiempo
    if(!values.tiempo){
-      error.peso = 'requerido'
-   } else if(values.tiempo < 50 || values.tiempo > 150) {
-      error.tiempo = 'El tiempo debe ser entre 50 y 180'
+      error.tiempo = 'requerido'
+   } else if(values.tiempo < 30 || values.tiempo > 120) {
+      error.tiempo = 'El tiempo debe ser entre 30 y 120'
    }else if(!/^\D*\d*$/.test(values.tiempo)) {
       error.tiempo = 'Intruduce un número sin decimales'
    }

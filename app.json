@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Eagler",
+    "slug": "eagler-app",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
@@ -24,10 +25,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.alejandrollorente.eagler"
+      "bundleIdentifier": "com.eagler.eagler"
     },
     "android": {
-      "package": "com.alejandrollorente.eagler"
+      "package": "com.eagler.eagler"
     },
     "description": "Tus entrenadores de Golf. Mejora tu swing con entrenamientos personalizados. Entrena tu golf como un jugador del Tour con ejercicios técnicos y físicos en el campo y en casa. Además, encontrarás consejos que mejorará tu psicología y nutrición deportiva."
   }

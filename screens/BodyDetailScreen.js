@@ -1,23 +1,29 @@
 /* =========== LIBRERIAS ============= */
-import React, {useState, useEffect} from "react"; // React
+import React, {useState, useEffect, useRef} from "react"; // React
 import { StyleSheet } from "react-native"; // React Native
 import { Container, Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Spinner, Text } from "native-base"; // Native Base
 import { Video } from 'expo-av'; // Expo
 import { Ionicons } from '@expo/vector-icons';
 /* ========== REDUX ================== */
 import { useDispatch, useSelector  } from 'react-redux' // React-Redux
-import { actionGetSeccionBase } from '../store/actions/bodyAction'; // Actions
+import { 
+	actionGetSeccionBase,
+	actionGuardarWarmupsStore,
+	actionGuardarWorkoutsStore,
+	actionGuardarMovementsStore
+} from '../store/actions/bodyAction'; // Actions
 /* ========== PROPIOS ================ */
 import Strings from '../constants/Strings'; // Strings
 // import Text from '../components/CustomText';
 import DetailScreenHeader from '../components/DetailScreenHeader'; // Header
 import layout from "../constants/Layout"; // Styles
 import Colors from '../constants/Colors' // Styles
+import CounterBody from '../components/CounterBody'; // Contador tiempo ejercicios
 
 // Una referencia de las secciones de clase que hay en la base de datos
-const sessionMovements = ["session1", "session2"];
-const sessionWorkouts = ["session1"];
-const sessionWarmups = ["session1", "session2"];
+const sessionWarmups = [1, 2, 3, 4];
+const sessionWorkouts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const sessionMovements = [1, 2, 3, 4];
 
 //========== RANDOM
 const getRadnom = ref => {
@@ -43,27 +49,29 @@ const BodyDetailScreen = props => {
 	const { navigation } = props;
 	// PARAMS
 	const title = navigation.getParam("title", "title");
-	// STATE
-	const [contVideo, setContVideo] = useState(0);
 	// REDUX
-	const { claseBase }= useSelector(state => state.body)
+	const { warmups, workouts, movements }= useSelector(state => state.body)
 	// Dispatchs
 	const dispatch = useDispatch()
 	const getClaseBase = (movements, workouts, warmups) => dispatch(actionGetSeccionBase(movements, workouts, warmups))
+	const clearWarmups = () => dispatch(actionGuardarWarmupsStore([]))
+	const clearWorkouts = () => dispatch(actionGuardarWorkoutsStore([]))
+	const clearMovements = () => dispatch(actionGuardarMovementsStore([]))
+	// STATE
+	const [currentSection, setCurrentSection] = useState([]);
+	const [currentVideo, setCurrentVideo] = useState('')
+	const [contVideo, setContVideo] = useState(0);
+	//CHILD REF
+	const contadorRef = useRef();
 	
 	useEffect(() => {
 		switch (title) {
 			case 'All':
 				getClaseBase(
-					'1',
-					'1',
-					'1'
+					sessionMovements[getRadnom("movements")],
+					sessionWorkouts[getRadnom("workouts")],
+					sessionWarmups[getRadnom("warmups")]
 				)
-				// getClaseBase(
-				// 	sessionMovements[getRadnom("movements")],
-				// 	sessionWorkouts[getRadnom("workouts")],
-				// 	sessionWarmups[getRadnom("warmups")]
-				// )
 				break;
 			default:
 				getClaseBase(
@@ -71,33 +79,45 @@ const BodyDetailScreen = props => {
 					'1',
 					'1'
 				)
-				// getClaseBase(
-				// 	sessionMovements[getRadnom("movements")],
-				// 	sessionWorkouts[getRadnom("workouts")],
-				// 	sessionWarmups[getRadnom("warmups")]
-				// )
 				break;
+		}
+
+		return () => {
+			clearWarmups();
+			clearWorkouts();
+			clearMovements();
 		}
 	}, [])
 
-	
-	let videos = [];
-	(getVideos = () => {
-		claseBase.map((e, i) => {
-			videos.push(e.fields);
-		});
-	})();
-	
+	useEffect(() => {
+		if (warmups.length != 0){
+			setCurrentSection(warmups)
+			setCurrentVideo(warmups[0].fields.video.stringValue)
+		}
+	}, [warmups])
+
+	// useEffect(() => {
+
+	// 	return () => {
+	// 		clearWarmups();
+	// 		clearWorkouts();
+	// 		clearMovements();
+	// 	}
+
+	// })
+
+	//console.log('WA ===> ', warmups, 'WO ===> ', workouts, 'MO ===> ', movements)
+
 	// Crea la vista del current video 
-	const mostrarVideo = e => {
+	const mostrarVideo = (section, i) => {
 		return (
 			<>
 				<Video style={stylesPage.video_avtive}
 					// usePoster={true}
-					// posterSource={{ uri: e.img }}
+					// posterSource={{ uri: section[i].fields.img.stringValue }}
 					shouldPlay
 					source={{
-						uri: e.video.stringValue
+						uri: section.length != 0 ? section[i].fields.video.stringValue : ''
 					}}
 					key={Math.random()}
 					rate={1.0}
@@ -112,46 +132,32 @@ const BodyDetailScreen = props => {
 	};
 
 	// Crea lista de reproduccion de videos
-	const mostrarListaVideos = videos => {
+	const mostrarListaVideos = (section, videos) => {
 		return (
-			<List style={stylesPage.list_videos}>
+			<List>
+				<ListItem itemDivider first style={stylesPage.headerSection}>
+					<Text>{section}</Text>
+            </ListItem>
 			{videos.map((video, i) => (
-				<ListItem thumbnail key={i} onPress = {() => nextVideo(i)}>
-					<Left>
-						{video.img && video.img.stringValue !== '' ? (
-							<Thumbnail
-								square
-								source={{ uri: video.img.stringValue }}
-							/>
-						) : (
-							<Thumbnail
-								square
-								source={require("../assets/images/1Basics.png")}
-							/>
-						)}
-					</Left>
-					<Body>
-						<Text>{video.title ? video.title.stringValue : 'Titulo del video'}</Text>
-						<Text note numberOfLines={1}>
-							Duración: {video.duration.integerValue} mts
-						</Text>
-					</Body>
-					<Right>
-						<Button transparent onPress={() => nextVideo(i)}>
-							<Ionicons
-								name="ios-play-circle"
-								size={26}
-								color={"#240066"}
-							/>
-						</Button>
-					</Right>
-				</ListItem>
+				<CounterBody  ref={contadorRef}
+					currentVideo = {currentVideo}
+					videos = {videos}
+					video = {video}
+					index = {i}
+					key= {i}
+					start = {false} 
+					duracao = {1}
+					secons = {video.fields.duration.integerValue ? parseInt(video.fields.duration.integerValue) : parseInt(video.fields.duration.stringValue)}
+					nextVideo = {nextVideo}
+				/>
 			))}
 			</List>
 		)
 	}
 
-	const nextVideo = i => {
+	const nextVideo = async (section, i) => {
+		await setCurrentSection(section)
+		await setCurrentVideo(section.length != 0 ? section[i].fields.video.stringValue: '')
 		setContVideo(i)
 	};
 
@@ -166,15 +172,18 @@ const BodyDetailScreen = props => {
 			
 
 			{/* ==================== CONTENT PAGE =================*/}
-			{videos.length > 0 
+			{warmups.length > 0 && workouts.length > 0 && movements.length > 0
 			?
 			<Container>
 				<View>
-					{mostrarVideo(videos[contVideo])} 
+					{/* {mostrarVideo(videos[contVideo])} */}
+					{mostrarVideo( currentSection, contVideo )}
 				</View>
 
 				<Content>
-					{mostrarListaVideos(videos)}
+					{mostrarListaVideos('CALENTAMIENTO', warmups)}
+					{mostrarListaVideos('EJERCICIOS', workouts)}
+					{mostrarListaVideos('ESTIRAMIENTOS', movements)}
 				</Content>
 			</Container>
 			:
@@ -195,14 +204,17 @@ const stylesPage = StyleSheet.create({
 		textAlign: 'center', 
 		color: Colors.tintColor
 	},
-	// Video 
+	// Video Active
 	video_avtive: {
 		width: layout.window.width,
 		height: layout.window.height / 3
 	},
-	list_videos: {
-		marginTop: 10
-	}
+	// Header Section List
+	headerSection: {
+		color: Colors.tintColor,
+		backgroundColor: Colors.secondaryColor,
+		fontWeight: 'bold'
+	},
 });
 
 // (controlarVideos = e => {

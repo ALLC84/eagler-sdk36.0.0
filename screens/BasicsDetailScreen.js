@@ -178,7 +178,7 @@ const  BasicsDetailScreen = props => {
 	const mostrarListaVideos = videos => {
 		return (
 			<List style={stylesPage.list_videos}>
-				{videos.map((video, i) => (
+			{videos.map((video, i) => (
 				<ListItem thumbnail key={i} onPress = {() => nextVideo(i)}>
 					<Left>
 						{video.img && video.img.stringValue !== '' && video.img.stringValue !== 'img' ? (
@@ -198,10 +198,9 @@ const  BasicsDetailScreen = props => {
 					<Body>
 						{/* <Text>Titulo del video</Text> */}
 						<Text>{video.category && video.tag ? `${video.category.stringValue} | ${video.tag.stringValue}` : 'Categoria'}</Text>
-						<Text style={{fontWeight: 'bold'}}>{video.title ? video.title.stringValue : 'Titulo del video'}</Text>
+						<Text style={{fontWeight: video.video.stringValue == videos[contVideo].video.stringValue ? 'bold' : 'normal'}}>{video.title ? video.title.stringValue : 'Titulo del video'}</Text>
 						
 						<Text note numberOfLines={1}>
-							{/* // TODO: Crear funcion para calcular los tiempos que se deben visualizar cada video. */}
 							{Strings.ST22} {calculaTiempoEjercicios(tiempoClase, i)} minutos
 						</Text>
 					</Body>
@@ -213,7 +212,7 @@ const  BasicsDetailScreen = props => {
 							<Ionicons
 								name="ios-play-circle"
 								size={26}
-								color={"#240066"}
+								color={video.video.stringValue == videos[contVideo].video.stringValue ? "#240066" : '#ccc'}
 							/>
 						</Button>
 					</Right>

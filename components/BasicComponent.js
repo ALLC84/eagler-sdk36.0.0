@@ -1,7 +1,7 @@
 /* =========== LIBRERIAS ============= */
 import React, { useEffect, useState } from "react"; // React
 import { StyleSheet } from "react-native"; // React Native
-import { Content, Toast, Root, Spinner, Text } from "native-base"; // NativeBase
+import { Content, Toast, Root, Spinner, Text , Button} from "native-base"; // NativeBase
 import { AUTH } from "../services/firebase"; // Firebase
 /* ========== PROPIOS ================ */
 // import Text from "./CustomText"; // Custom Text Styles and Font
@@ -130,6 +130,15 @@ const BasicComponent = props => {
             img={imgs[0]}
             navigation={navigation}
           />
+
+          <Button style={stylesPage.button_form}
+            block
+            onPress={() => {
+              navigation.navigation.navigate("Suscripciones")
+            }}
+          >
+            <Text>PASATE A PREMIUM</Text>
+          </Button>
         </Content>
         }
       </Root>
@@ -143,5 +152,9 @@ const stylesPage = StyleSheet.create({
   snipperText: {
     textAlign: "center",
     color: Colors.tintColor
-  }
+  },
+  button_form: {
+    marginTop: 50,
+    backgroundColor: "#240066"
+ },
 });

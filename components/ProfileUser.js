@@ -1,5 +1,5 @@
 /* =========== LIBRERIAS ============= */
-import React, { Component } from "react"; // React
+import React from "react"; // React
 import { ScrollView, View, Image, TouchableOpacity } from "react-native"; // React Native
 import { ListItem, Left, Right, Text } from "native-base"; // Native Base
 import { Ionicons } from '@expo/vector-icons'; // Expo

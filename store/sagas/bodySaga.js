@@ -65,11 +65,11 @@ function* getSeccionBase(values) {
       const warmups = yield call(getWarmupsFirebase, values.args.warmups);
       const workouts = yield call(getWorkoutsFirebase, values.args.workouts);
       const movements = yield call(getMovementsFirebase, values.args.movements);
-      const claseBase = yield warmups.concat(workouts, movements);
+      //const claseBase = yield warmups.concat(workouts, movements);
       yield put(actionGuardarWarmupsStore(warmups))
       yield put(actionGuardarWorkoutsStore(workouts))
       yield put(actionGuardarMovementsStore(movements))
-      yield put(actionGuardarSeccionBaseStore(claseBase))
+      //yield put(actionGuardarSeccionBaseStore(claseBase))
    } catch (error) {
       console.log('TCL: -------------------------------------------')
       console.log('TCL: function*getSeccionBase -> error', error)

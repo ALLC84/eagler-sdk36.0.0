@@ -15,6 +15,7 @@ const BasicReducer = ( state = initialState, action ) => {
             ...state,
             fases: action.fases,
             fase : action.fases.fase,
+            premium: action.fases.premium,
             loading: action.fases.loading
          };
       case TYPES.GUARDAR_CLASE_COMBINADA_BASIC_STORE:

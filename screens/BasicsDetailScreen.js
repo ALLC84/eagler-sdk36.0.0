@@ -181,15 +181,17 @@ const  BasicsDetailScreen = props => {
 				{videos.map((video, i) => (
 				<ListItem thumbnail key={i} onPress = {() => nextVideo(i)}>
 					<Left>
-						{video.img && video.img.stringValue !== '' ? (
+						{video.img && video.img.stringValue !== '' && video.img.stringValue !== 'img' ? (
 							<Thumbnail
 								square
 								source={{ uri: video.img.stringValue }}
+								style={{borderRadius: 5}}
 							/>
 						) : (
 							<Thumbnail
 								square
-								source={require("../assets/images/1Basics.png")}
+								source={require("../assets/images/no_image.png")}
+								style={{borderRadius: 5}}
 							/>
 						)}
 					</Left>

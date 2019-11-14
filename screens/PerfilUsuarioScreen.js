@@ -32,7 +32,7 @@ const PerfilUsuarioScreen = props => {
 	},[])
 
 	// Muestra cada item de la lista de abilidades
-	const	mostrarPuntuacion = (avilidad, handicap, puntuacion, icon, func) => {
+	const	mostrarPuntuacion = (habilidad, handicap, puntuacion, icon, func) => {
 		
 		return (
 			<ListItem avatar>
@@ -43,7 +43,7 @@ const PerfilUsuarioScreen = props => {
 					/>
 				</Left>
 				<Body>
-					<Text style={{fontWeight: '400'}}>{avilidad}</Text>
+					<Text style={{fontWeight: '400'}}>{habilidad}</Text>
 					<Text style={{fontSize: 14}}> Estas en fase {func(parseInt(puntuacion), parseFloat(handicap))}</Text>
 				</Body>
 				<Right>

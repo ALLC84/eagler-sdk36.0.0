@@ -1,5 +1,5 @@
 /* =========== LIBRERIAS ============= */
-import React, { Component } from "react"; // React
+import React, { useState } from "react"; // React
 import { Image, TouchableOpacity, Platform, StyleSheet } from "react-native"; // React Native
 import { Card, CardItem, Left, Body, Right, Spinner, Content, Text } from "native-base"; // Native Base
 import { Ionicons } from '@expo/vector-icons'; // Expo
@@ -10,8 +10,11 @@ import cardStyles from '../constants/styles/CardStyle' // Styles
 
 const CardDrillComponent = props => {
 	const { drill } = props;
-	const { title, tag, img, video } = drill;
+	const { title, tag, img } = drill;
 	const { navigation } = props.navigation;
+
+	//State
+	const [loading, setLoading] = useState(true)
 
 	const drillDetailView = drill => {
 		navigation.navigate("DrillDetail", { drill: drill });
@@ -20,17 +23,6 @@ const CardDrillComponent = props => {
 	Platform.OS === "ios" ? Image.prefetch({ uri: img }) : null;
 	//Image.prefetch({ uri: img });
 	return (
-		!video
-		? // Snipper
-		<Card>
-			<CardItem cardBody>
-				<Content style={stylesPage.snipperContent}>
-					<Spinner color={Colors.tintColor}/>
-					<Text style={stylesPage.snipperText}> Preparando la clases...</Text>
-				</Content>
-			</CardItem>
-		</Card>
-		: // Tarjeta de las secciones 
 		<Card style={cardStyles.card_section}>
 			{/* Imagen */}
 			<CardItem style={cardStyles.card_item}
@@ -39,16 +31,25 @@ const CardDrillComponent = props => {
 			>
 				<Image style={cardStyles.card_item_img}
 					source={{ uri: img, cache: "force-cache" }}
+					onLoadEnd={() => setLoading(false)}
 				/>
+
+				{loading ? 
+					<Spinner color={Colors.tintColor}
+						style={{position: 'absolute', left: '45%'}}
+					/> 
+				: null}
 			</CardItem>
 
 			{/* Capa por encima de la imagen */}
+			{!loading ?
 			<CardItem style={cardStyles.card_image_cap}
 				button onPress={() => drillDetailView(drill)}
-			></CardItem>
+			></CardItem> : null }
 			
 			{/* Card Action and Text  */}
-			<CardItem style={cardStyles.card_item_action_and_text}>
+			
+			{!loading ? <CardItem style={cardStyles.card_item_action_and_text}>
 				<Left>
 					<Body>
 						<Text type={'semi-bold'} style={cardStyles.card_title}>
@@ -70,7 +71,7 @@ const CardDrillComponent = props => {
 						/>
 					</TouchableOpacity>
 				</Right>
-			</CardItem>
+			</CardItem>  : null}
 		</Card>
 	);
 }

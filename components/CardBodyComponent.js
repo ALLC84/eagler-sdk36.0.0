@@ -1,15 +1,19 @@
 /* =========== LIBRERIAS ============= */
-import React from "react"; // React
+import React, {useState} from "react"; // React
 import { Image, TouchableOpacity, StyleSheet } from "react-native"; // React Native
-import { Card, CardItem, Left, Body, Right, Text} from "native-base"; // Native Base
+import { Card, CardItem, Left, Body, Right, Text, Spinner} from "native-base"; // Native Base
 import { Ionicons } from '@expo/vector-icons'; // Expo
 /* ========== PROPIOS ================ */
 // import Text from './CustomText'; // Custom Text Styles and Font
 import cardStyles from '../constants/styles/CardStyle' // Styles
+import Colors from '../constants/Colors'; // Styles
 
 const CardBodyComponent = props =>{
 	const { img, title, subtitle } = props;
 	const { navigation } = props.navigation;
+
+	//State
+	const [loading, setLoading] = useState(true)
 
 	const bodyDetailView = (title) =>{
 		navigation.navigate("BodyDetail", { title: title });
@@ -24,17 +28,26 @@ const CardBodyComponent = props =>{
 				button onPress={() => bodyDetailView(title)}
 			>
 				<Image style={cardStyles.card_item_img}
-					source={img}
 					// source={{ uri: img }}
+					source={img}
+					onLoadEnd={() => setLoading(false)}
 				/>
+
+				{loading ? 
+					<Spinner color={Colors.tintColor}
+						style={{position: 'absolute', left: '45%'}}
+					/> 
+				: null}
 			</CardItem>
 
 			{/* Capa por encima de la imagen */}
+			{!loading ?
 			<CardItem style={cardStyles.card_image_cap}
 				button onPress={() => bodyDetailView(title)}
-			></CardItem>
+			></CardItem> : null }
 
 			{/* Card Action and Text  */}
+			{!loading ?
 			<CardItem style={cardStyles.card_item_action_and_text}>
 				<Left>
 					<Body>
@@ -53,7 +66,7 @@ const CardBodyComponent = props =>{
 						/>
 					</TouchableOpacity>
 				</Right>
-			</CardItem>
+			</CardItem> : null }
 		</Card>
 	);
 	

@@ -21,6 +21,7 @@ const getFaseFirebase = userId =>
    .get()
    .then(doc => {
       let fases = {
+         premium: '',
          handicap: '',
          fase: '',
          faseHierrosCortos: '',
@@ -32,6 +33,7 @@ const getFaseFirebase = userId =>
       };
       if (doc.exists) {
          const data = doc.data();
+         fases.premium           = data.premium
          fases.handicap          = data.handicap !== undefined ? data.handicap : 36.0
          fases.fase              = data.fase
          fases.faseHierrosCortos = FunctionSetPhase.getPhaseHierrosCortos(parseInt(data.tiempoHierrosCortos),parseFloat(fases.handicap))

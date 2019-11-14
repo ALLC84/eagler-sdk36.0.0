@@ -30,13 +30,13 @@ const BasicComponent = props => {
   const user = AUTH.currentUser;
   const { navigation } = props;
   // STATE
-  const [visibleModalPerfilJuego, setVisibleModalPerfilJuego] = useState(false)
+  const [visibleModalPerfilJuego, setVisibleModalPerfilJuego] = useState(false);
 	// REDUX
-  const { fase, loading }= useSelector(state => state.basic)
-
+  const { premium, fase, loading }= useSelector(state => state.basic);
 	// Dispatchs
 	const dispatch = useDispatch()
   const getFase = (userId) => dispatch(actionGetFase(userId))
+  
 
   // FUNCTIONS
   const cerrarModal = () => setVisibleModalPerfilJuego(false)
@@ -83,6 +83,7 @@ const BasicComponent = props => {
   } else {
     return (
       <Root>
+        {premium === true ?
         <Content padder>
           <CardBasicsComponent
             key={"1"}
@@ -120,6 +121,17 @@ const BasicComponent = props => {
             navigation={navigation}
           />
         </Content>
+        :
+        <Content padder>
+          <CardBasicsComponent
+            key={"1"}
+            title={'Gratis'}
+            subtitle={'Clase de prueba'}
+            img={imgs[0]}
+            navigation={navigation}
+          />
+        </Content>
+        }
       </Root>
     );
   }

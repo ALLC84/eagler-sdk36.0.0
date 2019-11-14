@@ -96,18 +96,6 @@ const BodyDetailScreen = props => {
 		}
 	}, [warmups])
 
-	// useEffect(() => {
-
-	// 	return () => {
-	// 		clearWarmups();
-	// 		clearWorkouts();
-	// 		clearMovements();
-	// 	}
-
-	// })
-
-	//console.log('WA ===> ', warmups, 'WO ===> ', workouts, 'MO ===> ', movements)
-
 	// Crea la vista del current video 
 	const mostrarVideo = (section, i) => {
 		return (

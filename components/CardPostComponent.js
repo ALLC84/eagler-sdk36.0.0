@@ -1,16 +1,20 @@
 /* =========== LIBRERIAS ============= */
-import React from "react"; // React
+import React, {useState} from "react"; // React
 import { Image, Platform, StyleSheet } from "react-native"; // React Native
-import { Card, CardItem, Button, Left, Body, Right, Text } from "native-base"; // Native Base
+import { Card, CardItem, Button, Left, Body, Right, Text, Spinner } from "native-base"; // Native Base
 import { Ionicons } from '@expo/vector-icons';
 /* ========== PROPIOS ================ */
 // import Text from './CustomText'; // Custom Text Styles and Font
 import Strings from '../constants/Strings'; // Strings
 import cardStyles from '../constants/styles/CardStyle' // Styles
+import Colors from '../constants/Colors'; // Styles
 
 const CardPostComponent = props => {
 	const { post, navigation } = props;
 	const { title, tag, img } = post;
+
+	//State
+	const [loading, setLoading] = useState(true)
 
 	const postDetailView = post => {
 		navigation.navigate("PostDetail", { post: post });
@@ -27,27 +31,35 @@ const CardPostComponent = props => {
 			}>
 				<Image style={cardStyles.card_item_img}
 					source={{ uri: img, cache: "force-cache" }}
+					onLoadEnd={() => setLoading(false)}
 				/>
+
+				{loading ? 
+					<Spinner color={Colors.tintColor}
+						style={{position: 'absolute', left: '45%'}}
+					/> 
+				: null}
 			</CardItem>
 
 		{/* Capa por encima de la imagen */}
+			{!loading ?
 			<CardItem style={cardStyles.card_image_cap}
 				button 
 				onPress={() => postDetailView(post)}
-			></CardItem>
+			></CardItem> : null }
 
 			{/* Card Top Text  */}
-			<CardItem style={cardStyles.card_item_action_and_text}>
+			{!loading ? <CardItem style={cardStyles.card_item_action_and_text}>
 				<Left>
 					<Body>
 						<Text type={'semi-bold'} style={cardStyles.card_title}> {title} </Text>
 						<Text style={cardStyles.card_subtitle}> {tag} </Text>
 					</Body>
 				</Left>
-			</CardItem>
+			</CardItem> : null }
 
-			{/* Card Bottom Text  */}
-			<CardItem style={cardStyles.card_item_buttom}>
+			{/* Card Button Text */}
+			{!loading ? <CardItem style={cardStyles.card_item_buttom}>
 				<Left>
 					<Button transparent>
 						<Ionicons
@@ -71,7 +83,7 @@ const CardPostComponent = props => {
 						</Text>
 					</Button>
 				</Right>
-			</CardItem>
+			</CardItem> : null }
 		</Card>
 	);
 }

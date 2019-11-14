@@ -11,7 +11,7 @@ const SecondaryColor = Colors.secondaryColor;
 
 module.exports = StyleSheet.create({
    card_section: {
-		borderRadius: 10
+		borderRadius: 10,
 	},
 	card_item: {
 		borderRadius: 10
@@ -20,7 +20,8 @@ module.exports = StyleSheet.create({
 		flex: 1,
 		height: 200,
 		width: null,
-		borderRadius: 10
+		borderRadius: 10,
+		backgroundColor: 'hsla(360, 100%, 0%, .2)',
 	},
 	card_image_cap: {
 		flex: 1,
@@ -28,11 +29,13 @@ module.exports = StyleSheet.create({
 		position: 'relative',
 		height: 200,
 		marginTop: -200,
-		borderRadius: 10
+		borderRadius: 10,
 	}, // Capa por encima de la imagen => Se utilizara hasta que esten preparadas previamente
 	card_item_action_and_text: {
 		position: "absolute",
-		backgroundColor: "transparent"
+		backgroundColor: "transparent",
+		borderTopLeftRadius: 10,
+		borderTopRightRadius: 10
 	},
 	card_title: {
 		fontSize: 24,

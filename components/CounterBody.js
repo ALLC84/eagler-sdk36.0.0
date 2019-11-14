@@ -1,7 +1,7 @@
 /* =========== LIBRERIAS ============= */
 import React, { Component } from "react"; // React
 import { StyleSheet, View } from "react-native"; // React Native
-import { Button, Text, List, ListItem, Body, Right, Left, Thumbnail } from "native-base"; // Native 
+import { Button, Text, ListItem, Body, Right, Left, Thumbnail } from "native-base"; // Native 
 import { Ionicons } from '@expo/vector-icons';
 /* ========== PROPIOS ================ */
 import Colors from '../constants/Colors';
@@ -26,16 +26,13 @@ class CounterBody extends Component {
       duracao: this.props.duracao,
       secons: this.props.secons,
       isPlay: this.props.start,
-  
+
       getTime: null,
     }
   }
    
-
   componentDidMount() {
     this.startClock(this.state.duracao, this.props.secons)
-    // if(this.state.isPlay){
-    // }
   }
 
   componentWillUnmount(){
@@ -62,7 +59,6 @@ class CounterBody extends Component {
             
             return           
             // this.setUnoMas(true)
-            //this.toggleColor();
           }
           min = this.state.liveTimeMin -1
         }
@@ -85,6 +81,12 @@ class CounterBody extends Component {
         flagTimer: true,
         getTime: this.getTime
       })
+
+      if(this.props.currentVideo != this.props.video.fields.video.stringValue) {
+        this.setState({
+          isPlay: false
+        })
+      }
 
       if(!this.state.isPlay) {
         clearInterval(this.getTime)
@@ -121,48 +123,92 @@ class CounterBody extends Component {
     })
   }
 
-  // Hacer que al dar play al contador inicie el video
+  // Items List
+  //================
+  itemImage(img){
+    return (
+      <Left>
+        {img && img.stringValue !== '' && img.stringValue !== 'img' ? (
+          <Thumbnail
+            square
+            source={{ uri: img.stringValue }}
+            style={{borderRadius: 5}}
+          />
+        ) : (
+          <Thumbnail
+            square
+            source={require("../assets/images/no_image.png")}
+            style={{borderRadius: 5}}
+          />
+        )}
+      </Left>
+    )
+  }
+
+  itemBody(videos, video, index, nextVideo, currentVideo){
+    return(
+      <Body>
+        <Button transparent
+          onPress = {() => nextVideo(videos, index)}
+        >
+          <View style={{display: 'flex', flexDirection: 'column'}}>
+            <Text 
+              style={{fontWeight: currentVideo == video.video.stringValue ? "bold" : null, color: 'black'}}
+            >
+              {video.title ? video.title.stringValue : 'Titulo del video'}
+            </Text>
+            <Text style={{fontWeight: currentVideo == video.video.stringValue ? "bold" : null, color: this.state.color, marginTop: 5}}
+            > 
+              {this.state.timeFormat}
+            </Text>
+          </View>
+        </Button>
+      </Body>
+    )
+  }
+
+  itemIcon(video, currentVideo){
+    return (
+      <Right>
+        <Button transparent iconRight
+          style={{minWidth: 40}}
+          onPress={() => {
+            if(currentVideo == video.video.stringValue) {
+              this.handlePlay()
+            }
+          }}
+        >
+          <Text></Text>
+          <Ionicons
+            name="md-stopwatch"
+            size={26}
+            color={currentVideo == video.video.stringValue ? "#240066" : "#ccc"}
+          />
+        </Button>
+      </Right>
+    )
+  }
+
+  // Render Componet
   render() {
     const {videos, video, index, nextVideo, currentVideo} = this.props
 
     return (
-      <ListItem thumbnail onPress = {() => nextVideo(videos, index)}
-      >
-        <Left>
-          {video.fields.img && video.fields.img.stringValue !== '' ? (
-            <Thumbnail
-              square
-              source={{ uri: video.fields.img.stringValue }}
-            />
-          ) : (
-            <Thumbnail
-              square
-              source={require("../assets/images/1Basics.png")}
-            />
-          )}
-        </Left>
-        <Body>
-          <Text>{video.fields.title.stringValue}</Text>
-          <Text style={stylesPage.text_button_counter, {color: this.state.color}}> 
-            {this.state.timeFormat}
-          </Text>
-        </Body>
-        <Right>
-          {/* // TODO: Validar play contador solo si es el current video */}
-          <Button transparent 
-            onPress={() => {
-              if(currentVideo == video.fields.video.stringValue) {
-                this.handlePlay()
-              }
-            }}
-          >
-            <Ionicons
-              name="md-stopwatch"
-              size={26}
-              color={"#240066"}
-            />
-          </Button>
-        </Right>
+      <ListItem thumbnail>
+        {/* Left Imagen */}
+        {this.itemImage(video.fields.img)}
+
+        {/* Body */}
+        {this.itemBody(
+          videos,
+          video.fields,
+          index,
+          nextVideo,
+          currentVideo
+        )}
+
+        {/* Right Items Button */}
+        {this.itemIcon(video.fields, currentVideo)}
       </ListItem>
     )
   };
@@ -172,23 +218,8 @@ export default CounterBody;
 
 // Styles del Componente
 const stylesPage = StyleSheet.create({
-  button_counter: {
-    
-  },
-  text_button_counter: {
+  text_counter: {
     fontWeight: 'bold',
-    marginTop: 5 
+    marginTop: 8 
   }
 });
-
-// return (
-//   <Button style={stylesPage.button_counter}
-//     small
-//     transparent
-//     onPress={() => this.handlePlay()}
-//   >
-//     <Text style={stylesPage.text_button_counter}> 
-//       {this.state.timeFormat}
-//     </Text>
-//   </Button>
-// )

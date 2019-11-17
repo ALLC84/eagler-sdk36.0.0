@@ -3,7 +3,8 @@ import React, {useState, useEffect} from "react"; // React
 import { StyleSheet } from "react-native"; // React-native
 import { AUTH } from "../services/firebase"; // Firebase
 import { Container, Content, Card, Text, Spinner, Button, Segment, StyleProvider} from 'native-base';
-import { View, ImageBackground } from 'react-native';
+import { View, ImageBackground, Alert } from 'react-native';
+import { Root, Popup } from 'popup-ui'
 /* ========== REDUX ================ */
 import { useDispatch, useSelector  } from 'react-redux'; // React-Redux
 import {actionGetIsPremium, actionSetPremium, actionUpdatePremium} from '../store/actions/subscriptionsAction';
@@ -115,7 +116,31 @@ const  Suscripciones = props => {
 
 					{premium != 'FREE' ? <Button style={stylesPage.button_form}
 						block
-						onPress={() => {setPremium(user.uid, 'FREE'), updateLocalPremium('FREE')}}
+						onPress={() => {
+							Alert.alert(
+								'GRATIS',
+								'Seguro quieres cancelar tu suscripción ?',
+								[
+								  {
+									 text: 'Cancelar',
+									 onPress: () => console.log('Cancel Pressed'),
+									 style: 'cancel',
+								  },
+								  {text: 'OK', onPress: () => {
+										setPremium(user.uid, 'FREE'), updateLocalPremium('FREE');
+										Popup.show({
+											type: 'Success',
+											title: 'Actualización Completada',
+											button: false,
+											textBody: 'Has cancelado tu suscripción, para volver a tener acceso a todo el contenido puedes suscribirte en cualquire momento, te esperamos!!',
+											buttontext: 'Ok',
+											callback: () => Popup.hide()
+										})
+								  }},
+								],
+								{cancelable: false},
+							);
+						}}
 					>
 						<Text>GRATIS</Text>
 					</Button> : null}
@@ -164,7 +189,31 @@ const  Suscripciones = props => {
 
 					{premium != 'PREMIUM' ? <Button style={stylesPage.button_form}
 						block
-						onPress={() => {setPremium(user.uid, 'PREMIUM'), updateLocalPremium('PREMIUM')}}
+						onPress={() => {
+							Alert.alert(
+								'PREMIUM',
+								'Seguir con la suscripción ?',
+								[
+								  {
+									 text: 'Cancelar',
+									 onPress: () => console.log('Cancel Pressed'),
+									 style: 'cancel',
+								  },
+								  {text: 'OK', onPress: () => {
+										setPremium(user.uid, 'PREMIUM'), updateLocalPremium('PREMIUM');
+									  	Popup.show({
+											type: 'Success',
+											title: 'Actualización Completada',
+											button: false,
+											textBody: 'Te has suscrito correctamente a PREMIUM, ahora tienes acceso a todo el contenido de la App.',
+											buttontext: 'Ok',
+											callback: () => Popup.hide()
+										})
+								  }},
+								],
+								{cancelable: false},
+							 );
+						}}
 					>
 						<Text>PASATE A PREMIUM</Text>
 					</Button> : null}
@@ -214,7 +263,31 @@ const  Suscripciones = props => {
 
 					{premium != 'ULTIMATE' ? <Button style={stylesPage.button_form}
 						block
-						onPress={() => {setPremium(user.uid, 'ULTIMATE'), updateLocalPremium('ULTIMATE')}}
+						onPress={() => {
+							Alert.alert(
+								'ULTIMATE',
+								'Seguir con la suscripción ?',
+								[
+								  {
+									 text: 'Cancel',
+									 onPress: () => console.log('Cancel Pressed'),
+									 style: 'cancel',
+								  },
+								  {text: 'OK', onPress: () => {
+										setPremium(user.uid, 'ULTIMATE'), updateLocalPremium('ULTIMATE');
+										Popup.show({
+											type: 'Success',
+											title: 'Actualización Completada',
+											button: false,
+											textBody: 'Te has suscrito correctamente a ULTIMATE, ahora tienes acceso a todo el contenido de la App y mas...',
+											buttontext: 'Ok',
+											callback: () => Popup.hide()
+										})
+								  }},
+								],
+								{cancelable: false},
+							);
+						}}
 					>
 						<Text>PASATE A ULTIMATE</Text>
 					</Button> : null}
@@ -226,7 +299,7 @@ const  Suscripciones = props => {
 	}
 
 	return (
-		<>
+		<Root>
 			{/* Header Page */}
 			<DetailScreenHeader
 				navigation={props.navigation} 
@@ -255,7 +328,7 @@ const  Suscripciones = props => {
 				</Container>
 			}
 
-		</>
+		</Root>
 	);
 	
 }
@@ -271,21 +344,4 @@ const stylesPage = StyleSheet.create({
 	},
 });
 
-
-{/* <CardItem cardBody
-	style={{height: 200, borderRadius: 10,}}
->
-		<Thumbnail
-			square
-			source={imgs[0]}
-			onLoadEnd={() => setLoading(false)}
-			style={{height: 200, flex: 1}}
-		/>
-
-		{loading ? 
-			<Spinner color={Colors.tintColor}
-				style={{position: 'absolute', left: '45%'}}
-			/> 
-		: null}
-</CardItem> */}
 

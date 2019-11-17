@@ -40,6 +40,10 @@ const TYPES = {
 
    ACTION_CERRAR_MODAL                 : 'ACTION_CERRAR_MODAL',
    ACTION_MOSTRAR_MODAL                : 'ACTION_MOSTRAR_MODAL',
+
+   SET_PREMIUM                         : 'SET_PREMIUM',
+   GET_PREMIUM                         : 'GET_PREMIUM',
+   GUARDAR_PREMIUM_SUBSCRIPTIONS_STORE : 'GUARDAR_PREMIUM_SUBSCRIPTIONS_STORE'
 }
 
 export default TYPES;

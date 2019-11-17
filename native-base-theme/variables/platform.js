@@ -267,15 +267,15 @@ export default {
   },
 
   // Segment
-  segmentBackgroundColor: platform === PLATFORM.IOS ? '#F8F8F8' : '#240066',
-  segmentActiveBackgroundColor: platform === PLATFORM.IOS ? '#240066' : '#fff',
-  segmentTextColor: platform === PLATFORM.IOS ? '#240066' : '#fff',
-  segmentActiveTextColor: platform === PLATFORM.IOS ? '#fff' : '#240066',
-  segmentBorderColor: platform === PLATFORM.IOS ? '#240066' : '#fff',
-  segmentBorderColorMain: platform === PLATFORM.IOS ? '#a7a6ab' : '#240066',
+  segmentBackgroundColor: platform === PLATFORM.IOS ? '#FFF' : '#FFF',
+  segmentActiveBackgroundColor: platform === PLATFORM.IOS ? '#240066' : '#240066',
+  segmentTextColor: platform === PLATFORM.IOS ? '#240066' : '#240066',
+  segmentActiveTextColor: platform === PLATFORM.IOS ? '#fff' : '#fff',
+  segmentBorderColor: platform === PLATFORM.IOS ? '#240066' : '#240066',
+  segmentBorderColorMain: platform === PLATFORM.IOS ? '#a7a6ab' : '#a7a6ab',
 
   // Spinner
-  defaultSpinnerColor: '#45D56E',
+  defaultSpinnerColor: '#240066',
   inverseSpinnerColor: '#1A191B',
 
   // Tab

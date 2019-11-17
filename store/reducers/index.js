@@ -8,15 +8,17 @@ import BodyReducer from './bodyReducer';
 import DrillReducer from './drillReducer';
 import IQReducer from './IQReducer';
 import UserProfileReducer from './userProfileReducer';
+import SubscriptionsReducer from './subscriptionsReducer';
 
 
 export default combineReducers({
    form,
-   session     : SessionReducer,
-   basic       : BasicReducer,
-   body        : BodyReducer,
-   drills      : DrillReducer,
-   posts       : IQReducer,
-   userProfile : UserProfileReducer,
+   session       : SessionReducer,
+   basic         : BasicReducer,
+   body          : BodyReducer,
+   drills        : DrillReducer,
+   posts         : IQReducer,
+   userProfile   : UserProfileReducer,
+   subscriptions : SubscriptionsReducer
 });
 

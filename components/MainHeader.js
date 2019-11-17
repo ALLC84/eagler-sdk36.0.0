@@ -16,12 +16,16 @@ const  MainHeader = props => {
 				{/* <Text style={stylesPage.name_app_header}>
 					{Strings.ST0}
 				</Text> */}
-				<Button transparent style={{width: 100}}>
+				{/* <Button transparent style={{width: 100}}>
 					<Image style={{flex: 1, maxHeight: '100%', paddingVertical: 2}}
 						source={require("../assets/images/logo-solid-header.png")}
 						// source={require("../assets/images/eagler.png")}
 					/>
-				</Button>
+				</Button> */}
+					<Image style={{width: 80, maxHeight: 30, paddingVertical: 2}}
+						source={require("../assets/images/logo-solid-header.png")}
+						// source={require("../assets/images/eagler.png")}
+					/>
 			</Left>
 			
 			<Right>
@@ -47,6 +51,7 @@ const stylesPage = StyleSheet.create({
 		color: Colors.tintColor,
 	},
 	icon_menu_heade: {
-		color: Colors.tintColor
+		color: Colors.tintColor,
+		fontSize: Platform.OS === "ios" ? 34 : 32
 	}
 });

@@ -12,6 +12,7 @@ import Colors from "../constants/Colors"; // Color Style
 /* ========== REDUX ================ */
 import { useDispatch, useSelector  } from 'react-redux' // React-Redux
 import { actionGetFase } from "../store/actions/basicAction"; //Actions Redux
+import {actionGetIsPremium} from '../store/actions/subscriptionsAction';
 
 const imgs = [
   // "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/basics%2Fportada%2FseveBunker.jpeg?alt=media&token=d115d0c5-a727-4d3c-ae7b-cd186c0082cc"
@@ -32,10 +33,12 @@ const BasicComponent = props => {
   // STATE
   const [visibleModalPerfilJuego, setVisibleModalPerfilJuego] = useState(false);
 	// REDUX
-  const { premium, fase, loading }= useSelector(state => state.basic);
+  const { fase, loading }= useSelector(state => state.basic);
+  const { premium }= useSelector(state => state.subscriptions);
 	// Dispatchs
 	const dispatch = useDispatch()
   const getFase = (userId) => dispatch(actionGetFase(userId))
+  const isPremium = (userId) => dispatch(actionGetIsPremium(userId))
   
 
   // FUNCTIONS
@@ -45,6 +48,7 @@ const BasicComponent = props => {
   useEffect(() => {
     if(user) {
       getFase(user.uid)
+      isPremium(user.uid)
     }
   }, [])
 
@@ -83,7 +87,7 @@ const BasicComponent = props => {
   } else {
     return (
       <Root>
-        {premium === true ?
+        {premium != 'FREE' ?
         <Content padder>
           <CardBasicsComponent
             key={"1"}

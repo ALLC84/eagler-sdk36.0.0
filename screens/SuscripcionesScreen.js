@@ -1,9 +1,12 @@
 /* =========== LIBRERIAS ============= */
-import React, {useState} from "react"; // React
+import React, {useState, useEffect} from "react"; // React
 import { StyleSheet } from "react-native"; // React-native
+import { AUTH } from "../services/firebase"; // Firebase
 import { Container, Content, Card, Text, Spinner, Button, Segment, StyleProvider} from 'native-base';
 import { View, ImageBackground } from 'react-native';
-
+/* ========== REDUX ================ */
+import { useDispatch, useSelector  } from 'react-redux'; // React-Redux
+import {actionGetIsPremium, actionSetPremium, actionUpdatePremium} from '../store/actions/subscriptionsAction';
 /* ========== THEME PERSONALIZADO NATIVE BASE ================ */
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
@@ -19,9 +22,23 @@ const imgs = [
  ];
 
 const  Suscripciones = props => {
+	const user = AUTH.currentUser;
 	//State
-	const [loading, setLoading] = useState(true)
+	const [loadingImg, setLoading] = useState(true)
 	const [segment, setSegment] = useState('free')
+	// REDUX
+	const { premium, loading }= useSelector(state => state.subscriptions);
+	// Dispatchs
+	const dispatch = useDispatch()
+	const isPremium = (userId) => dispatch(actionGetIsPremium(userId))
+	const setPremium = (userId, value) => dispatch(actionSetPremium(userId, value))
+	const updateLocalPremium = (value) => dispatch(actionUpdatePremium(value))
+
+	useEffect(() => {
+		if(user) {
+			isPremium(user.uid)
+		}
+	 }, [])
 
 	const handleSegment = (segment) => {
 		switch (segment) {
@@ -66,7 +83,7 @@ const  Suscripciones = props => {
 					onLoadEnd={() => setLoading(false)}
 				>
 
-					{loading ? 
+					{loadingImg ? 
 						<Spinner color={Colors.tintColor}
 							style={{position: 'absolute', left: '45%'}}
 						/> 
@@ -79,7 +96,7 @@ const  Suscripciones = props => {
 						alignItems: 'center',
 						justifyContent: 'center',
 						backgroundColor: 'rgba(68,138,255 ,1)',
-						borderRadius: '100%',
+						borderRadius: 100,
 						padding: 20,
 						height: 150,
 						width: 150,
@@ -95,6 +112,13 @@ const  Suscripciones = props => {
 						<Text>Clases limitadas</Text>
 						<Text>Ejercicios limitados</Text>
 					</View>
+
+					{premium != 'FREE' ? <Button style={stylesPage.button_form}
+						block
+						onPress={() => {setPremium(user.uid, 'FREE'), updateLocalPremium('FREE')}}
+					>
+						<Text>GRATIS</Text>
+					</Button> : null}
 					
 
 				</ImageBackground>
@@ -121,22 +145,29 @@ const  Suscripciones = props => {
 						alignItems: 'center',
 						justifyContent: 'center',
 						backgroundColor: 'rgba(48,79,254 ,1)',
-						borderRadius: '100%',
+						borderRadius: 100,
 						padding: 20,
 						height: 150,
 						width: 150,
 						marginTop: 50
 					}}>
-						<Text style={{fontWeight: 'bold', fontSize: 28, color: '#ccc'}}>9,99€</Text>
+						<Text style={{fontWeight: 'bold', fontSize: 28, color: '#ccc'}}>0,00€</Text>
 						<Text style={{color: '#ccc'}}>Mes</Text>
 					</View>
 
-					<Text style={{fontSize: 20, marginVertical: 20, fontWeight: 'bold'}}>GRATIS</Text>
+					<Text style={{fontSize: 20, marginVertical: 20, fontWeight: 'bold'}}>PREMIUM</Text>
 
 					<View>
 						<Text>Clases ilimitadas</Text>
 						<Text>Ejercicios ilimitados</Text>
 					</View>
+
+					{premium != 'PREMIUM' ? <Button style={stylesPage.button_form}
+						block
+						onPress={() => {setPremium(user.uid, 'PREMIUM'), updateLocalPremium('PREMIUM')}}
+					>
+						<Text>PASATE A PREMIUM</Text>
+					</Button> : null}
 					
 
 				</ImageBackground>
@@ -150,7 +181,7 @@ const  Suscripciones = props => {
 					onLoadEnd={() => setLoading(false)}
 				>
 
-					{loading ? 
+					{loadingImg ? 
 						<Spinner color={Colors.tintColor}
 							style={{position: 'absolute', left: '45%'}}
 						/> 
@@ -163,13 +194,13 @@ const  Suscripciones = props => {
 						alignItems: 'center',
 						justifyContent: 'center',
 						backgroundColor: 'rgba(101,31,255 ,1)',
-						borderRadius: '100%',
+						borderRadius: 100,
 						padding: 20,
 						height: 150,
 						width: 150,
 						marginTop: 50
 					}}>
-						<Text style={{fontWeight: 'bold', fontSize: 28, color: '#ccc'}}>14,99€</Text>
+						<Text style={{fontWeight: 'bold', fontSize: 28, color: '#ccc'}}>00,00€</Text>
 						<Text style={{color: '#ccc'}}>Mes</Text>
 					</View>
 
@@ -180,6 +211,13 @@ const  Suscripciones = props => {
 						<Text>Ejercicios ilimitados</Text>
 						<Text>1 clase en grupo semestral</Text>
 					</View>
+
+					{premium != 'ULTIMATE' ? <Button style={stylesPage.button_form}
+						block
+						onPress={() => {setPremium(user.uid, 'ULTIMATE'), updateLocalPremium('ULTIMATE')}}
+					>
+						<Text>PASATE A ULTIMATE</Text>
+					</Button> : null}
 					
 
 				</ImageBackground>
@@ -197,17 +235,25 @@ const  Suscripciones = props => {
 			/>
 
 			{/* Content Page */}
-			<Container>
-				
-				<View style={{marginTop: 10}}>
-					{tabSegment()}
-				</View>
+			{!loading ?
+				<Container>
+					
+					<View style={{marginTop: 10}}>
+						{tabSegment()}
+					</View>
 
-				<Content padder>
-					{handleSegment(segment)}
-				</Content>
-				
-			</Container>
+					<Content padder>
+						{handleSegment(segment)}
+					</Content>
+					
+				</Container>
+				: 
+				<Container>
+					<Spinner color={Colors.tintColor}
+						style={{position: 'absolute', left: '45%'}}
+					/> 
+				</Container>
+			}
 
 		</>
 	);

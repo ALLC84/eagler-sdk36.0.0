@@ -19,6 +19,7 @@ import funcionesBodySaga from './sagas/bodySaga';
 import funcionesDrillSaga from './sagas/drillSaga';
 import funcionesIQSaga from './sagas/IQSaga';
 import funcionesUserProfileSaga from './sagas/userProfileSaga';
+import funcionesSubscriptionsSaga from './sagas/subscriptionsSaga';
 
 
 //Combine Reducers
@@ -56,6 +57,9 @@ sagaMiddleware.run(
 );
 sagaMiddleware.run(
    funcionesUserProfileSaga
+);
+sagaMiddleware.run(
+   funcionesSubscriptionsSaga
 );
 
 export default store;

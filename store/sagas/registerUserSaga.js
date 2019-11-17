@@ -43,7 +43,7 @@ const crearProfile = (name, email) => {
       tiempoPutt: 0,
 
       // CAMPOS STATUS
-      premium: false
+      premium: 'FREE'
    });
 };
 

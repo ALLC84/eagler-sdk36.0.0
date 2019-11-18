@@ -132,7 +132,7 @@ const  Suscripciones = props => {
 											type: 'Success',
 											title: 'Actualización Completada',
 											button: false,
-											textBody: 'Has cancelado tu suscripción, para volver a tener acceso a todo el contenido puedes suscribirte en cualquire momento, te esperamos!!',
+											textBody: 'Has cancelado tu suscripción, para volver a tener acceso a todo el contenido puedes suscribirte en cualquire momento, te esperamos!',
 											buttontext: 'Ok',
 											callback: () => Popup.hide()
 										})

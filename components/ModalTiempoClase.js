@@ -22,8 +22,9 @@ const ModalTiempoClase = props => {
 	const [ visibleModal, setVisibleModal ] = useState(true)
 
 	// Actualizar puntos abilidades definiendo % segun tiempo clase
-	const actualizarPerfil = async (idUser, time) => {
-		await functionUserProfile.defineTiempoHabilidades(idUser, time);
+	const actualizarPerfil = (idUser, time) => {
+		// TODO: Actualiza datos del Profile segun tiempo de clase
+		// await functionUserProfile.defineTiempoHabilidades(idUser, time);
 		setVisibleModal(false)
 		props.crearTiempoClase(time);
 	};

@@ -4,6 +4,7 @@ import { StyleSheet } from "react-native"; // React Native
 import { Container, Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Spinner, Text } from "native-base"; // Native Base
 import { Video } from 'expo-av'; // Expo
 import { Ionicons } from '@expo/vector-icons';
+import { Root } from 'popup-ui'
 /* ========== REDUX ================== */
 import { useDispatch, useSelector  } from 'react-redux' // React-Redux
 import { 
@@ -150,7 +151,7 @@ const BodyDetailScreen = props => {
 	};
 
 	return (
-		<>
+		<Root>
 			{/* ==================== HEADER PAGE =================*/}
 			<DetailScreenHeader 
 				navigation={navigation}
@@ -181,7 +182,7 @@ const BodyDetailScreen = props => {
 						{Strings.ST33_1}
 				</Text>
 			</>}
-		</>
+		</Root>
 	);
 }
 export default BodyDetailScreen;

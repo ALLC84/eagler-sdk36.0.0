@@ -26,12 +26,12 @@ const  BasicsDetailScreen = props => {
 	// STATE
 	const [ videos, setVideos ] = useState([])
 	const [ visibleModalTiempo, setVisibleModalTiempo ] = useState(true);
-	const [ counterVisible, setCounterVisible ] = useState(false);
+	const [ counterVisible, setCounterVisible ] = useState(true);
 	const [ tiempoClase, setTiempoClase ] = useState(0)
 	const [ tiempoEjercicio, setTiempoEjercicio ] = useState(0)
 	const [ contVideo, setContVideo ] = useState(0)
-	const [ infoModal, setInfoModal ] = useState(false)
-	const [ unoMas, setUnoMas ] = useState(false)
+	const [ isPlay, setIsPlay ] = useState(false)
+	// const [ unoMas, setUnoMas ] = useState(false)
 	// REDUX
 	const { claseCombinada, fases }= useSelector(state => state.basic)
 	// Dispatchs
@@ -39,6 +39,7 @@ const  BasicsDetailScreen = props => {
 	const getClaseCombinada = (fases) => dispatch(actionGetClaseCombinada(fases))
 	//CHILD REF
 	const contadorRef = useRef();
+	
 
 	//Bbtiene las clases de Golf
 	useEffect(() => {
@@ -65,40 +66,10 @@ const  BasicsDetailScreen = props => {
 		}
 	}, [claseCombinada])
 
-	// Cambia al siguiende video cuando (unoMas) es true
-	useEffect(() => {
-		if(unoMas) {
-			changeVideo( (contVideo + 1) , 'mas')
-		}
-	}, [unoMas])
-	
-
-	// Crea tiempo de clase y cierra el modal
-	const crearTiempoClase = tiempoClase => {
-		setTiempoClase(tiempoClase);
-		setVisibleModalTiempo(false);
-		setTiempoEjercicio(calculaTiempoEjercicios(tiempoClase, 0));
-		// setCounterVisible(true);
-	};
-
-	const calculaTiempoEjercicios = (tiempo, i) => {
-		switch (i) {
-			case 0: return Math.floor(parseInt(tiempo * .15));
-			case 1: return Math.floor(parseInt(tiempo * .15));
-			case 2: return Math.floor(parseInt(tiempo * .10));
-			case 3: return Math.floor(parseInt(tiempo * .10));
-			case 4: return Math.floor(parseInt(tiempo * .25));
-			case 5: return Math.floor(parseInt(tiempo * .25));
-			default:
-				break;
-		}
-	}
-
 	// Crea la vista del current video 
 	const mostrarVideo = e => {
 		return (
-			<View style={{position: 'relative'}}>
-				
+			<View>
 				<Video style={stylesPage.video_avtive}
 					// usePoster={true}
 					// posterSource={{ uri: e.img }}
@@ -116,72 +87,52 @@ const  BasicsDetailScreen = props => {
 				/>
 			</View>
 		);
-	};
-
-	// Crear modal info
-	const crearModalInfo = () => {
-		return(
-			<Modal
-				animationType="fade"
-				// transparent={true}
-				visible={infoModal}
-			>
-				<View>
-					<Button transparent 
-						style={stylesPage.modal_button_close}
-						onPress={() => {
-							setInfoModal(false)
-						}}
-					>
-						<Ionicons
-							size={40}
-							color={"red"}
-							name={"ios-close"}
-						/>
-					</Button>
-				</View>
-			</Modal>
-		)
 	}
 
 	// Crea barra con el contador y botones ( <    30:59    > )
 	const mostrarContadorActionBar = () => {
+		
 		return (
 			<View style={stylesPage.action_bar}>
-				<Button small transparent
-					onPress={() => changeVideo(parseInt(contVideo) - 1, 'menos')}
-				>
-					<Ionicons
-						name="ios-arrow-back"
-						size={20}
-						color={"#240066"}
-					/>
-				</Button>
+
+				<View></View>
 
 				{/* CONTADOR */}
 				{/* =========================================== */}
-				
-				<CounterClass ref={contadorRef}
-					start = {counterVisible} 
-					duracao = {parseInt(tiempoEjercicio)}
-					setUnoMas= {setUnoMas}
-				/>
-				
-				{/* ===========================================  */}
 
-				<Button small transparent
-					onPress={() => changeVideo(parseInt(contVideo) + 1, 'mas')}
-				>
+				{counterVisible ?
+					<Button transparent
+						onPress={() => setCounterVisible(false)}
+					>
+						<Text style={{color: '#240066', fontWeight: '600'}}>COMENZAR</Text>
+					</Button>
+				:
+					<CounterClass ref={contadorRef}
+						start = {false} 
+						duracao = {parseInt(tiempoEjercicio)}
+						// setUnoMas= {setUnoMas}
+					/>
+				}
+				
+				{/* Play / Pause */}
+				{/* ===========================================  */}
+				<Button transparent
+					onPress={() => {
+						if(contadorRef.current != undefined) {
+							contadorRef.current.handlePlay();
+							// setIsPlay(!isPlay);
+						}
+					}}
+				>	
 					<Ionicons
-						name="ios-arrow-forward"
-						size={20}
+						name="ios-play"
+						size={28}
 						color={"#240066"}
 					/>
 				</Button>
 			</View>
 		)
 	}
-
 
 	// Crea lista de reproduccion de videos
 	const mostrarListaVideos = videos => {
@@ -216,14 +167,14 @@ const  BasicsDetailScreen = props => {
 					<Right>
 						<Button
 							transparent
-							// onPress={() => nextVideo(i)}
 							onPress={() => {
 								if(video.video.stringValue == videos[contVideo].video.stringValue){
 									const title = video.title ? video.title.stringValue : 'Titulo del video'
 									Popup.show({
+										type: 'Eagler',
 										title: title,
 										button: false,
-										textBody: 'Aqui -> Contenido de información con la explicación detallada sobre el ejercicio actual',
+										textBody: ['Aqui -> Contenido de información con la explicación detallada sobre el ejercicio actual', 'Aqui -> Contenido de información con la explicación detallada sobre el ejercicio actual'],
 										buttontext: 'Ok',
 										callback: () => Popup.hide()
 									})
@@ -231,7 +182,7 @@ const  BasicsDetailScreen = props => {
 							}}
 						>
 							<Ionicons
-								name="md-help-circle"
+								name="md-information-circle"
 								size={28}
 								color={video.video && video.video.stringValue == videos[contVideo].video.stringValue ? "#240066" : '#ccc'}
 							/>
@@ -243,22 +194,34 @@ const  BasicsDetailScreen = props => {
 		)
 	}
 
-	// Se utiliza para next y back del listado de videos
-	const changeVideo = (i, pasarVideo) => {
-		if(contVideo === 0 && pasarVideo === 'menos' )return;
-		if(contVideo == videos.length - 1 && pasarVideo === 'mas') return;
-		if(unoMas){
-			setUnoMas(false)
-		}
-		setContVideo(i)
-		contadorRef.current.nextVideo(calculaTiempoEjercicios(tiempoClase,i))
+	// Crea tiempo de clase y cierra el modal
+	const crearTiempoClase = tiempoClase => {
+		setTiempoClase(tiempoClase);
+		setVisibleModalTiempo(false);
+		setTiempoEjercicio(calculaTiempoEjercicios(tiempoClase, 0));
+		// setCounterVisible(true);
 	};
+
+	const calculaTiempoEjercicios = (tiempo, i) => {
+		switch (i) {
+			case 0: return Math.floor(parseInt(tiempo * .15));
+			case 1: return Math.floor(parseInt(tiempo * .15));
+			case 2: return Math.floor(parseInt(tiempo * .10));
+			case 3: return Math.floor(parseInt(tiempo * .10));
+			case 4: return Math.floor(parseInt(tiempo * .25));
+			case 5: return Math.floor(parseInt(tiempo * .25));
+			default:
+				break;
+		}
+	}
 
 	const nextVideo = async  i => {
 		if(contVideo !== i) {
 			await setContVideo(i)
 			await setTiempoEjercicio(calculaTiempoEjercicios(tiempoClase,i))
-			contadorRef.current.nextVideo(calculaTiempoEjercicios(tiempoClase,i))
+			if(contadorRef.current != undefined){
+				contadorRef.current.nextVideo(calculaTiempoEjercicios(tiempoClase,i))
+			}
 		}
 	}
 
@@ -289,21 +252,7 @@ const  BasicsDetailScreen = props => {
 					{/* ==================== LISTADO VIDEOS ================= */}
 					<Content> 
 						{mostrarListaVideos(videos)}
-						{/* {crearModalInfo()} */}
 					</Content>
-
-
-					{/* <Fab 
-						active={activeFab}
-						direction="up"
-						containerStyle={{}}
-						style={{ backgroundColor: '#240066' }}
-						position="bottomRight"
-						onPress={() => setInfoModal(!infoModal)}
-						// onPress={() => setActiveFab(!activeFab)}
-					>
-						<Icon name="ios-information-circle" />
-					</Fab> */}
 				</>
 				:
 				<Content style={stylesPage.snipperContent}>
@@ -336,9 +285,10 @@ const stylesPage = StyleSheet.create({
 	action_bar: {
 		display: 'flex', 
 		flexDirection: 'row', 
-		justifyContent: 'space-between', 
-		paddingHorizontal: 15,
-		paddingVertical: 10,
+		justifyContent: 'space-between',
+		alignItems: 'center', 
+		paddingHorizontal: 20,
+		paddingVertical: 5,
 		backgroundColor: Colors.secondaryColor,
 		color: Colors.tintColor,
 
@@ -346,13 +296,50 @@ const stylesPage = StyleSheet.create({
 	list_videos: {
 		marginTop: 10
 	},
-	modal_button_close: {
-		position: 'absolute',
-		top: 50,
-		right: -1,
-		marginRight: 30
-	},
 
 });
+
+// Cambia al siguiende video cuando (unoMas) es true
+//--------------------------------------------------
+// useEffect(() => {
+// 	if(unoMas) {
+// 		changeVideo( (contVideo + 1) , 'mas')
+// 	}
+// }, [unoMas])
+
+
+// Se utiliza para next y back del listado de videos
+//--------------------------------------------------
+// const changeVideo = (i, pasarVideo) => {
+// 	if(contVideo === 0 && pasarVideo === 'menos' )return;
+// 	if(contVideo == videos.length - 1 && pasarVideo === 'mas') return;
+// 	if(unoMas){
+// 		setUnoMas(false)
+// 	}
+// 	setContVideo(i)
+// 	contadorRef.current.nextVideo(calculaTiempoEjercicios(tiempoClase,i))
+// };
+
+
+/* <Button small transparent
+					onPress={() => changeVideo(parseInt(contVideo) - 1, 'menos')}
+				>
+					<Ionicons
+						name="ios-arrow-back"
+						size={20}
+						color={"#240066"}
+					/>
+				</Button> */
+
+
+/* <Button small transparent
+					onPress={() => changeVideo(parseInt(contVideo) + 1, 'mas')}
+				>
+					<Ionicons
+						name="ios-arrow-forward"
+						size={20}
+						color={"#240066"}
+					/>
+				</Button> */
 
 

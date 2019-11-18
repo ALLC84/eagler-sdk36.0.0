@@ -11,7 +11,7 @@ class CounterClass extends Component {
 
   constructor (props) {
     super(props);
-    this.setUnoMas = this.props.setUnoMas;
+    // this.setUnoMas = this.props.setUnoMas;
 
     this.state = {
       liveTimeMin: -1,
@@ -50,7 +50,7 @@ class CounterClass extends Component {
         }else{
           if(this.state.liveTimeMin == 0){
             clearInterval(this.getTime);
-            this.setUnoMas(true)
+            // this.setUnoMas(true)
             //this.toggleColor();
             return           
           }
@@ -132,16 +132,18 @@ class CounterClass extends Component {
   // Hacer que al dar play al contador inicie el video
   render() {
     return (
-      <Button style={stylesPage.button_counter}
-        small
-        transparent
-        onPress={() => this.handlePlay()}
-      >
-        {/* // TODO: cambiar tamaño */}
-        <Text style={stylesPage.text_button_counter}> 
-          {this.state.timeFormat}
-        </Text>
-      </Button>
+      // <Button style={stylesPage.button_counter}
+      //   transparent
+      //   onPress={() => this.handlePlay()}
+      // >
+      //   <Text style={stylesPage.text_button_counter}> 
+      //     {this.state.timeFormat}
+      //   </Text>
+      // </Button>
+
+      <Text style={stylesPage.text_button_counter}> 
+        {this.state.timeFormat}
+      </Text>
     )
   };
 }
@@ -151,9 +153,11 @@ export default CounterClass;
 // Styles del Componente
 const stylesPage = StyleSheet.create({
   button_counter: {
-    width: 80,
+  
   },
   text_button_counter: {
-    color: '#240066'
+    color: '#240066',
+    fontSize: 20,
+    fontWeight: '600'
   }
 });

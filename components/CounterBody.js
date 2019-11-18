@@ -3,6 +3,7 @@ import React, { Component } from "react"; // React
 import { StyleSheet, View } from "react-native"; // React Native
 import { Button, Text, ListItem, Body, Right, Left, Thumbnail } from "native-base"; // Native 
 import { Ionicons } from '@expo/vector-icons';
+import { Root, Popup } from 'popup-ui'
 /* ========== PROPIOS ================ */
 import Colors from '../constants/Colors';
 
@@ -167,9 +168,31 @@ class CounterBody extends Component {
     )
   }
 
-  itemIcon(video, currentVideo){
+  itemIcons(video, currentVideo){
     return (
-      <Right>
+      <Right style={{display: 'flex', flexDirection: 'row'}}>
+        <Button transparent iconRight
+          style={{minWidth: 40}}
+          onPress={() => {
+            const title = video.title.stringValue
+            const info = video.info ? video.info.stringValue : 'Informacion del ejercicio'
+            Popup.show({
+              type: 'Eagler',
+              title: title,
+              button: false,
+              textBody: info,
+              buttontext: 'Ok',
+              callback: () => Popup.hide()
+            })
+          }}
+        >
+          <Ionicons
+            name="md-information-circle"
+            size={26}
+            color={currentVideo == video.video.stringValue ? "#240066" : "#ccc"}
+          />
+        </Button>
+
         <Button transparent iconRight
           style={{minWidth: 40}}
           onPress={() => {
@@ -178,7 +201,6 @@ class CounterBody extends Component {
             }
           }}
         >
-          <Text></Text>
           <Ionicons
             name="md-stopwatch"
             size={26}
@@ -208,7 +230,7 @@ class CounterBody extends Component {
         )}
 
         {/* Right Items Button */}
-        {this.itemIcon(video.fields, currentVideo)}
+        {this.itemIcons(video.fields, currentVideo)}
       </ListItem>
     )
   };

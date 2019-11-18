@@ -5,6 +5,7 @@ import { Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Sp
 import { Video } from 'expo-av'; // Expo
 import { Ionicons } from '@expo/vector-icons';
 // import { StyleSheet, TouchableOpacity } from "react-native";
+import { Root, Popup } from 'popup-ui'
 /* ========== REDUX ================ */
 import { useDispatch, useSelector  } from 'react-redux'; // React-Redux
 import { actionGetClaseCombinada } from '../store/actions/basicAction';
@@ -23,6 +24,7 @@ const  BasicsDetailScreen = props => {
 	// PARAMS
 	const title = navigation.getParam("title", "title");
 	// STATE
+	const [ videos, setVideos ] = useState([])
 	const [ visibleModalTiempo, setVisibleModalTiempo ] = useState(true);
 	const [ counterVisible, setCounterVisible ] = useState(false);
 	const [ tiempoClase, setTiempoClase ] = useState(0)
@@ -38,6 +40,7 @@ const  BasicsDetailScreen = props => {
 	//CHILD REF
 	const contadorRef = useRef();
 
+	//Bbtiene las clases de Golf
 	useEffect(() => {
 		if(fases && !visibleModalTiempo) {
 			switch (title) {
@@ -51,18 +54,23 @@ const  BasicsDetailScreen = props => {
 		}
 	}, [fases])
 
+	//Cuando llegan los datos de los ejercicios guardamos los videos en una videos
+	useEffect(() => {
+		if(claseCombinada.length > 0){
+			let videos = [];
+			claseCombinada.map((e, i) => {
+				videos.push(e.fields);
+			});
+			setVideos(videos)
+		}
+	}, [claseCombinada])
+
+	// Cambia al siguiende video cuando (unoMas) es true
 	useEffect(() => {
 		if(unoMas) {
 			changeVideo( (contVideo + 1) , 'mas')
 		}
 	}, [unoMas])
-
-	let videos = [];
-	(getVideos = () => {
-		claseCombinada.map((e, i) => {
-			videos.push(e.fields);
-		});
-	})();
 	
 
 	// Crea tiempo de clase y cierra el modal
@@ -90,6 +98,7 @@ const  BasicsDetailScreen = props => {
 	const mostrarVideo = e => {
 		return (
 			<View style={{position: 'relative'}}>
+				
 				<Video style={stylesPage.video_avtive}
 					// usePoster={true}
 					// posterSource={{ uri: e.img }}
@@ -198,7 +207,7 @@ const  BasicsDetailScreen = props => {
 					<Body>
 						{/* <Text>Titulo del video</Text> */}
 						<Text>{video.category && video.tag ? `${video.category.stringValue} | ${video.tag.stringValue}` : 'Categoria'}</Text>
-						<Text style={{fontWeight: video.video.stringValue == videos[contVideo].video.stringValue ? 'bold' : 'normal'}}>{video.title ? video.title.stringValue : 'Titulo del video'}</Text>
+						<Text style={{fontWeight: video.video && video.video.stringValue == videos[contVideo].video.stringValue ? 'bold' : 'normal'}}>{video.title ? video.title.stringValue : 'Titulo del video'}</Text>
 						
 						<Text note numberOfLines={1}>
 							{Strings.ST22} {calculaTiempoEjercicios(tiempoClase, i)} minutos
@@ -207,12 +216,24 @@ const  BasicsDetailScreen = props => {
 					<Right>
 						<Button
 							transparent
-							onPress={() => nextVideo(i)}
+							// onPress={() => nextVideo(i)}
+							onPress={() => {
+								if(video.video.stringValue == videos[contVideo].video.stringValue){
+									const title = video.title ? video.title.stringValue : 'Titulo del video'
+									Popup.show({
+										title: title,
+										button: false,
+										textBody: 'Aqui -> Contenido de información con la explicación detallada sobre el ejercicio actual',
+										buttontext: 'Ok',
+										callback: () => Popup.hide()
+									})
+								}
+							}}
 						>
 							<Ionicons
-								name="ios-play-circle"
-								size={26}
-								color={video.video.stringValue == videos[contVideo].video.stringValue ? "#240066" : '#ccc'}
+								name="md-help-circle"
+								size={28}
+								color={video.video && video.video.stringValue == videos[contVideo].video.stringValue ? "#240066" : '#ccc'}
 							/>
 						</Button>
 					</Right>
@@ -250,7 +271,7 @@ const  BasicsDetailScreen = props => {
 		/>;
 	} else {
 		return (
-			<>
+			<Root>
 				{/* Header Page */}
 				<DetailScreenHeader 
 					navigation={navigation}
@@ -290,7 +311,7 @@ const  BasicsDetailScreen = props => {
 					<Text style={stylesPage.snipperText}> Preparando la clases...</Text>
 				</Content>
 				}
-			</>
+			</Root>
 		)
 	}
 }

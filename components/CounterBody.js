@@ -175,7 +175,7 @@ class CounterBody extends Component {
           style={{minWidth: 40}}
           onPress={() => {
             const title = video.title.stringValue
-            const info = video.info ? video.info.stringValue : 'Informacion del ejercicio'
+            const info = video.info ? video.info.arrayValue.values : 'Proximamente información sobre el ejercicio'
             Popup.show({
               type: 'Eagler',
               title: title,
@@ -187,7 +187,7 @@ class CounterBody extends Component {
           }}
         >
           <Ionicons
-            name="md-information-circle"
+            name="ios-information-circle-outline"
             size={26}
             color={currentVideo == video.video.stringValue ? "#240066" : "#ccc"}
           />

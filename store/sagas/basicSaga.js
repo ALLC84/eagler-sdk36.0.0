@@ -7,6 +7,8 @@ import TYPES from '../actions/types'
 import {
    actionGuardarFaseStore,
    actionGuardarClaseCombinadaStore,
+   actionGuardarClaseSeccionMediaStore,
+   actionGuardarClaseSeccionCortaStore
 } from '../actions/basicAction';
 /* =========== FUNCIONES ASIGNAR FASES ============= */
 import FunctionSetPhase from '../../lib/functions/functionFaseClase';
@@ -65,11 +67,29 @@ function* getFases(values) {
    }
 }
 
+/* =============== FUNCION COMPARTIDA QUE UTILIZAN LAS DIFERENTES SECCIONES ============= */
+const getClase = async (doc, fase) => {
+   const url = `https://firestore.googleapis.com/v1beta1/projects/${
+      FIREBASECONFIG.projectId
+   }/databases/(default)/documents/basics/${doc}/${fase}?key=${
+      FIREBASECONFIG.apiKey
+   }`
+   
+   const response = await fetch(url);
+   const data = await response.json();
+   const dataArr = data.documents;
+   const length = dataArr.length;
+   const random = FunctionBasic.getRadnom(length);
+   const result = dataArr[random];
+
+   return result;
+}
 
 
-/* =========== GET CLASES ============= */
+
+/* =========== GET CLASES COMBINADAS============= */
 //Genera una seccion aleatoria de clases utilizando getClase
-const getClases = async (fases) => {
+const getClasesCombinada = async (fases) => {
    let claseCombinada = [];
    const abilidades = [
       "shortgame",
@@ -101,26 +121,11 @@ const getClases = async (fases) => {
    return claseCombinada
 };
 // Obtiene una avilidad => Es llamada dentro del bucle desde getClases
-const getClase = async (doc, fase) => {
-   const url = `https://firestore.googleapis.com/v1beta1/projects/${
-      FIREBASECONFIG.projectId
-   }/databases/(default)/documents/basics/${doc}/${fase}?key=${
-      FIREBASECONFIG.apiKey
-   }`
-   
-   const response = await fetch(url);
-   const data = await response.json();
-   const dataArr = data.documents;
-   const length = dataArr.length;
-   const random = FunctionBasic.getRadnom(length);
-   const result = dataArr[random];
 
-   return result;
-}
 // Guarda en la clase generada en Redux
 function* getClaseCombinada(values) {
    try {
-      const claseCombinada = yield call(getClases, values.fases)
+      const claseCombinada = yield call(getClasesCombinada, values.fases)
       yield put(actionGuardarClaseCombinadaStore(claseCombinada))
    }catch (error) {
       console.log('TCL: ----------------------------------------------')
@@ -130,9 +135,97 @@ function* getClaseCombinada(values) {
 }
 
 
+
+/*=========== SECCION MEDIA =============*/
+const getClasesSeccionMedia = async (fases) => {
+   let claseSeccionMedia = [];
+   const abilidades = [
+      "shortgame",
+      "shortirons",
+      "drive",
+      "putt"
+   ];
+
+   const faseAbilidades = [
+      fases.faseApproach,
+      fases.faseHierrosCortos,
+      fases.faseDrive,
+      fases.fasePutt
+   ];
+
+   for (i = 0; i <= abilidades.length; i++) {
+      const data = await getClase(
+         abilidades[i],
+         faseAbilidades[i]
+      )
+      claseSeccionMedia.push(data);
+      if(i === 3) break
+   }
+
+   return claseSeccionMedia;
+};
+// Guarda en la clase generada en Redux
+function* getClaseSeccionMedia(values) {
+   try {
+      const claseSeccionMedia = yield call(getClasesSeccionMedia, values.fases)
+      yield put(actionGuardarClaseSeccionMediaStore(claseSeccionMedia))
+   }catch (error) {
+      console.log('TCL: ----------------------------------------------')
+      console.log('TCL: function*claseSeccionMedia -> error', error)
+      console.log('TCL: ----------------------------------------------')
+   }
+}
+
+
+
+
+/*=========== SECCION CORTA =============*/
+const getClasesSeccionCorta = async (fases) => {
+   let claseSeccionCorta = [];
+   const abilidades = [
+      "shortgame",
+      "shortirons",
+      "putt"
+   ];
+
+   const faseAbilidades = [
+      fases.faseApproach,
+      fases.faseHierrosCortos,
+      fases.fasePutt
+   ];
+
+   for (i = 0; i <= abilidades.length; i++) {
+      const data = await getClase(
+         abilidades[i],
+         faseAbilidades[i]
+      )
+      claseSeccionCorta.push(data);
+      if(i === 2) break
+   }
+
+   return claseSeccionCorta;
+};
+// Guarda en la clase generada en Redux
+function* getClaseSeccionCorta(values) {
+   try {
+      const claseSeccionCorta = yield call(getClasesSeccionCorta, values.fases)
+      yield put(actionGuardarClaseSeccionCortaStore(claseSeccionCorta))
+   }catch (error) {
+      console.log('TCL: ----------------------------------------------')
+      console.log('TCL: function*claseSeccionCorta -> error', error)
+      console.log('TCL: ----------------------------------------------')
+   }
+}
+
+
+
+
+
 export default function* funcionesBasicSaga() {
    yield takeEvery(TYPES.GET_FASE, getFases);
    yield takeEvery(TYPES.GET_CLASE_COMBINADA, getClaseCombinada);
+   yield takeEvery(TYPES.GET_CLASE_SECCION_MEDIA, getClaseSeccionMedia);
+   yield takeEvery(TYPES.GET_CLASE_SECCION_CORTA, getClaseSeccionCorta);
 }
 
 

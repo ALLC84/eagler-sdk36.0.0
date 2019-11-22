@@ -98,14 +98,16 @@ const BasicComponent = props => {
           />
           <CardBasicsComponent
             key={"2"}
-            title={Strings.ST25}
+            // title={Strings.ST25}
+            title={'Media'}
             subtitle={Strings.ST26}
             img={imgs[1]}
             navigation={navigation}
           />
           <CardBasicsComponent
             key={"3"}
-            title={Strings.ST27}
+            // title={Strings.ST27}
+            title={'Corta'}
             subtitle={Strings.ST28}
             img={imgs[2]}
             navigation={navigation}

@@ -8,7 +8,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { Root, Popup } from 'popup-ui'
 /* ========== REDUX ================ */
 import { useDispatch, useSelector  } from 'react-redux'; // React-Redux
-import { actionGetClaseCombinada } from '../store/actions/basicAction';
+import { 
+	actionGetClaseCombinada, 
+	actionGetClaseSeccionMedia,
+	actionGetClaseSeccionCorta 
+} from '../store/actions/basicAction';
 /* ========== PROPIOS ================ */
 // import Text from '../components/CustomText';
 import DetailScreenHeader from '../components/DetailScreenHeader'; // Header
@@ -33,13 +37,26 @@ const  BasicsDetailScreen = props => {
 	const [ isPlay, setIsPlay ] = useState(false)
 	// const [ unoMas, setUnoMas ] = useState(false)
 	// REDUX
-	const { claseCombinada, fases }= useSelector(state => state.basic)
+	const { claseCombinada, claseSeccionMedia, claseSeccionCorta, fases }= useSelector(state => state.basic)
 	// Dispatchs
 	const dispatch = useDispatch()
 	const getClaseCombinada = (fases) => dispatch(actionGetClaseCombinada(fases))
+	const getClaseSeccionMedia = (fases) => dispatch(actionGetClaseSeccionMedia(fases))
+	const getClaseSeccionCorta = (fases) => dispatch(actionGetClaseSeccionCorta(fases))
 	//CHILD REF
 	const contadorRef = useRef();
-	
+
+	/** Funcion que utilizo para verificar los campor y mostrar en consola */
+	// const logVideos = (videos) => {
+	// 	videos.map( video => {
+	// 		console.log('TCL: ------------------')
+	// 		console.log('TCL: videos', video.info.arrayValue.values)
+	// 		console.log('TCL: ------------------')
+	// 	})
+	// }
+	// useEffect(( ) => {
+	// 	logVideos(videos)
+	// }, [videos])
 
 	//Bbtiene las clases de Golf
 	useEffect(() => {
@@ -47,6 +64,12 @@ const  BasicsDetailScreen = props => {
 			switch (title) {
 				case 'Combinada':
 					getClaseCombinada(fases)
+					break;
+				case 'Media':
+					getClaseSeccionMedia(fases)
+					break;
+				case 'Corta':
+					getClaseSeccionCorta(fases)
 					break;
 				default:
 					getClaseCombinada(fases)
@@ -57,14 +80,37 @@ const  BasicsDetailScreen = props => {
 
 	//Cuando llegan los datos de los ejercicios guardamos los videos en una videos
 	useEffect(() => {
-		if(claseCombinada.length > 0){
-			let videos = [];
-			claseCombinada.map((e, i) => {
-				videos.push(e.fields);
-			});
-			setVideos(videos)
-		}
-	}, [claseCombinada])
+		switch (title) {
+			case 'Combinada':
+				if(claseCombinada.length > 0){
+					let videos = [];
+					claseCombinada.map((e, i) => {
+						videos.push(e.fields);
+					});
+					setVideos(videos)
+				}
+				break
+			case 'Media':
+				if(claseSeccionMedia.length > 0){
+					let videos = [];
+					claseSeccionMedia.map((e, i) => {
+						videos.push(e.fields);
+					});
+					setVideos(videos)
+				}
+				break
+			case 'Corta':
+				if(claseSeccionCorta.length > 0){
+					let videos = [];
+					claseSeccionCorta.map((e, i) => {
+						videos.push(e.fields);
+					});
+					setVideos(videos)
+				}
+				break
+			}
+
+	},[claseCombinada, claseSeccionMedia, claseSeccionCorta])
 
 	// Crea la vista del current video 
 	const mostrarVideo = e => {
@@ -161,7 +207,7 @@ const  BasicsDetailScreen = props => {
 						<Text style={{fontWeight: video.video && video.video.stringValue == videos[contVideo].video.stringValue ? 'bold' : 'normal'}}>{video.title ? video.title.stringValue : 'Titulo del video'}</Text>
 						
 						<Text note numberOfLines={1}>
-							{Strings.ST22} {calculaTiempoEjercicios(tiempoClase, i)} minutos
+							{Strings.ST22} {calculaTiempoEjercicios(title, tiempoClase, i)} minutos
 						</Text>
 					</Body>
 					<Right>
@@ -170,19 +216,19 @@ const  BasicsDetailScreen = props => {
 							onPress={() => {
 								if(video.video.stringValue == videos[contVideo].video.stringValue){
 									const title = video.title ? video.title.stringValue : 'Titulo del video'
+									const info = video.info ? video.info.arrayValue.values : 'Proximamente información sobre el ejercicio'
 									Popup.show({
 										type: 'Eagler',
 										title: title,
 										button: false,
-										textBody: ['Aqui -> Contenido de información con la explicación detallada sobre el ejercicio actual', 'Aqui -> Contenido de información con la explicación detallada sobre el ejercicio actual'],
-										buttontext: 'Ok',
+										textBody: info,
 										callback: () => Popup.hide()
 									})
 								}
 							}}
 						>
 							<Ionicons
-								name="md-information-circle"
+								name="ios-information-circle-outline"
 								size={28}
 								color={video.video && video.video.stringValue == videos[contVideo].video.stringValue ? "#240066" : '#ccc'}
 							/>
@@ -202,16 +248,37 @@ const  BasicsDetailScreen = props => {
 		// setCounterVisible(true);
 	};
 
-	const calculaTiempoEjercicios = (tiempo, i) => {
-		switch (i) {
-			case 0: return Math.floor(parseInt(tiempo * .15));
-			case 1: return Math.floor(parseInt(tiempo * .15));
-			case 2: return Math.floor(parseInt(tiempo * .10));
-			case 3: return Math.floor(parseInt(tiempo * .10));
-			case 4: return Math.floor(parseInt(tiempo * .25));
-			case 5: return Math.floor(parseInt(tiempo * .25));
-			default:
-				break;
+	const calculaTiempoEjercicios = (abilidad, tiempo, i) => {
+		switch (abilidad) {
+			case 'Combinada': 
+			switch (i) {
+				case 0: return Math.floor(parseInt(tiempo * .15));
+				case 1: return Math.floor(parseInt(tiempo * .15));
+				case 2: return Math.floor(parseInt(tiempo * .10));
+				case 3: return Math.floor(parseInt(tiempo * .10));
+				case 4: return Math.floor(parseInt(tiempo * .25));
+				case 5: return Math.floor(parseInt(tiempo * .25));
+				default:
+					break;
+			}
+			case 'Media': 
+			switch (i) {
+				case 0: return Math.floor(parseInt(tiempo * .25));
+				case 1: return Math.floor(parseInt(tiempo * .25));
+				case 2: return Math.floor(parseInt(tiempo * .30));
+				case 3: return Math.floor(parseInt(tiempo * .20));
+				default:
+					break;
+			}
+			case 'Corta': 
+			switch (i) {
+				case 0: return Math.floor(parseInt(tiempo * .50));
+				case 1: return Math.floor(parseInt(tiempo * .25));
+				case 2: return Math.floor(parseInt(tiempo * .25));
+				default:
+					break;
+			}
+			default: break;
 		}
 	}
 

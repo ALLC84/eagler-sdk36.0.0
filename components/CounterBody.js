@@ -189,7 +189,8 @@ class CounterBody extends Component {
           <Ionicons
             name="ios-information-circle-outline"
             size={26}
-            color={currentVideo == video.video.stringValue ? "#240066" : "#ccc"}
+            color={"#240066"}
+            // color={currentVideo == video.video.stringValue ? "#240066" : "#ccc"}
           />
         </Button>
 

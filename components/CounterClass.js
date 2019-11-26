@@ -1,37 +1,38 @@
 /* =========== LIBRERIAS ============= */
 import React, { Component } from "react"; // React
 import { StyleSheet, View } from "react-native"; // React Native
-import { Button, Text } from "native-base"; // Native Base
+import { Button, Text, ListItem, Body, Right, Left, Thumbnail } from "native-base"; // Native 
+import { Ionicons } from '@expo/vector-icons';
+import { Root, Popup } from 'popup-ui'
 /* ========== PROPIOS ================ */
 import Colors from '../constants/Colors';
 
-const colorArray = ['#FFF', 'red'];
+const colorArray = ['#240066', 'red'];
 
 class CounterClass extends Component {
 
   constructor (props) {
     super(props);
-    // this.setUnoMas = this.props.setUnoMas;
 
     this.state = {
       liveTimeMin: -1,
       liveTimeSec: 0,
+
       color: colorArray[0],
       colorInt:0,
+
       timeFormat:'00:00',
       flagTimer: false,
   
       duracao: this.props.duracao,
       isPlay: this.props.start,
-  
+
       getTime: null,
     }
   }
-
+   
   componentDidMount() {
     this.startClock(this.state.duracao, 59)
-    // if(this.state.isPlay){
-    // }
   }
 
   componentWillUnmount(){
@@ -49,10 +50,15 @@ class CounterClass extends Component {
           min = parseInt(minute) - 1
         }else{
           if(this.state.liveTimeMin == 0){
+            this.toggleColor();
             clearInterval(this.getTime);
-            // this.setUnoMas(true)
-            //this.toggleColor();
+            
+            if(this.props.index < (this.props.videos.length -1)) {
+              this.props.nextVideo(this.props.index + 1)
+            }
+            
             return           
+            // this.setUnoMas(true)
           }
           min = this.state.liveTimeMin -1
         }
@@ -75,6 +81,12 @@ class CounterClass extends Component {
         flagTimer: true,
         getTime: this.getTime
       })
+
+      if(this.props.currentVideo != this.props.video.video.stringValue) {
+        this.setState({
+          isPlay: false
+        })
+      }
 
       if(!this.state.isPlay) {
         clearInterval(this.getTime)
@@ -99,17 +111,6 @@ class CounterClass extends Component {
     })
   }
 
-  async nextVideo(minute) {
-    await this.clearListener()
-    this.setState({
-      liveTimeMin: -1,
-      liveTimeSec: 0,
-      isPlay: false
-    }, () => {
-      this.startClock(minute, 59)
-    })
-  }
-
   clearListener() {
     if(this.state.getTime !== null) {
       clearInterval(this.state.getTime)
@@ -117,33 +118,120 @@ class CounterClass extends Component {
   }
 
   toggleColor(){
-    this.getTime =  setInterval(() => {
-      // console.log("toggleColor =");
-      let newIndice = this.state.colorInt + 1;
-      let indice = newIndice % 2
-      // console.log('indice color = '+ indice);
-      this.setState({
-        color: colorArray[indice],
-        colorInt: newIndice
-      })
-    }, 1000)
+    this.setState({
+      color: colorArray[1]
+    })
   }
 
-  // Hacer que al dar play al contador inicie el video
-  render() {
+  // Items List
+  //================
+  itemImage(img){
     return (
-      // <Button style={stylesPage.button_counter}
-      //   transparent
-      //   onPress={() => this.handlePlay()}
-      // >
-      //   <Text style={stylesPage.text_button_counter}> 
-      //     {this.state.timeFormat}
-      //   </Text>
-      // </Button>
+      <Left>
+        {img && img.stringValue !== '' && img.stringValue !== 'img' ? (
+          <Thumbnail
+            square
+            source={{ uri: img.stringValue }}
+            style={{borderRadius: 5}}
+          />
+        ) : (
+          <Thumbnail
+            square
+            source={require("../assets/images/no_image.png")}
+            style={{borderRadius: 5}}
+          />
+        )}
+      </Left>
+    )
+  }
 
-      <Text style={stylesPage.text_button_counter}> 
-        {this.state.timeFormat}
-      </Text>
+  itemBody(videos, video, index, nextVideo, currentVideo){
+    return(
+      <Body>
+        <Button transparent
+          onPress = {() => nextVideo(index)}
+        >
+          <View style={{display: 'flex', flexDirection: 'column'}}>
+            <Text 
+              style={{fontWeight: currentVideo == video.video.stringValue ? "bold" : null, color: 'black'}}
+            >
+              {video.title ? video.title.stringValue : 'Titulo del video'}
+            </Text>
+            <Text style={{fontWeight: currentVideo == video.video.stringValue ? "bold" : null, color: this.state.color, marginTop: 5}}
+            > 
+              {this.state.timeFormat}
+            </Text>
+          </View>
+        </Button>
+      </Body>
+    )
+  }
+
+  itemIcons(video, currentVideo){
+    return (
+      <Right style={{display: 'flex', flexDirection: 'row'}}>
+        <Button transparent iconRight
+          style={{minWidth: 40}}
+          onPress={() => {
+            const title = video.title.stringValue
+            const info = video.info ? video.info.arrayValue.values : 'Proximamente información sobre el ejercicio'
+            Popup.show({
+              type: 'Eagler',
+              title: title,
+              button: false,
+              textBody: info,
+              buttontext: 'Ok',
+              callback: () => Popup.hide()
+            })
+          }}
+        >
+          <Ionicons
+            name="ios-information-circle-outline"
+            size={26}
+            color={"#240066"}
+            // color={currentVideo == video.video.stringValue ? "#240066" : "#ccc"}
+          />
+        </Button>
+
+        <Button transparent iconRight
+          style={{minWidth: 40}}
+          onPress={() => {
+            if(currentVideo == video.video.stringValue) {
+              this.handlePlay()
+            }
+          }}
+        >
+          <Ionicons
+            name="md-stopwatch"
+            size={26}
+            color={currentVideo == video.video.stringValue ? "#240066" : "#ccc"}
+          />
+        </Button>
+      </Right>
+    )
+  }
+
+  // Render Componet
+  render() {
+    const {videos, video, index, nextVideo, currentVideo} = this.props
+
+    return (
+      <ListItem thumbnail>
+        {/* Left Imagen */}
+        {this.itemImage(video.img)}
+
+        {/* Body */}
+        {this.itemBody(
+          videos,
+          video,
+          index,
+          nextVideo,
+          currentVideo
+        )}
+
+        {/* Right Items Button */}
+        {this.itemIcons(video, currentVideo)}
+      </ListItem>
     )
   };
 }
@@ -152,12 +240,8 @@ export default CounterClass;
 
 // Styles del Componente
 const stylesPage = StyleSheet.create({
-  button_counter: {
-  
-  },
-  text_button_counter: {
-    color: '#240066',
-    fontSize: 20,
-    fontWeight: '600'
+  text_counter: {
+    fontWeight: 'bold',
+    marginTop: 8 
   }
 });

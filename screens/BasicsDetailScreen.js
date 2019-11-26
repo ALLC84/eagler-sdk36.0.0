@@ -29,12 +29,11 @@ const  BasicsDetailScreen = props => {
 	const title = navigation.getParam("title", "title");
 	// STATE
 	const [ videos, setVideos ] = useState([])
+	const [ currentVideo, setCurrentVideo] = useState('')
+	const [ contVideo, setContVideo ] = useState(0)
 	const [ visibleModalTiempo, setVisibleModalTiempo ] = useState(true);
-	const [ counterVisible, setCounterVisible ] = useState(true);
 	const [ tiempoClase, setTiempoClase ] = useState(0)
 	const [ tiempoEjercicio, setTiempoEjercicio ] = useState(0)
-	const [ contVideo, setContVideo ] = useState(0)
-	const [ isPlay, setIsPlay ] = useState(false)
 	// const [ unoMas, setUnoMas ] = useState(false)
 	// REDUX
 	const { claseCombinada, claseSeccionMedia, claseSeccionCorta, fases }= useSelector(state => state.basic)
@@ -45,6 +44,7 @@ const  BasicsDetailScreen = props => {
 	const getClaseSeccionCorta = (fases) => dispatch(actionGetClaseSeccionCorta(fases))
 	//CHILD REF
 	const contadorRef = useRef();
+	
 
 	/** Funcion que utilizo para verificar los campor y mostrar en consola */
 	// const logVideos = (videos) => {
@@ -88,6 +88,7 @@ const  BasicsDetailScreen = props => {
 						videos.push(e.fields);
 					});
 					setVideos(videos)
+					setCurrentVideo(videos[0].video.stringValue)
 				}
 				break
 			case 'Media':
@@ -97,6 +98,7 @@ const  BasicsDetailScreen = props => {
 						videos.push(e.fields);
 					});
 					setVideos(videos)
+					setCurrentVideo(videos[0].video.stringValue)
 				}
 				break
 			case 'Corta':
@@ -106,11 +108,41 @@ const  BasicsDetailScreen = props => {
 						videos.push(e.fields);
 					});
 					setVideos(videos)
+					setCurrentVideo(videos[0].video.stringValue)
 				}
 				break
 			}
 
 	},[claseCombinada, claseSeccionMedia, claseSeccionCorta])
+
+	// Muestra PopUp al finalizar la clase
+	const arrayInfo = [
+		info = [
+			{stringValue: 'Has terminado la clase!'},
+			{stringValue: 'Se sumaran los puntos adquiridos a la diferentes habilidades'},
+			{stringValue: 'Te esperamos para la siguiente clase'},
+		],
+		info = [
+			{stringValue: 'Eres un animal!'},
+			{stringValue: 'Tiger se te queda pequeño'},
+			{stringValue: 'Sique adelante!'},
+		],
+	]
+	const mostrarPopupFinClase = (info) => {
+		console.log(Math.floor(Math.random() * arrayInfo.length))
+		const title = 'Felicitaciones!'
+		Popup.show({
+			type: 'Eagler',
+			title: title,
+			button: false,
+			textBody: info,
+			buttontext: 'Ok',
+			callback: () => {
+				Popup.hide()
+				navigation.goBack()
+			}
+		})
+	}
 
 	// Crea la vista del current video 
 	const mostrarVideo = e => {
@@ -136,105 +168,30 @@ const  BasicsDetailScreen = props => {
 	}
 
 	// Crea barra con el contador y botones ( <    30:59    > )
-	const mostrarContadorActionBar = () => {
-		
+	const mostrarSeparadorBar = () => {
 		return (
 			<View style={stylesPage.action_bar}>
-
-				<View></View>
-
-				{/* CONTADOR */}
-				{/* =========================================== */}
-
-				{counterVisible ?
-					<Button transparent
-						onPress={() => setCounterVisible(false)}
-					>
-						<Text style={{color: '#240066', fontWeight: '600'}}>COMENZAR</Text>
-					</Button>
-				:
-					<CounterClass ref={contadorRef}
-						start = {false} 
-						duracao = {parseInt(tiempoEjercicio)}
-						// setUnoMas= {setUnoMas}
-					/>
-				}
-				
-				{/* Play / Pause */}
-				{/* ===========================================  */}
-				<Button transparent
-					onPress={() => {
-						if(contadorRef.current != undefined) {
-							contadorRef.current.handlePlay();
-							// setIsPlay(!isPlay);
-						}
-					}}
-				>	
-					<Ionicons
-						name="ios-play"
-						size={28}
-						color={"#240066"}
-					/>
-				</Button>
+				<Text style={{textTransform: "uppercase"}}>Sección técnica {title}</Text>
 			</View>
 		)
 	}
+
 
 	// Crea lista de reproduccion de videos
 	const mostrarListaVideos = videos => {
 		return (
 			<List style={stylesPage.list_videos}>
 			{videos.map((video, i) => (
-				<ListItem thumbnail key={i} onPress = {() => nextVideo(i)}>
-					<Left>
-						{video.img && video.img.stringValue !== '' && video.img.stringValue !== 'img' ? (
-							<Thumbnail
-								square
-								source={{ uri: video.img.stringValue }}
-								style={{borderRadius: 5}}
-							/>
-						) : (
-							<Thumbnail
-								square
-								source={require("../assets/images/no_image.png")}
-								style={{borderRadius: 5}}
-							/>
-						)}
-					</Left>
-					<Body>
-						{/* <Text>Titulo del video</Text> */}
-						<Text>{video.category && video.tag ? `${video.category.stringValue} | ${video.tag.stringValue}` : 'Categoria'}</Text>
-						<Text style={{fontWeight: video.video && video.video.stringValue == videos[contVideo].video.stringValue ? 'bold' : 'normal'}}>{video.title ? video.title.stringValue : 'Titulo del video'}</Text>
-						
-						<Text note numberOfLines={1}>
-							{Strings.ST22} {calculaTiempoEjercicios(title, tiempoClase, i)} minutos
-						</Text>
-					</Body>
-					<Right>
-						<Button
-							transparent
-							onPress={() => {
-								if(video.video.stringValue == videos[contVideo].video.stringValue){
-									const title = video.title ? video.title.stringValue : 'Titulo del video'
-									const info = video.info ? video.info.arrayValue.values : 'Proximamente información sobre el ejercicio'
-									Popup.show({
-										type: 'Eagler',
-										title: title,
-										button: false,
-										textBody: info,
-										callback: () => Popup.hide()
-									})
-								}
-							}}
-						>
-							<Ionicons
-								name="ios-information-circle-outline"
-								size={28}
-								color={video.video && video.video.stringValue == videos[contVideo].video.stringValue ? "#240066" : '#ccc'}
-							/>
-						</Button>
-					</Right>
-				</ListItem>
+				<CounterClass  ref={contadorRef}
+					currentVideo = {currentVideo}
+					videos = {videos}
+					video = {video}
+					index = {i}
+					key= {i}
+					start = {false} 
+					duracao = {calculaTiempoEjercicios(title, tiempoClase, i)}
+					nextVideo = {nextVideo}
+			/>
 			))}
 			</List>
 		)
@@ -285,10 +242,7 @@ const  BasicsDetailScreen = props => {
 	const nextVideo = async  i => {
 		if(contVideo !== i) {
 			await setContVideo(i)
-			await setTiempoEjercicio(calculaTiempoEjercicios(tiempoClase,i))
-			if(contadorRef.current != undefined){
-				contadorRef.current.nextVideo(calculaTiempoEjercicios(tiempoClase,i))
-			}
+			setCurrentVideo(videos[i].video.stringValue)
 		}
 	}
 
@@ -313,12 +267,18 @@ const  BasicsDetailScreen = props => {
 					{/* ================== CURRENT VIDEO ================== */}
 					{mostrarVideo(videos[contVideo])}
 					
-					{/* ================== BARRA <  30:59  > ================== */}
-					{mostrarContadorActionBar()}
+					{/* ================== BARRA SEPARADOR TITLE ================== */}
+					{mostrarSeparadorBar()}
 
 					{/* ==================== LISTADO VIDEOS ================= */}
 					<Content> 
-						{mostrarListaVideos(videos)}
+						{videos.length > 0 ? mostrarListaVideos(videos) : null}
+
+						<Button style={stylesPage.button_form}
+							block
+							onPress={() => mostrarPopupFinClase(arrayInfo[Math.floor(Math.random() * arrayInfo.length)])}>
+							<Text>Finalizar</Text>
+						</Button>
 					</Content>
 				</>
 				:
@@ -350,18 +310,20 @@ const stylesPage = StyleSheet.create({
 		height: layout.window.height / 3
 	},
 	action_bar: {
-		display: 'flex', 
-		flexDirection: 'row', 
-		justifyContent: 'space-between',
-		alignItems: 'center', 
 		paddingHorizontal: 20,
-		paddingVertical: 5,
+		paddingVertical: 12,
 		backgroundColor: Colors.secondaryColor,
 		color: Colors.tintColor,
 
 	},
 	list_videos: {
 		marginTop: 10
+	},
+	button_form: {
+		margin: 20,
+		marginTop: 50,
+		backgroundColor: "#240066"
+
 	},
 
 });
@@ -410,3 +372,104 @@ const stylesPage = StyleSheet.create({
 				</Button> */
 
 
+
+// ===== ITEMS LIST VIDEOS ==========
+
+				// <ListItem thumbnail key={i} onPress = {() => nextVideo(i)}>
+				// 	<Left>
+				// 		{video.img && video.img.stringValue !== '' && video.img.stringValue !== 'img' ? (
+				// 			<Thumbnail
+				// 				square
+				// 				source={{ uri: video.img.stringValue }}
+				// 				style={{borderRadius: 5}}
+				// 			/>
+				// 		) : (
+				// 			<Thumbnail
+				// 				square
+				// 				source={require("../assets/images/no_image.png")}
+				// 				style={{borderRadius: 5}}
+				// 			/>
+				// 		)}
+				// 	</Left>
+				// 	<Body>
+				// 		{/* <Text>Titulo del video</Text> */}
+				// 		<Text>{video.category && video.tag ? `${video.category.stringValue} | ${video.tag.stringValue}` : 'Categoria'}</Text>
+				// 		<Text style={{fontWeight: video.video && video.video.stringValue == videos[contVideo].video.stringValue ? 'bold' : 'normal'}}>{video.title ? video.title.stringValue : 'Titulo del video'}</Text>
+						
+				// 		<Text note numberOfLines={1}>
+				// 			{Strings.ST22} {calculaTiempoEjercicios(title, tiempoClase, i)} minutos
+				// 		</Text>
+				// 	</Body>
+				// 	<Right>
+				// 		<Button
+				// 			transparent
+				// 			onPress={() => {
+				// 				if(video.video.stringValue == videos[contVideo].video.stringValue){
+				// 					const title = video.title ? video.title.stringValue : 'Titulo del video'
+				// 					const info = video.info ? video.info.arrayValue.values : 'Proximamente información sobre el ejercicio'
+				// 					Popup.show({
+				// 						type: 'Eagler',
+				// 						title: title,
+				// 						button: false,
+				// 						textBody: info,
+				// 						callback: () => Popup.hide()
+				// 					})
+				// 				}
+				// 			}}
+				// 		>
+				// 			<Ionicons
+				// 				name="ios-information-circle-outline"
+				// 				size={28}
+				// 				color={video.video && video.video.stringValue == videos[contVideo].video.stringValue ? "#240066" : '#ccc'}
+				// 			/>
+				// 		</Button>
+				// 	</Right>
+				// </ListItem>
+
+
+// ====== BARA ACTION ======
+
+	// Crea barra con el contador y botones ( <    30:59    > )
+	// const mostrarContadorActionBar = () => {
+		
+	// 	return (
+	// 		<View style={stylesPage.action_bar}>
+
+	// 			<View></View>
+
+	// 			{/* CONTADOR */}
+	// 			{/* =========================================== */}
+
+	// 			{counterVisible ?
+	// 				<Button transparent
+	// 					onPress={() => setCounterVisible(false)}
+	// 				>
+	// 					<Text style={{color: '#240066', fontWeight: '600'}}>COMENZAR</Text>
+	// 				</Button>
+	// 			:
+	// 				<CounterClass ref={contadorRef}
+	// 					start = {false} 
+	// 					duracao = {parseInt(tiempoEjercicio)}
+	// 					// setUnoMas= {setUnoMas}
+	// 				/>
+	// 			}
+				
+	// 			{/* Play / Pause */}
+	// 			{/* ===========================================  */}
+	// 			<Button transparent
+	// 				onPress={() => {
+	// 					if(contadorRef.current != undefined) {
+	// 						contadorRef.current.handlePlay();
+	// 						// setIsPlay(!isPlay);
+	// 					}
+	// 				}}
+	// 			>	
+	// 				<Ionicons
+	// 					name="ios-play"
+	// 					size={28}
+	// 					color={"#240066"}
+	// 				/>
+	// 			</Button>
+	// 		</View>
+	// 	)
+	// }

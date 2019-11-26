@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native"; // React Native
 import { Container, Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Spinner, Text } from "native-base"; // Native Base
 import { Video } from 'expo-av'; // Expo
 import { Ionicons } from '@expo/vector-icons';
-import { Root } from 'popup-ui'
+import { Root, Popup } from 'popup-ui'
 /* ========== REDUX ================== */
 import { useDispatch, useSelector  } from 'react-redux' // React-Redux
 import { 
@@ -97,6 +97,35 @@ const BodyDetailScreen = props => {
 		}
 	}, [warmups])
 
+	// Muestra PopUp al finalizar la clase
+	const arrayInfo = [
+		info = [
+			{stringValue: 'Has terminado la clase Body!'},
+			{stringValue: 'Se sumaran los puntos adquiridos a la diferentes habilidades'},
+			{stringValue: 'Te esperamos para la siguiente clase'},
+		],
+		info = [
+			{stringValue: 'Eres un animal salvaje del Body!'},
+			{stringValue: 'Tiger se te queda pequeño'},
+			{stringValue: 'Sique adelante!'},
+		],
+	]
+	const mostrarPopupFinClase = (info) => {
+		console.log(Math.floor(Math.random() * arrayInfo.length))
+		const title = 'Felicitaciones!'
+		Popup.show({
+			type: 'Eagler',
+			title: title,
+			button: false,
+			textBody: info,
+			buttontext: 'Ok',
+			callback: () => {
+				Popup.hide()
+				navigation.goBack()
+			}
+		})
+	}
+
 	// Crea la vista del current video 
 	const mostrarVideo = (section, i) => {
 		return (
@@ -173,6 +202,12 @@ const BodyDetailScreen = props => {
 					{mostrarListaVideos('CALENTAMIENTO', warmups)}
 					{mostrarListaVideos('EJERCICIOS', workouts)}
 					{mostrarListaVideos('ESTIRAMIENTOS', movements)}
+
+					<Button style={stylesPage.button_form}
+						block
+						onPress={() => mostrarPopupFinClase(arrayInfo[Math.floor(Math.random() * arrayInfo.length)])}>
+						<Text>Finalizar</Text>
+					</Button>
 				</Content>
 			</Container>
 			:
@@ -203,6 +238,12 @@ const stylesPage = StyleSheet.create({
 		color: Colors.tintColor,
 		backgroundColor: Colors.secondaryColor,
 		fontWeight: 'bold'
+	},
+	button_form: {
+		margin: 20,
+		marginTop: 50,
+		backgroundColor: "#240066"
+
 	},
 });
 

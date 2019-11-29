@@ -71,7 +71,7 @@ const BasicComponent = props => {
     return (
       <Root>
         <Spinner color={Colors.tintColor} />
-        <Text style={stylesPage.snipperText}>Validando perfil!!</Text>
+        <Text style={stylesPage.snipperText}>Validando perfil!</Text>
       </Root>
     );
   } else if (fase === undefined || visibleModalPerfilJuego === true && loading === false) {

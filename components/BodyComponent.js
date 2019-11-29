@@ -8,11 +8,8 @@ import CardBodyComponent from "./CardBodyComponent";
 
 
 const imgs = [
-	// "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/Body%2Fbody%20img%2Fportada%2Fimg-mueve-cuerda.jpg?alt=media&token=d523e8f2-e126-4a5c-929a-3a8fa2c9be17",
 	require("../assets/images/portadaBody/img-mueve-cuerda.jpg"),
-	// "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/Body%2Fbody%20img%2Fportada%2Fimg-sentadillas.jpg?alt=media&token=5dabf6e4-a0ae-4288-97bf-d9fbba4678bc",
 	require("../assets/images/portadaBody/img-sentadillas.jpg"),
-	// "https://firebasestorage.googleapis.com/v0/b/eaglerclub-4f815.appspot.com/o/Body%2Fbody%20img%2Fportada%2Fimg-kettlebell.jpeg?alt=media&token=f40548b6-fd5c-4b20-9a5e-535ffeef95c2"
 	require("../assets/images/portadaBody/kettlebell.jpeg"),
 ];
 

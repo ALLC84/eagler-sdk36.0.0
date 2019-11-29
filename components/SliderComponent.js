@@ -19,9 +19,10 @@ const SliderIntro = (props) => {
             <Text>skip</Text>
          </Button> */}
 
-         <ImageBackground source={props.uri} style={styles.imageIntro}>
-            <Button style={styles.boton} onPress={()=>props.cerrarTourApp()}>
-               <Text>skip</Text>
+         {/* <ImageBackground source={props.uri} style={styles.imageIntro}> */}
+         <View style={styles.backIntro}>
+            <Button transparent style={styles.boton} onPress={()=>props.cerrarTourApp()}>
+               <Text style={{color: '#240066', fontSize: 18}}>SALIR</Text>
             </Button>
             
             <View>
@@ -36,39 +37,47 @@ const SliderIntro = (props) => {
                />
             </View>
 
-            <View style={{padding: 40}}>
+            <View style={{padding: 40, marginTop: 30}}>
                <Text style={{
                   textAlign: 'center', 
                   // marginTop: 180,
-                  color: 'white',
-                  fontSize: 24
-               }}>Bienvenido a la App de Eagler</Text>
+                  color: '#240066',
+                  fontSize: 32,
+                  fontWeight: 'bold',
+               }}>Bienvenido a Eagler</Text>
 
                <Text style={{
                   textAlign: 'center', 
                   marginTop: 40,
-                  color: 'white',
-                  fontSize: 18
+                  color: '#240066',
+                  fontSize: 26
                }}>Encontraras las claves para mejorar todo tu golf</Text>
             </View>
                
-         </ImageBackground>
+         {/* </ImageBackground> */}
+         </View>
       </>
    )
 }
 const SliderInfo = (props) => {
    return(
-      <>
-         <Image style={styles.image} source={props.uri} />
+      <View style={{displa: 'flex', alignItems: 'center'}}>
+         <View style={{height: 400, marginBottom: 30}}>
+            <Image style={{height: 400, width}} source={props.uri} />
+         </View>
+         { !props.fin ? <View style={{height: 100}}>
+            <Image style={styles.image} source={props.icon} />
+         </View> : null}
+
          {
             props.fin
             ?
-            <Button style={styles.botonHecho} block onPress={()=>props.cerrarTourApp()}>
-               <Text>Hecho</Text>
+            <Button transparent style={styles.botonHecho} block onPress={()=>props.cerrarTourApp()}>
+               <Text style={{color: '#fff'}}>HECHO</Text>
             </Button>
             :
-            <Button style={styles.boton} onPress={()=>props.cerrarTourApp()}>
-               <Text>skip</Text>
+            <Button transparent style={styles.boton} onPress={()=>props.cerrarTourApp()}>
+               <Text style={{color: '#240066', fontSize: 18}}>SALIR</Text>
             </Button>
          }
 
@@ -77,17 +86,18 @@ const SliderInfo = (props) => {
                   textAlign: 'center', 
                   // marginTop: 180,
                   // color: 'white',
-                  fontSize: 24
+                  fontSize: 26,
+                  fontWeight: '600'
                }}>{props.title}</Text>
 
                <Text style={{
                   textAlign: 'center', 
                   marginTop: 40,
                   // color: 'white',
-                  fontSize: 18
+                  fontSize: 20
                }}>{props.description}</Text>
             </View>
-      </>
+      </View>
    )
 }
 
@@ -96,11 +106,20 @@ export default class SliderComponent extends Component {
       super(props)
       this.state = {
          imageSlider: [
-            require('../assets/images/Home_640.jpg'),
-            require('../assets/images/LaApp_640.jpg'),
-            require('../assets/images/Home_640.jpg'),
-            require('../assets/images/LaApp_640.jpg')
+            require('../assets/images/portadaBasics/koepkaHierros.jpg'),
+            require('../assets/images/portadaBody/img-mueve-cuerda.jpg'),
+            require('../assets/images/portadaBasics/puttSpieth.jpg'),
+            require('../assets/images/introApp/Golf-Pre-Shot-Routine.jpg'),
+            require('../assets/images/introApp/Celebrating.jpg'),
+         ],  
+         iconSlider: [
+            require('../assets/images/1BasicsAz.png'),
+            require('../assets/images/1BodyAz.png'),
+            require('../assets/images/1DrillsAz.png'),
+            require('../assets/images/1IQAz.png'),
          ]
+
+         
       }
    }
 
@@ -123,15 +142,17 @@ export default class SliderComponent extends Component {
             <View>
                <SliderInfo 
                   cerrarTourApp={this.props.cerrarTourApp} 
-                  uri={this.state.imageSlider[0]} 
+                  uri={this.state.imageSlider[0]}
+                  icon={this.state.iconSlider[0]}
                   title={'Basics'}
-                  description={'Aqui tendras sesiones personalizadas de entrenamientos por niveles desde le Putt hasta el Drive Pincha en la sesiones, introduce el tiempo que quieras dedicar y empieza a mejorar!!'}
+                  description={'Aqui tendras sesiones personalizadas de entrenamientos por niveles desde le Putt hasta el Drive Pincha en la sesiones, introduce el tiempo que quieras dedicar y empieza a mejorar!'}
                />
             </View>
             <View>
                <SliderInfo 
                   cerrarTourApp={this.props.cerrarTourApp} 
                   uri={this.state.imageSlider[1]}
+                  icon={this.state.iconSlider[1]}
                   title={'Body'}
                   description={'Para que los entrenamiento técnicos mejoren más rápido, deberemos entrenar la movilidad de nuestro cuerpo. Te presentamos las combinaciones más eficientes para tu nivel.'}
                />
@@ -139,7 +160,8 @@ export default class SliderComponent extends Component {
             <View>
                <SliderInfo 
                   cerrarTourApp={this.props.cerrarTourApp} 
-                  uri={this.state.imageSlider[2]}
+                  uri={this.state.imageSlider[2]  }                
+                  icon={this.state.iconSlider[2]}
                   title={'Drills'}
                   description={'Encontraras ejercidos muy sencillos y concretos que podrás hacer en cualquier momento que harán que mejores tu golf sin necesidad de ir al campo.'}
                />
@@ -148,6 +170,7 @@ export default class SliderComponent extends Component {
                <SliderInfo 
                   cerrarTourApp={this.props.cerrarTourApp} 
                   uri={this.state.imageSlider[3]}
+                  icon={this.state.iconSlider[3]}
                   title={'iQ'}
                   description={'La psicología y la nutrición son aspectos para aumentar el rendimiento en cualquier deporte. Aquí te propondremos estrategias y ejercicios fáciles de implementar y lleven a tu Golf al siguiente nivel.'}
                />
@@ -156,8 +179,8 @@ export default class SliderComponent extends Component {
             <View>
                <SliderInfo 
                   cerrarTourApp={this.props.cerrarTourApp} 
-                  uri={this.state.imageSlider[1]} fin={true}
-                  title={'Gracias!!'}
+                  uri={this.state.imageSlider[4]} fin={true}
+                  title={'Gracias!'}
                   description={'Para que los ejercicios Técnicos y entrenamientos físicos se adapten a ti, necesitamos que introduzcas algunos datos sencillos'}
                />
             </View>
@@ -182,17 +205,28 @@ const styles = StyleSheet.create({
       height,
       width,
    },
+   backIntro: {
+      display: 'flex',
+      alignItems: 'center',
+      // justifyContent: 'center',
+      height,
+      width,
+      backgroundColor: '#DEFD59'
+   },
    image: {
-      height: 250,
-      width
+      maxHeight: 100,
+      width: 100,
+      resizeMode: 'stretch'
    },
    boton: {
       position: 'absolute',
       right: 20,
       marginTop: 60,
-      backgroundColor: "#240066"
+      // backgroundColor: "#240066"
    },
    botonHecho: {
-      backgroundColor: "#240066"
+      backgroundColor: "#240066",
+      width: width - 20,
+      marginLeft: 10
    }
 });

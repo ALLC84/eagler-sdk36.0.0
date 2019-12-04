@@ -103,7 +103,7 @@ const  ProfileUser = props => {
 					</Right>
 				</ListItem>
 
-				<ListItem
+				{/* <ListItem
 					style={stylesDrawer.item_menu}
 					onPress={() => {
 						closeDrawer()
@@ -127,9 +127,9 @@ const  ProfileUser = props => {
 							style={stylesDrawer.icon_menu}
 						/>
 					</Right>
-				</ListItem>
+				</ListItem> */}
 
-				<ListItem
+				{/* <ListItem
 					style={stylesDrawer.item_menu}
 					onPress={ () => {
 						closeDrawer()
@@ -153,7 +153,7 @@ const  ProfileUser = props => {
 							style={stylesDrawer.icon_menu}
 						/>
 					</Right>
-				</ListItem>
+				</ListItem> */}
 			</ScrollView>
 
 			<View style={stylesDrawer.footer_menu}>

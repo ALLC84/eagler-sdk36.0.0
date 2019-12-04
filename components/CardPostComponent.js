@@ -20,7 +20,7 @@ const CardPostComponent = props => {
 		navigation.navigate("PostDetail", { post: post });
 	}
 
-	Platform.OS === "ios" ? Image.prefetch({ uri: img }) : null;
+	// Platform.OS === "ios" ? Image.prefetch({ uri: img }) : null;
 	//Image.prefetch({ uri: img });
 	return (
 		<Card style={cardStyles.card_section}>
@@ -30,7 +30,7 @@ const CardPostComponent = props => {
 				button onPress={() => postDetailView(post)
 			}>
 				<Image style={cardStyles.card_item_img}
-					source={{ uri: img, cache: "force-cache" }}
+					source={{ uri: img }}
 					onLoadEnd={() => setLoading(false)}
 				/>
 

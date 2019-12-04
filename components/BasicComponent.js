@@ -87,7 +87,7 @@ const BasicComponent = props => {
   } else {
     return (
       <Root>
-        {premium != 'FREE' ?
+        {/* {premium != 'FREE' ? */}
         <Content padder>
           <CardBasicsComponent
             key={"1"}
@@ -112,7 +112,7 @@ const BasicComponent = props => {
             img={imgs[2]}
             navigation={navigation}
           />
-          <CardBasicsComponent
+          {/* <CardBasicsComponent
             key={"4"}
             title={Strings.ST29}
             subtitle={Strings.ST30}
@@ -125,28 +125,28 @@ const BasicComponent = props => {
             subtitle={Strings.ST32}
             img={imgs[4]}
             navigation={navigation}
-          />
+          /> */}
         </Content>
-        :
-        <Content padder>
-          <CardBasicsComponent
-            key={"1"}
-            title={'Gratis'}
-            subtitle={'Clase de prueba'}
-            img={imgs[0]}
-            navigation={navigation}
-          />
+        {/* :
+        // <Content padder>
+        //   <CardBasicsComponent
+        //     key={"1"}
+        //     title={'Gratis'}
+        //     subtitle={'Clase de prueba'}
+        //     img={imgs[0]}
+        //     navigation={navigation}
+        //   />
 
-          <Button style={stylesPage.button_form}
-            block
-            onPress={() => {
-              navigation.navigation.navigate("Suscripciones")
-            }}
-          >
-            <Text>PASATE A PREMIUM</Text>
-          </Button>
-        </Content>
-        }
+        //   <Button style={stylesPage.button_form}
+        //     block
+        //     onPress={() => {
+        //       navigation.navigation.navigate("Suscripciones")
+        //     }}
+        //   >
+        //     <Text>PASATE A PREMIUM</Text>
+        //   </Button>
+        // </Content>
+        // */}
       </Root>
     );
   }

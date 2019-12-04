@@ -20,7 +20,7 @@ const CardDrillComponent = props => {
 		navigation.navigate("DrillDetail", { drill: drill });
 	}
 
-	Platform.OS === "ios" ? Image.prefetch({ uri: img }) : null;
+	// Platform.OS === "ios" ? Image.prefetch({ uri: img }) : null;
 	//Image.prefetch({ uri: img });
 	return (
 		<Card style={cardStyles.card_section}>
@@ -30,7 +30,7 @@ const CardDrillComponent = props => {
 				button onPress={() => drillDetailView(drill)}
 			>
 				<Image style={cardStyles.card_item_img}
-					source={{ uri: img, cache: "force-cache" }}
+					source={{ uri: img }}
 					onLoadEnd={() => setLoading(false)}
 				/>
 

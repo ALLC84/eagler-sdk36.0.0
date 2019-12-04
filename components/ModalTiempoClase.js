@@ -100,7 +100,8 @@ const stylesPage = StyleSheet.create({
 	form_text: {
 		marginBottom: 40,
 		textAlign: "center",
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		fontSize: 24
 	}
 });
 

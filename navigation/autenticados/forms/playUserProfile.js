@@ -123,7 +123,7 @@ const validate = (values) => {
    if(!values.mano){
       error.mano = 'requerido'
    } else if(values.mano != 'Diestro' && values.mano != 'Zurdo') {
-      error.mano = 'Campo mano incorrecto'
+      error.mano = 'Diestro/Zurdo'
    }
 
    return error;

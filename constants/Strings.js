@@ -94,9 +94,9 @@ const Strings = {
     ST39_1: "Ver post",
     
     // Modals
-    ST40: "Para personalizar los ejercicios y adecuarlos a su nivel de juego, necesitamos que rellene su perfil de juego, esto solo sera una vez. Gracias!!",
+    ST40: "Para personalizar los ejercicios necesitamos que rellenes tu perfil. Será solo una vez.",
 
-    ST41: "¿Que tiempo entrenaras hoy?",
+    ST41: "Minutos de entrenamiento",
 
     // Formularios  Rutas Autenticadas
     // Perfil Juego
@@ -108,7 +108,7 @@ const Strings = {
 
     ST45: "Handicap",
 
-    ST46: "mano",
+    ST46: "Mano",
 
     ST47: "Actualizar",
     

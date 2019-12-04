@@ -1,7 +1,7 @@
 /* =========== LIBRERIAS ============= */
 import React, { useState, useEffect} from "react"; // React
 import { connect } from 'react-redux'; // Redux
-import { Modal, View, Dimensions, StyleSheet } from "react-native"; // React Native
+import { Modal, View, Dimensions, StyleSheet, ScrollView, SafeAreaView } from "react-native"; // React Native
 import { Form, Text } from "native-base"; // Native Base
 /* ========== REDUX ================ */
 import { useDispatch, useSelector  } from 'react-redux' // React-Redux
@@ -55,24 +55,27 @@ const ModalPerfilJuego = props => {
 
 	const mostrarForm = (userProfile) => {
 		return(
-			<View style={stylesPage.form_view}>
-				<Text style={stylesPage.form_message} >
-					{Strings.ST40}
-				</Text>
-				
-				<Form style={stylesPage.form_container}>
-					<PlayUserProfileForm 
-						getFase = {getFase}
-						initialValues = {initialValues} 
-						updatePlayProfile={updatePlayProfile} 
-						userId={user.uid} 
-						userProfile={userProfile}
-						setMessage={mostrarToast}
-						createInitialPhase={createInitialPhase}
-						cerrarModal={cerrarModal}
-					/>
-				</Form>
-			</View>
+			// <ScrollView style={stylesPage.form_view}>
+			<SafeAreaView style={stylesPage.form_view}>
+				<ScrollView>
+					<Text style={stylesPage.form_message} >
+						{Strings.ST40}
+					</Text>
+					
+					<Form style={stylesPage.form_container}>
+						<PlayUserProfileForm 
+							getFase = {getFase}
+							initialValues = {initialValues} 
+							updatePlayProfile={updatePlayProfile} 
+							userId={user.uid} 
+							userProfile={userProfile}
+							setMessage={mostrarToast}
+							createInitialPhase={createInitialPhase}
+							cerrarModal={cerrarModal}
+						/>
+					</Form>
+				</ScrollView>
+			</SafeAreaView>
 		)
 	}
 
@@ -106,14 +109,16 @@ const stylesPage = StyleSheet.create({
 		marginHorizontal: 10
 	},
 	form_message: {
+		fontSize: 20,
 		marginBottom: 40,
-		textAlign: "justify",
-		paddingHorizontal: 40
+		paddingHorizontal: 40,
+		paddingTop: 20
 	},
 	form_container: {
-		width: width, 
-		paddingLeft: 20, 
-		paddingRight: 30
+		marginBottom: 250
+		// width: width,
+		// paddingLeft: 20, 
+		// paddingRight: 30
 	}
 });
 

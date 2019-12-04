@@ -157,6 +157,9 @@ class CounterClass extends Component {
             >
               {video.title ? video.title.stringValue : 'Titulo del video'}
             </Text>
+            <Text note>
+              {video.category ? video.category.stringValue : 'Category'} | {video.tag ? video.tag.stringValue : 'Tag'}
+            </Text>
             <Text style={{fontWeight: currentVideo == video.video.stringValue ? "bold" : null, color: this.state.color, marginTop: 5}}
             > 
               {this.state.timeFormat}

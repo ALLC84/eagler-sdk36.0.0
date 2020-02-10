@@ -1,6 +1,6 @@
 /* =========== LIBRERIAS ============= */
 import React, {useState} from "react"; // React
-import { Image, TouchableOpacity, StyleSheet } from "react-native"; // React Native
+import { Image, TouchableOpacity, StyleSheet, Platform } from "react-native"; // React Native
 import { Card, CardItem, Left, Body, Right, Text, Spinner} from "native-base"; // Native Base
 import { Ionicons } from '@expo/vector-icons'; // Expo
 /* ========== PROPIOS ================ */
@@ -60,7 +60,7 @@ const CardBodyComponent = props =>{
 						onPress={() => bodyDetailView(title)}
 					>
 						<Ionicons
-							size={40}
+							size={!Platform.isPad ? 40 : 60 }
 							color={"#fff"}
 							name={"ios-play-circle"}
 						/>

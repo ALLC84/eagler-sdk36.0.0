@@ -1,6 +1,6 @@
 /* =========== LIBRERIAS ============= */
 import React, {useState, useEffect, useRef} from "react"; // React
-import { StyleSheet } from "react-native"; // React Native
+import { StyleSheet, Platform } from "react-native"; // React Native
 import { Container, Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Spinner, Text } from "native-base"; // Native Base
 import { Video } from 'expo-av'; // Expo
 import { Ionicons } from '@expo/vector-icons';
@@ -59,7 +59,9 @@ const BodyDetailScreen = props => {
 	const clearWorkouts = () => dispatch(actionGuardarWorkoutsStore([]))
 	const clearMovements = () => dispatch(actionGuardarMovementsStore([]))
 	// STATE
+	const [isPrimerEjercicio, setIsPrimerEjercicio] = useState(false);
 	const [currentSection, setCurrentSection] = useState([]);
+	const [currentSectionTitle, setCurrentSectionTitle] = useState('CALENTAMIENTO');
 	const [currentVideo, setCurrentVideo] = useState('')
 	const [contVideo, setContVideo] = useState(0);
 	//CHILD REF
@@ -97,6 +99,13 @@ const BodyDetailScreen = props => {
 		}
 	}, [warmups])
 
+	useEffect(() => {
+		if (currentSectionTitle === 'EJERCICIOS' && contVideo >= 0 && !isPrimerEjercicio){
+			setIsPrimerEjercicio(true)
+			mostrarPopupInicioEjercicios()
+		}
+	}, [currentSectionTitle, contVideo])
+
 	// Muestra PopUp al finalizar la clase
 	const arrayInfo = [
 		info = [
@@ -111,7 +120,7 @@ const BodyDetailScreen = props => {
 		],
 	]
 	const mostrarPopupFinClase = (info) => {
-		console.log(Math.floor(Math.random() * arrayInfo.length))
+		// console.log(Math.floor(Math.random() * arrayInfo.length))
 		const title = 'Felicitaciones!'
 		Popup.show({
 			type: 'Eagler',
@@ -122,6 +131,18 @@ const BodyDetailScreen = props => {
 			callback: () => {
 				Popup.hide()
 				navigation.goBack()
+			}
+		})
+	}
+	const mostrarPopupInicioEjercicios = (info) => {
+		Popup.show({
+			type: 'Eagler',
+			title: 'Ejercicios Físicos',
+			button: false,
+			textBody: 'Estas listo para empezar?',
+			buttontext: 'Ok',
+			callback: () => {
+				Popup.hide()
 			}
 		})
 	}
@@ -155,27 +176,30 @@ const BodyDetailScreen = props => {
 			<List>
 				<ListItem itemDivider first style={stylesPage.headerSection}>
 					<Text>{section}</Text>
-            </ListItem>
-			{videos.map((video, i) => (
-				<CounterBody  ref={contadorRef}
-					currentVideo = {currentVideo}
-					videos = {videos}
-					video = {video}
-					index = {i}
-					key= {i}
-					start = {false} 
-					duracao = {1}
-					secons = {video.fields.duration.integerValue ? parseInt(video.fields.duration.integerValue) : parseInt(video.fields.duration.stringValue)}
-					nextVideo = {nextVideo}
-				/>
-			))}
+				</ListItem>
+
+				{videos.map((video, i) => (
+					<CounterBody  ref={contadorRef}
+						titleSection = {section}
+						currentVideo = {currentVideo}
+						videos = {videos}
+						video = {video}
+						index = {i}
+						key= {i}
+						start = {false} 
+						duracao = {1}
+						secons = {video.fields.duration.integerValue ? parseInt(video.fields.duration.integerValue) : parseInt(video.fields.duration.stringValue)}
+						nextVideo = {nextVideo}
+					/>
+				))}
 			</List>
 		)
 	}
 
-	const nextVideo = async (section, i) => {
+	const nextVideo = async (titleSection, section, i) => {
+		setCurrentSectionTitle(titleSection)
 		await setCurrentSection(section)
-		await setCurrentVideo(section.length != 0 ? section[i].fields.video.stringValue: '')
+		await setCurrentVideo(section.length != 0 ? section[i].fields.video.stringValue : '')
 		setContVideo(i)
 	};
 
@@ -194,7 +218,6 @@ const BodyDetailScreen = props => {
 			?
 			<Container>
 				<View>
-					{/* {mostrarVideo(videos[contVideo])} */}
 					{mostrarVideo( currentSection, contVideo )}
 				</View>
 
@@ -231,7 +254,7 @@ const stylesPage = StyleSheet.create({
 	// Video Active
 	video_avtive: {
 		width: layout.window.width,
-		height: layout.window.height / 3
+		height: !Platform.isPad ? layout.window.height / 3 : layout.window.height / 2
 	},
 	// Header Section List
 	headerSection: {

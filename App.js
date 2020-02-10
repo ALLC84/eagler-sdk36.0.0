@@ -13,7 +13,6 @@ import { Ionicons } from '@expo/vector-icons';
 import Store from './store/Store'; // Store de ( State de la App )
 import RutasSelection from './navigation/rutasSelection'; // Selector de Rutas
 
-
 export default class App extends React.Component {
 	state = {
 		isLoadingComplete: false,

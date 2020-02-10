@@ -17,7 +17,7 @@ const Strings = {
     // Start ( login - logout )
     ST5: "¿Forgot Password?",
 
-    ST6: "¿Ahún no te has registrado?",
+    ST6: "¿Aún no te has registrado?",
 
     ST7: "Iniciar sesión",
 
@@ -39,6 +39,8 @@ const Strings = {
     ST15: "Compartir",
 
     ST16: "Logout",
+
+    ST16_1: "Nuestro Metodo",
 
     // Header Detail Screens
     ST17: "Volver",

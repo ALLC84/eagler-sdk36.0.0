@@ -1,4 +1,7 @@
 "use strict";
+import { Platform } from 'react-native'
+// console.log(Platform.isPad);// boolean
+
 
 import Colors from "../Colors";
 import window from "../Layout";
@@ -18,7 +21,7 @@ module.exports = StyleSheet.create({
    },
    card_item_img: {
 		flex: 1,
-		height: 200,
+		height: !Platform.isPad ? 200 : 400,
 		width: null,
 		borderRadius: 10,
 		backgroundColor: 'hsla(360, 100%, 0%, .2)',
@@ -27,8 +30,8 @@ module.exports = StyleSheet.create({
 		flex: 1,
 		backgroundColor: 'hsla(360, 100%, 0%, .4)',
 		position: 'relative',
-		height: 200,
-		marginTop: -200,
+		height: !Platform.isPad ? 200 : 400,
+		marginTop: !Platform.isPad ? -200 : -400,
 		borderRadius: 10,
 	}, // Capa por encima de la imagen => Se utilizara hasta que esten preparadas previamente
 	card_item_action_and_text: {
@@ -38,11 +41,11 @@ module.exports = StyleSheet.create({
 		borderTopRightRadius: 10
 	},
 	card_title: {
-		fontSize: 24,
+		fontSize: !Platform.isPad ? 24 : 32,
 		color: "#fff"
 	},
 	card_subtitle: {
-		fontSize: 18,
+		fontSize: !Platform.isPad ? 18 : 24,
 		color: "#fff"
    },
    // Solo tarjetas de IQ
@@ -52,6 +55,7 @@ module.exports = StyleSheet.create({
       bottom: 0 
    },
    texts_button: {
+		fontSize: !Platform.isPad ? 18 : 24,
 		color: '#FFF',
 		marginLeft: 10,
 		marginTop: 5

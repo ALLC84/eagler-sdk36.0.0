@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
@@ -25,10 +25,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.eagler.eagler"
+      "bundleIdentifier": "com.eagler.eagler",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Necesitamos permiso a su galeria para seleccionar una foto para su perfil de usuario"
+      }
     },
     "android": {
-      "package": "com.eagler.eagler"
+      "package": "com.eagler.eagler",
+      "versionCode": 2
     },
     "description": "Tus entrenadores de Golf. Mejora tu swing con entrenamientos personalizados. Entrena tu golf como un jugador del Tour con ejercicios técnicos y físicos en el campo y en casa. Además, encontrarás consejos que mejorará tu psicología y nutrición deportiva."
   }

@@ -146,11 +146,11 @@ class CounterBody extends Component {
     )
   }
 
-  itemBody(videos, video, index, nextVideo, currentVideo){
+  itemBody(titleSection, videos, video, index, nextVideo, currentVideo){
     return(
       <Body>
         <Button transparent
-          onPress = {() => nextVideo(videos, index)}
+          onPress = {() => nextVideo(titleSection, videos, index)}
         >
           <View style={{display: 'flex', flexDirection: 'column'}}>
             <Text 
@@ -214,7 +214,7 @@ class CounterBody extends Component {
 
   // Render Componet
   render() {
-    const {videos, video, index, nextVideo, currentVideo} = this.props
+    const {titleSection, videos, video, index, nextVideo, currentVideo} = this.props
 
     return (
       <ListItem thumbnail>
@@ -223,6 +223,7 @@ class CounterBody extends Component {
 
         {/* Body */}
         {this.itemBody(
+          titleSection,
           videos,
           video.fields,
           index,

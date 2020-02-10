@@ -103,6 +103,32 @@ const  ProfileUser = props => {
 					</Right>
 				</ListItem>
 
+				<ListItem
+					style={stylesDrawer.item_menu}
+					onPress={() => {
+						closeDrawer()
+						navigation.navigate("TheMethod");
+					}}
+				>
+					<Left>
+						<View style={{width: 30}}>
+							<Ionicons
+								name="ios-rocket"
+								style={stylesDrawer.icon_left_menu}
+							/>
+						</View>
+						<Text style={stylesDrawer.text_menu}>
+							{Strings.ST16_1}
+						</Text>
+					</Left>
+					<Right>
+						<Ionicons
+							name="ios-arrow-forward"
+							style={stylesDrawer.icon_menu}
+						/>
+					</Right>
+				</ListItem>
+
 				{/* <ListItem
 					style={stylesDrawer.item_menu}
 					onPress={() => {

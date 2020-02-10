@@ -143,24 +143,24 @@ const setImageProfileFirebase = async (args) => {
       .child("userProfile/" + args.name)
       .put(blob, metadata);
 
-      uploadImage.on('state_changed',(snapshot) => {
-         // var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-         // console.log('Upload is ' + progress + '% done');
-      }, (error) => {
-         console.log('TCL: -------------------------------------------')
-         console.log('TCL: setImageProfileFirebase -> error', error)
-         console.log('TCL: -------------------------------------------')
-      }, () => {
-         uploadImage.snapshot.ref.getDownloadURL()
-            .then(downloadURL => {
-               DB
-               .collection("users")
-               .doc(args.name)
-               .update({
-                  avatarImg: downloadURL
-               })
-         });
-      })
+   uploadImage.on('state_changed',(snapshot) => {
+      // var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      // console.log('Upload is ' + progress + '% done');
+   }, (error) => {
+      console.log('TCL: -------------------------------------------')
+      console.log('TCL: setImageProfileFirebase -> error', error)
+      console.log('TCL: -------------------------------------------')
+   }, () => {
+      uploadImage.snapshot.ref.getDownloadURL()
+         .then(downloadURL => {
+            DB
+            .collection("users")
+            .doc(args.name)
+            .update({
+               avatarImg: downloadURL
+            })
+      });
+   })
 }
 
 function* setImageProfile(values){

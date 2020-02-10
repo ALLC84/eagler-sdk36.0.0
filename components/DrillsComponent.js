@@ -1,6 +1,6 @@
 /* =========== LIBRERIAS ============= */
 import React, { useEffect } from "react"; // React
-import { StyleSheet } from 'react-native'; // React Native
+import { StyleSheet, FlatList } from 'react-native'; // React Native
 import { connect } from 'react-redux'; // Redux
 import { Content, Spinner, Text } from "native-base"; // Native Base
 /* ========== PROPIOS ================ */
@@ -45,12 +45,9 @@ const DrillsComponent = props => {
 		</>
 		:
 		<Content padder>
-			{ crearCardDrills(drills) }
+			{crearCardDrills(drills)}
 		</Content>
-	);
-	
-
-	
+	);	
 }
 export default DrillsComponent;
 

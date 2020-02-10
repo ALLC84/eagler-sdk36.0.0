@@ -38,12 +38,12 @@ const getFaseFirebase = userId =>
          fases.premium           = data.premium
          fases.handicap          = data.handicap !== undefined ? data.handicap : 36.0
          fases.fase              = data.fase
-         fases.faseHierrosCortos = FunctionSetPhase.getPhaseHierrosCortos(parseInt(data.tiempoHierrosCortos),parseFloat(fases.handicap))
-         fases.faseHierrosLargos = FunctionSetPhase.getPhaseHierrosLargos(parseInt(data.tiempoHierrosLargos), parseFloat(fases.handicap))
-         fases.faseMaderas       = FunctionSetPhase.getPhaseMaderas(parseInt(data.tiempoMaderas), parseFloat(fases.handicap))
-         fases.faseDrive         = FunctionSetPhase.getPhaseDrive(parseInt(data.tiempoDrive), parseFloat(fases.handicap))
-         fases.faseApproach      = FunctionSetPhase.getPhaseApproach(parseInt(data.tiempoApproach), parseFloat(fases.handicap))
-         fases.fasePutt          = FunctionSetPhase.getPhasePutt(parseInt(data.tiempoPutt), parseFloat(fases.handicap))  
+         fases.faseHierrosCortos = 1/*FunctionSetPhase.getPhaseHierrosCortos(parseInt(data.tiempoHierrosCortos),parseFloat(fases.handicap))*/
+         fases.faseHierrosLargos = 1/*FunctionSetPhase.getPhaseHierrosLargos(parseInt(data.tiempoHierrosLargos), parseFloat(fases.handicap))*/
+         fases.faseMaderas       = 1 /*FunctionSetPhase.getPhaseMaderas(parseInt(data.tiempoMaderas), parseFloat(fases.handicap))*/
+         fases.faseDrive         = 1/*FunctionSetPhase.getPhaseDrive(parseInt(data.tiempoDrive), parseFloat(fases.handicap))*/
+         fases.faseApproach      = 1/*FunctionSetPhase.getPhaseApproach(parseInt(data.tiempoApproach), parseFloat(fases.handicap))*/
+         fases.fasePutt          = 1/*FunctionSetPhase.getPhasePutt(parseInt(data.tiempoPutt), parseFloat(fases.handicap))*/ 
       } else {
          console.log('TCL: ------------------------------------------------------')
          console.log('TCL: getFaseFirebase -> Warning: El documento esta vacio')

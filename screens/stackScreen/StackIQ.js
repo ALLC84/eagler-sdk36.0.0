@@ -7,6 +7,7 @@ import PerfilUsuarioScreen from "../PerfilUsuarioScreen";
 import PerfilFisicoUsuarioScreen from "../PerfilFisicoUsuarioScreen";
 import PerfilJuegoUsuarioScreen from "../PerfilJuegoUsuarioScreen";
 import SuscripcionesScreen from "../SuscripcionesScreen";
+import TheMethodScreen from '../theMethodScreen';
 
 
 const IQ = createStackNavigator(
@@ -28,6 +29,9 @@ const IQ = createStackNavigator(
 		},
 		Suscripciones: {
 			screen: SuscripcionesScreen
+		},
+		TheMethod: {
+			screen: TheMethodScreen
 		}
 	},
 	{

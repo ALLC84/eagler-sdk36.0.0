@@ -11,6 +11,7 @@ import PerfilUsuarioScreen from "../PerfilUsuarioScreen";
 import PerfilFisicoUsuarioScreen from "../PerfilFisicoUsuarioScreen";
 import PerfilJuegoUsuarioScreen from "../PerfilJuegoUsuarioScreen";
 import SuscripcionesScreen from "../SuscripcionesScreen";
+import TheMethodScreen from '../theMethodScreen';
 
 
 const Basics = createStackNavigator(
@@ -38,6 +39,9 @@ const Basics = createStackNavigator(
 		},
 		Suscripciones: {
 			screen: SuscripcionesScreen
+		},
+		TheMethod: {
+			screen: TheMethodScreen
 		}
 	},
 	{

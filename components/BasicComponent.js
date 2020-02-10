@@ -39,7 +39,6 @@ const BasicComponent = props => {
 	const dispatch = useDispatch()
   const getFase = (userId) => dispatch(actionGetFase(userId))
   const isPremium = (userId) => dispatch(actionGetIsPremium(userId))
-  
 
   // FUNCTIONS
   const cerrarModal = () => setVisibleModalPerfilJuego(false)

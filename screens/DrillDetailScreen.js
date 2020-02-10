@@ -1,6 +1,6 @@
 /* =========== LIBRERIAS ============= */
 import React from "react"; // React
-import { StyleSheet } from "react-native"; // React Native
+import { StyleSheet, Platform } from "react-native"; // React Native
 import { Container, Content, View, Badge, Text } from "native-base"; // Native Base
 import { Video } from 'expo-av'; // Expo
 /* ========== PROPIOS ================ */
@@ -61,7 +61,7 @@ const DrillDetailScreen = props => {
 						</Text>
 
 						{content.map((content, i) => (
-							<Text key={i}>
+							<Text key={i} style={stylesPage.text_content_view}>
 								{content}
 								{"\n"}
 							</Text>
@@ -81,11 +81,15 @@ const stylesPage = StyleSheet.create({
 	// Video 
 	video_avtive: {
 		width: layout.window.width,
-		height: layout.window.height / 3
+		height: !Platform.isPad ? layout.window.height / 3 : layout.window.height / 2
 	},
 	title_view: {
-		fontSize: 18,
+		fontSize: !Platform.isPad ? 18 : 24,
 		marginBottom: 10,
 		fontWeight: "600"
+	},
+	text_content_view: {
+		fontSize: !Platform.isPad ? 14 : 18,
+
 	}
 });

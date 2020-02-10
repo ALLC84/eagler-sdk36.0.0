@@ -1,6 +1,6 @@
 /* =========== LIBRERIAS ============= */
 import React, { useEffect, useState, useRef } from "react"; // React
-import { StyleSheet, Modal } from "react-native"; // React-native
+import { StyleSheet, Platform } from "react-native"; // React-native
 import { Content, Button, Left, Body, Right, View, List, ListItem, Thumbnail, Spinner, Text, Fab, Icon } from "native-base"; // Native Base
 import { Video } from 'expo-av'; // Expo
 import { Ionicons } from '@expo/vector-icons';
@@ -46,7 +46,7 @@ const  BasicsDetailScreen = props => {
 	const contadorRef = useRef();
 	
 
-	/** Funcion que utilizo para verificar los campor y mostrar en consola */
+	/** Funcion que utilizo para verificar los campos y mostrar en consola */
 	// const logVideos = (videos) => {
 	// 	videos.map( video => {
 	// 		console.log('TCL: ------------------')
@@ -307,7 +307,7 @@ const stylesPage = StyleSheet.create({
 	// Video 
 	video_avtive: {
 		width: layout.window.width,
-		height: layout.window.height / 3
+		height: !Platform.isPad ? layout.window.height / 3 : layout.window.height / 2
 	},
 	action_bar: {
 		paddingHorizontal: 20,

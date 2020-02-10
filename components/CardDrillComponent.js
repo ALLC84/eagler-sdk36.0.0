@@ -12,6 +12,7 @@ const CardDrillComponent = props => {
 	const { drill } = props;
 	const { title, tag, img } = drill;
 	const { navigation } = props.navigation;
+	
 
 	//State
 	const [loading, setLoading] = useState(true)
@@ -65,7 +66,7 @@ const CardDrillComponent = props => {
 						onPress={() => drillDetailView(drill)}
 					>
 						<Ionicons
-							size={40}
+							size={!Platform.isPad ? 40 : 60 }
 							color={"#fff"}
 							name={"ios-play-circle"}
 						/>

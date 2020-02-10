@@ -4,7 +4,6 @@ import { StyleSheet } from "react-native"; // React Native
 import { Header, Left, Right, Button, Body, Title, Text, Icon } from "native-base"; // Native Base
 // import { Ionicons } from '@expo/vector-icons'; // Expo
 /* ========== PROPIOS ================ */
-// import Text from './CustomText'; // Custom Text Styles and Font
 import Strings from '../constants/Strings'; // Strings
 import Colors from '../constants/Colors'; // Styles
 
@@ -12,7 +11,7 @@ const DetailScreenHeader = props => {
    const {title, navigation} = props
 
    return (
-      <Header style={{backgroundColor: '#ffffff'}}>
+      <Header style={stylesPage.header}>
          <Left>
             <Button
                transparent
@@ -38,6 +37,9 @@ export default DetailScreenHeader;
 
 // Styles del Componente
 const stylesPage = StyleSheet.create({
+   header: {
+      backgroundColor: '#ffffff'
+   },
    nabbar_icon: {
 		color: Colors.tintColor,
 	},

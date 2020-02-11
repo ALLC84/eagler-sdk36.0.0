@@ -3,7 +3,7 @@
 import React from "react"; // React
 import { Platform, StatusBar, StyleSheet, View } from "react-native"; // React Native
 import { Provider } from 'react-redux'; // Redux
-import { Root, Text } from "native-base"; // Native Base
+import { Root } from "native-base"; // Native Base
 import { AppLoading } from "expo"; // Expo
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
@@ -70,6 +70,7 @@ export default class App extends React.Component {
 				// We include SpaceMono because we use it in HomeScreen.js. Feel free
 				// to remove this if you are not using it in your app
 				Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+				
 				"gilroy-light": require("./assets/fonts/Gilroy-Light.otf"),
 				"gilroy-regular": require("./assets/fonts/Gilroy-Regular.otf"),
 				"gilroy-semibold": require("./assets/fonts/Gilroy-Semibold.otf"),

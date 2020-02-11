@@ -10,7 +10,6 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 // })
 
 //Middlewares
-// import funcionPrimaria from './sagas/registerUserSaga';
 import createSagaMiddleware from 'redux-saga';
 // Mis sagas
 import funcionesRegistroSaga from './sagas/registerUserSaga';

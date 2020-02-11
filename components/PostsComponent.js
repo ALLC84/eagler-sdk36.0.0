@@ -1,9 +1,9 @@
 /* =========== LIBRERIAS ============= */
-import React, { useEffect } from "react"; // React
-import { StyleSheet } from 'react-native'; // React Native
-import { Content, Spinner } from "native-base"; // Native Base
+import React, { useEffect, useState } from "react"; // React
+import { StyleSheet, ScrollView } from 'react-native'; // React Native
+import { Spinner, Text } from "native-base"; // Native Base
 /* ========== PROPIOS ================ */
-import Text from './CustomText'; // Custom Text Styles and Font
+// import Text from './CustomText'; // Custom Text Styles and Font
 import Strings from '../constants/Strings'; // Strings
 import CardPostComponent from "./CardPostComponent"; // Card Post IQ
 import Colors from '../constants/Colors' // Styles
@@ -11,17 +11,19 @@ import Colors from '../constants/Colors' // Styles
 import { useDispatch, useSelector  } from 'react-redux'
 import { actionGetIQ } from '../store/actions/IQAction'
 
-
 const PostsComponent = props => {
+	// @refresh reset
 	const { navigation } = props;
+	const [cargando, setCargando] = useState(false)
+	const [currentPage, setCurrentPage] = useState(1)
 	// REDUX
-	const { posts }= useSelector(state => state.posts)
+	const { posts, totalPages }= useSelector(state => state.postsData);
 	// Dispatchs
 	const dispatch = useDispatch()
-	const getIQ = () => dispatch(actionGetIQ())
+	const getIQ = (page) => dispatch(actionGetIQ(page))
 	
 	useEffect(() => {
-		getIQ();
+		getIQ(1);
 	}, [])
 
 	const crearCardPost = posts => 
@@ -33,6 +35,21 @@ const PostsComponent = props => {
 			/>
 		))
 
+	// HANDLE SCROLL Y
+	const handleScroll = async (event) => {
+		if(currentPage == 1 || currentPage < totalPages) {
+
+			setCargando(true)
+			setCurrentPage(currentPage + 1)
+			
+			await getIQ(2)
+	
+			setTimeout(() => {
+				setCargando(false)
+			}, 1500);
+		}
+	}
+
 	return (
 		posts.length === 0
 		?
@@ -43,15 +60,22 @@ const PostsComponent = props => {
 			</Text>
 		</>
 		:
-		<Content padder>
+		<ScrollView style={stylesPage.content}
+			onMomentumScrollEnd={handleScroll}
+		>
 			{ crearCardPost(posts) }
-		</Content>
+			{ cargando ? <Spinner color={Colors.tintColor}/> : null}
+		</ScrollView>
 	);
 }
 export default PostsComponent;
 
 // Styles del Componente
 const stylesPage = StyleSheet.create({
+	content: {
+		paddingHorizontal: 10,
+		paddingBottom: 20
+	},
 	snipperText: {
 		textAlign: 'center', 
 		color: Colors.tintColor

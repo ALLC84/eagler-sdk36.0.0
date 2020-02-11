@@ -1,6 +1,6 @@
 /* =========== LIBRERIAS ============= */
 import React, {useState} from "react"; // React
-import { Image, Platform, StyleSheet } from "react-native"; // React Native
+import { Image, Platform, StyleSheet} from "react-native"; // React Native
 import { Card, CardItem, Button, Left, Body, Right, Text, Spinner } from "native-base"; // Native Base
 import { Ionicons } from '@expo/vector-icons';
 /* ========== PROPIOS ================ */

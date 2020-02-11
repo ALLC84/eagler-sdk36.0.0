@@ -17,7 +17,7 @@ export default combineReducers({
    basic         : BasicReducer,
    body          : BodyReducer,
    drills        : DrillReducer,
-   posts         : IQReducer,
+   postsData     : IQReducer,
    userProfile   : UserProfileReducer,
    subscriptions : SubscriptionsReducer
 });

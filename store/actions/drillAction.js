@@ -1,10 +1,18 @@
 import TYPES from './types';
 
-export const actionGetDrills = () => ({
-   type: TYPES.GET_DRILLS
+export const actionGetDrills = page => ({
+   type: TYPES.GET_DRILLS,
+   page
 });
 
-export const actionGuardarDrillsStorage = (drills) => ({
+// export const actionGuardarDrillsStorage = data => {
+//    console.log('DATA ACTIONS DRILLS =>', data)
+// };
+
+export const actionGuardarDrillsStorage = (data) => ({
    type: TYPES.GUARDAR_DRILLS_STORE,
-   drills
+   drills: data.drills,
+   totalDrills: data.totalDrills,
+   totalPages: data.totalPages,
+   perPage: data.perPage
 });

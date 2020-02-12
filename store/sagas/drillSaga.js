@@ -5,22 +5,56 @@ import { DB } from '../../services/firebase'
 import TYPES from '../actions/types'
 import { actionGuardarDrillsStorage } from '../actions/drillAction';
 
-const getDrillsFirebase = () => 
-   DB.collection("drills")
+const data = {
+   drills     : [],
+   perPage    : 5,
+   totalDrills : 0,
+   totalPages : 1,
+   lastVisible: {}
+}
+
+const getDrillsFirebase = async page => {
+   
+   await DB.collection("drills")
    .get()
    .then( querySnapshot => {
-      let drills = [];
-      querySnapshot.forEach( doc => {
-         drills.push(doc.data());
-      })
-      return drills;
+      data.totalDrills = querySnapshot.size;
+      data.totalPages = Math.ceil(data.totalDrills / data.perPage)
    })
+   if(page <= 1) {
+      await DB.collection("drills")
+      .limit(data.perPage)
+      .orderBy('title')
+      .get()
+      .then(querySnapshot => {
+         data.lastVisible = querySnapshot.docs[querySnapshot.docs.length-1]
+         querySnapshot.forEach( doc => {
+            data.drills.push(doc.data());
+         })
+      })
+   } else {
+      await DB.collection("drills")
+      .limit(data.perPage)
+      .orderBy('title')
+      .startAfter(data.lastVisible)
+      .get()
+      .then(querySnapshot => {
+         data.lastVisible = querySnapshot.docs[querySnapshot.docs.length-1];
+         querySnapshot.forEach( doc => {
+           data.drills.push(doc.data());
+         })
+      })
+
+   }
+
+   return data;
+}
 
 
-function* getDrills() {
+function* getDrills({page}) {
    try {
-      const drills = yield call(getDrillsFirebase)
-      yield put(actionGuardarDrillsStorage(drills))
+      const data = yield call(getDrillsFirebase, page)
+      yield put(actionGuardarDrillsStorage(data))
    } catch (error) {
       console.log(error)
    }

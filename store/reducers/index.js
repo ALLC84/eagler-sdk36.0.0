@@ -16,7 +16,7 @@ export default combineReducers({
    session       : SessionReducer,
    basic         : BasicReducer,
    body          : BodyReducer,
-   drills        : DrillReducer,
+   drillsData    : DrillReducer,
    postsData     : IQReducer,
    userProfile   : UserProfileReducer,
    subscriptions : SubscriptionsReducer

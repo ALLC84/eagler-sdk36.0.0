@@ -7,7 +7,7 @@ import { actionGuardarIQStorage } from '../actions/IQAction';
 
 const data = {
    IQ: [],
-   perPage: 2,
+   perPage: 5,
    totalPosts: 0,
    totalPages: 1,
    lastVisible: {}

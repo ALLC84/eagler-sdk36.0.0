@@ -1,8 +1,7 @@
 /* =========== LIBRERIAS ============= */
-import React, { useEffect } from "react"; // React
-import { StyleSheet, FlatList } from 'react-native'; // React Native
-import { connect } from 'react-redux'; // Redux
-import { Content, Spinner, Text } from "native-base"; // Native Base
+import React, { useEffect, useState } from "react"; // React
+import { StyleSheet, ScrollView } from 'react-native'; // React Native
+import { Spinner, Text } from "native-base"; // Native Base
 /* ========== PROPIOS ================ */
 // import Text from './CustomText'; // Custom Text Styles and Font
 import Strings from '../constants/Strings'; // Strings
@@ -14,15 +13,18 @@ import { actionGetDrills } from '../store/actions/drillAction'; // Actions
 
 
 const DrillsComponent = props => {
+	// @refresh reset
 	const { navigation } = props;
+	const [cargando, setCargando] = useState(false)
+	const [currentPage, setCurrentPage] = useState(1)
 	// REDUX
-	const { drills } = useSelector(state => state.drills)
+	const { drills, totalPages } = useSelector(state => state.drillsData)
 	// Dispatchs
 	const dispatch = useDispatch()
-	const getDrills = () => dispatch(actionGetDrills())
+	const getDrills = (page) => dispatch(actionGetDrills(page))
 	
 	useEffect(() => {
-		getDrills();
+		getDrills(1);
 	}, [])
 
 	const crearCardDrills = (drills) => 
@@ -34,6 +36,21 @@ const DrillsComponent = props => {
 			/>
 		))
 
+	// HANDLE SCROLL Y
+	const handleScroll = async (event) => {
+		if(currentPage == 1 || currentPage < totalPages) {
+
+			setCargando(true)
+			setCurrentPage(currentPage + 1)
+			
+			await getDrills(2)
+	
+			setTimeout(() => {
+				setCargando(false)
+			}, 1500);
+		}
+	}
+
 	return (
 		drills.length == 0
 		? 
@@ -44,15 +61,22 @@ const DrillsComponent = props => {
 			</Text>
 		</>
 		:
-		<Content padder>
+		<ScrollView style={stylesPage.content}
+			onMomentumScrollEnd={handleScroll}
+		>
 			{crearCardDrills(drills)}
-		</Content>
+			{ cargando ? <Spinner color={Colors.tintColor}/> : null}
+		</ScrollView>
 	);	
 }
 export default DrillsComponent;
 
 // Styles del Componente
 const stylesPage = StyleSheet.create({
+	content: {
+		paddingHorizontal: 10,
+		paddingBottom: 20
+	},
 	snipperText: {
 		textAlign: 'center', 
 		color: Colors.tintColor
